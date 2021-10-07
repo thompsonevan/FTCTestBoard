@@ -1,0 +1,9 @@
+- A couple of Motors
+- A couple of servos
+- Sensors:
+    . Color
+    . Distance
+    . Touch
+- Normal Hub
+- Using phones
+- 

@@ -1,23 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Pushbot: Teleop POV", group="Pushbot")
 //@Disabled
-public class Teleop extends LinearOpMode {
+public class ServoTeleop extends LinearOpMode {
 
-    Hardware robot = new Hardware();
-
-    double xVal;
-    double yVal;
-
-    double lfPwr;
-    double rfPwr;
-    double lbPwr;
-    double rbPwr;
+    MotorHardware robot = new MotorHardware();
 
     @Override
     public void runOpMode() {
@@ -29,8 +19,6 @@ public class Teleop extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            xVal = gamepad1.left_stick_x;
-            yVal = gamepad1.left_stick_y;
 
             telemetry.update();
         }
