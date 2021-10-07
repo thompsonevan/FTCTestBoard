@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class MotorCommon {
+public class ServoCommon {
     public LinearOpMode curOpMode;
 
-    public MotorCommon(LinearOpMode owningOpMode){
+    public ServoCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
     }
 
