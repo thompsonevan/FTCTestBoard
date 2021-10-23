@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Pushbot: Teleop POV", group="Pushbot")
+@TeleOp(name="Sensor Teleop", group="Pushbot")
 @Disabled
 public class SensorTeleop extends LinearOpMode {
 
