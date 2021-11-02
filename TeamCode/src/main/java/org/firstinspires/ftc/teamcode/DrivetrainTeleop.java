@@ -12,13 +12,10 @@ public class DrivetrainTeleop extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-
         DrivetrainCommon drivetrain = new DrivetrainCommon(this);
-
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

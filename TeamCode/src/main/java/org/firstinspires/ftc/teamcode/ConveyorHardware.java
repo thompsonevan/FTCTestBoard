@@ -16,10 +16,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class SensorHardware {
+public class ConveyorHardware {
 
-    public DistanceSensor ds1;
-    public Servo s1;
+    public Servo conveyorServo;
+    public DcMotor conveyorMotor;
 
     HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
@@ -27,11 +27,14 @@ public class SensorHardware {
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
-        s1 = hwMap.get(Servo.class, "s1");
+        conveyorMotor = hwMap.get(DcMotor.class, "conveyor_motor");
+        conveyorServo = hwMap.get(Servo.class, "conveyor_servo");
 
-        s1.setPosition(0);
+        conveyorMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        ds1 = hwMap.get(DistanceSensor.class, "ds1");
+        conveyorMotor.setPower(0);
+
+        conveyorServo.setPosition(0);
     }
 }
 

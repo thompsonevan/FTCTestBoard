@@ -15,9 +15,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class SpinnerHardware {
-    public DcMotor motor1 = null;
-    public DcMotor motor2 = null;
-    public DcMotor pointgiver = null;
+    public DcMotor spinnerMotor = null;
 
     HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
@@ -25,21 +23,13 @@ public class SpinnerHardware {
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
-        motor1  = hwMap.get(DcMotor.class, "motor1");
-        motor2  = hwMap.get(DcMotor.class, "motor2");
-        pointgiver  = hwMap.get(DcMotor.class, "pointgiver");
+        spinnerMotor  = hwMap.get(DcMotor.class, "spinner_motor");
 
-        motor1.setDirection(DcMotor.Direction.FORWARD);
-        motor2.setDirection(DcMotor.Direction.REVERSE);
-        pointgiver.setDirection(DcMotor.Direction.FORWARD);
+        spinnerMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        motor1.setPower(0);
-        motor2.setPower(0);
-        pointgiver.setPower(0);
+        spinnerMotor.setPower(0);
 
-        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pointgiver.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
  }
 

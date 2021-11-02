@@ -14,20 +14,15 @@ public class SpinnerCommon {
     }
 
     public void excuteTeleop(){
-        double x = curOpMode.gamepad1.left_stick_y;
-        double y = curOpMode.gamepad1.right_stick_y;
-        robot.motor1.setPower(x);
-        robot.motor2.setPower(y);
+        boolean CCW = curOpMode.gamepad1.x;
+        boolean CW = curOpMode.gamepad1.b;
 
-        boolean c = curOpMode.gamepad1.x;
-        boolean a = curOpMode.gamepad1.y;
-
-        if(c == true) {
-            robot.pointgiver.setPower(-1);
-        } else if (a){
-            robot.pointgiver.setPower(1);
+        if(CCW == true) {
+            robot.spinnerMotor.setPower(-1);
+        } else if (CW){
+            robot.spinnerMotor.setPower(1);
         } else {
-            robot.pointgiver.setPower(0);
+            robot.spinnerMotor.setPower(0);
         }
 
     }

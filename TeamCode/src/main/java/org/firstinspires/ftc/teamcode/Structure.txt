@@ -1,0 +1,16 @@
+Hardware Objects:
+    Wheels (4 motors)
+    Spinner (1 motor)
+    Convyer (1 motor)
+    Lifter (1 servo)
+    Distance sensors (2 sensors)
+
+Classes:
+    Drivetrain:
+        Wheels
+        Distance Sensors
+    Spinner:
+        Spinner Motor
+    Conveyer:
+        Conyere Motor
+        Lifter Servo

@@ -20,18 +20,9 @@ public class DrivetrainHardware
     public DcMotor  driveLF  = null;
     public DcMotor  driveRF  = null;
 
-//    public DistanceSensor ds1;
-
-//    public DistanceSensor leftCheck;
-//    public DistanceSensor rightCheck;
-//
-//    public Servo    leftGuide = null;
-//    public Servo    rightGuide = null;
-
     public BNO055IMU imu;
-    //public Servo    claw   = null;
 
-  //  public RevTouchSensor platformTouch;  // Hardware Device Object
+    public DistanceSensor ds1;
 
     public static final double MID_SERVO       =  0.3 ;
 
@@ -87,19 +78,8 @@ public class DrivetrainHardware
         driveRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         driveLR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         driveRR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // Define and initialize ALL installed servos.
-        //claw  = hwMap.get(Servo.class, "claw");
 
-
-       // leftGuide = hwMap.get(Servo.class, "left_guide");
-      //  rightGuide  = hwMap.get(Servo.class, "right_guide");
-
-     //   platformTouch = hwMap.get(RevTouchSensor.class, "platform_touch");
-
-     //   leftCheck = hwMap.get(DistanceSensor.class, "left_check");
-     //   rightCheck = hwMap.get(DistanceSensor.class, "right_check");
-
-//        ds1 = hwMap.get(DistanceSensor.class, "ds1");
+        ds1 = hwMap.get(DistanceSensor.class, "ds1");
 
     }
 
