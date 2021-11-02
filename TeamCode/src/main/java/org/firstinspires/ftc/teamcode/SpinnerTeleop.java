@@ -1,22 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@TeleOp(name="Servo Teleop", group="Pushbot")
+@TeleOp(name="Spinner Teleop", group="Pushbot")
 @Disabled
-public class ServoTeleop extends LinearOpMode {
-
-    ServoCommon servo = new ServoCommon(this);
+public class SpinnerTeleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        SpinnerCommon spinner = new SpinnerCommon(this);
+
         waitForStart();
 
         while (opModeIsActive()) {
 
-            servo.excuteTeleop();
+            spinner.excuteTeleop();
 
             telemetry.update();
         }

@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class MotorHardware {
+public class SpinnerHardware {
     public DcMotor motor1 = null;
     public DcMotor motor2 = null;
     public DcMotor pointgiver = null;

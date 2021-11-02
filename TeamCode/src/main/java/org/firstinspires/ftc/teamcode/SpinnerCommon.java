@@ -2,13 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class MotorCommon {
+public class SpinnerCommon {
 
-    public MotorHardware robot = new MotorHardware();
+    public SpinnerHardware robot = new SpinnerHardware();
 
     public LinearOpMode curOpMode;
 
-    public MotorCommon(LinearOpMode owningOpMode){
+    public SpinnerCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
     }
@@ -20,9 +20,12 @@ public class MotorCommon {
         robot.motor2.setPower(y);
 
         boolean c = curOpMode.gamepad1.x;
+        boolean a = curOpMode.gamepad1.y;
 
-        if(c == true){
+        if(c == true) {
             robot.pointgiver.setPower(-1);
+        } else if (a){
+            robot.pointgiver.setPower(1);
         } else {
             robot.pointgiver.setPower(0);
         }

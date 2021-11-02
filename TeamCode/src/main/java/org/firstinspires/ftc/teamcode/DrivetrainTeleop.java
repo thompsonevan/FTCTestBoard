@@ -1,24 +1,32 @@
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@TeleOp(name="Sensor Teleop", group="Pushbot")
-//@Disabled
-public class SensorTeleop extends LinearOpMode {
+@TeleOp(name="Drivetrain Teleop")
+@Disabled
+public class DrivetrainTeleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        SensorCommon sensor = new SensorCommon(this);
 
+
+        DrivetrainCommon drivetrain = new DrivetrainCommon(this);
+
+
+        // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+
+        // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            sensor.excuteTeleop();
+            drivetrain.executeTeleop();
 
             telemetry.update();
         }
     }
+
 }
