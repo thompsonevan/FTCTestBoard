@@ -14,7 +14,15 @@ public class ConveyorCommon {
     }
 
     public void excuteTeleop(){
-        robot.conveyorServo.setPosition(Math.round(180*curOpMode.gamepad1.right_trigger));
+        if(curOpMode.gamepad1.dpad_up){
+            robot.conveyorServo.setPosition(90f/180f);
+        } else if (curOpMode.gamepad1.dpad_right){
+            robot.conveyorServo.setPosition(100f/180f);
+        } else if (curOpMode.gamepad1.dpad_down){
+            robot.conveyorServo.setPosition(135f/180f);
+        } else if (curOpMode.gamepad1.dpad_left){
+            robot.conveyorServo.setPosition(180f/180f);
+        }
 
         boolean push = curOpMode.gamepad1.y;
         boolean pull = curOpMode.gamepad1.a;
