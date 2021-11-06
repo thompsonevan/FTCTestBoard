@@ -1,16 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Teleop All", group="Pushbot")
-//@Disabled
+@Disabled
 public class TeleopAll extends LinearOpMode {
 
         @Override
         public void runOpMode() {
 
-            boolean old = true;
+            boolean old = false;
 
             if(old){
                 OldDrivetrainCommon drivetrain = new OldDrivetrainCommon(this);
