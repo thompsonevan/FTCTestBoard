@@ -596,7 +596,7 @@ public class DrivetrainCommon {
     }
 
     public void printData(){
-        curOpMode.telemetry.addData("Distance", robot.ds1.getDistance(DistanceUnit.METER));
+        curOpMode.telemetry.addData("Distance", robot.ds1.getDistance(DistanceUnit.INCH));
     }
 
 }
