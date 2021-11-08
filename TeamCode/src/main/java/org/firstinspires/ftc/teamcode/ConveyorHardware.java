@@ -21,6 +21,9 @@ public class ConveyorHardware {
     public Servo conveyorServo;
     public DcMotor conveyorMotor;
 
+    public DistanceSensor ds1;
+    public DistanceSensor ds2;
+
     HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
 
@@ -37,6 +40,9 @@ public class ConveyorHardware {
         conveyorMotor.setPower(0);
 
         conveyorServo.setPosition(0);
+
+        ds1 = hwMap.get(DistanceSensor.class, "ds1");
+        ds2 = hwMap.get(DistanceSensor.class, "ds2");
     }
 }
 
