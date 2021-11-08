@@ -313,7 +313,6 @@ public class DrivetrainCommon {
         robot.driveRF.setPower(powerRightFront);
 
         printData();
-
     }
 
     private void initHardware() {
@@ -596,7 +595,48 @@ public class DrivetrainCommon {
     }
 
     public void printData(){
-        curOpMode.telemetry.addData("Distance", robot.ds1.getDistance(DistanceUnit.INCH));
+        curOpMode.telemetry.addData("Distance 1", robot.ds1.getDistance(DistanceUnit.INCH));
+        curOpMode.telemetry.addData("Distance 2", robot.ds2.getDistance(DistanceUnit.INCH));
+        curOpMode.telemetry.addData("Position", spawnpoint());
     }
+
+    double lastRead1 = 0;
+    double lastRead2 = 0;
+
+    public int spawnpoint(){
+        double read1 = 0;
+        double read2 = 0;
+
+        double curRead1 = robot.ds1.getDistance(DistanceUnit.INCH);
+        double curRead2 = robot.ds2.getDistance(DistanceUnit.INCH);
+
+        if (curRead1 > lastRead1){
+            read1 = curRead1;
+        }
+        if (curRead2 > lastRead2){
+            read2 = curRead2;
+        }
+
+        lastRead1 = read1;
+        lastRead2 = read2;
+
+        /*
+        Sensor 1 Caught : 1
+        Sensor 2 Caught : 2
+        Neither Caught : 3
+        Both caught : 0
+         */
+
+        if (read1 > 50 && read2 > 50){
+            return 0;
+        } else if (read1 > 50){
+            return 1;
+        } else if (read2 > 50){
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+
 
 }

@@ -10,12 +10,12 @@ public class OldDrivetrainCommon {
     public LinearOpMode curOpMode;
 
     public OldDrivetrainCommon(LinearOpMode owningOpMode){
-        owningOpMode = curOpMode;
+        curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
     }
 
     public void excuteTeleop(){
-        robot.leftDrive.setPower(curOpMode.gamepad1.left_stick_y);
-        robot.rightDrive.setPower(curOpMode.gamepad1.right_stick_y);
+        robot.leftDrive.setPower(curOpMode.gamepad1.right_stick_y);
+        robot.rightDrive.setPower(curOpMode.gamepad1.left_stick_y);
     }
 }
