@@ -3,21 +3,22 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-@TeleOp(name="Old Drivetrain Teleop", group="Pushbot")
+
+@TeleOp(name="Extender Teleop", group="Pushbot")
 @Disabled
-public class OldDrivetrainTeleop extends LinearOpMode {
+public class ExtenderTeleop extends LinearOpMode {
+
     @Override
-    public void runOpMode(){
-        OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
+    public void runOpMode() {
+        ExtenderCommon extender = new ExtenderCommon(this);
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            oldDrivetrain.excuteTeleop();
+            extender.excuteTeleop();
 
             telemetry.update();
         }
-
     }
 }

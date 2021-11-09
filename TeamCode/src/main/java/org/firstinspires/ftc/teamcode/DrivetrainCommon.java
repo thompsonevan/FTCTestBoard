@@ -311,9 +311,6 @@ public class DrivetrainCommon {
         robot.driveLR.setPower(powerLeftRear);
         robot.driveLF.setPower(powerLeftFront);
         robot.driveRF.setPower(powerRightFront);
-
-        printData();
-
     }
 
     private void initHardware() {
@@ -593,10 +590,6 @@ public class DrivetrainCommon {
 
     String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
-
-    public void printData(){
-        curOpMode.telemetry.addData("Distance", robot.ds1.getDistance(DistanceUnit.INCH));
     }
 
 }

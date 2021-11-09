@@ -11,14 +11,6 @@ public class TeleopAll extends LinearOpMode {
         @Override
         public void runOpMode() {
 
-            boolean old = true;
-
-            if(old){
-                OldDrivetrainCommon drivetrain = new OldDrivetrainCommon(this);
-            } else {
-                DrivetrainCommon drivetrain = new DrivetrainCommon(this);
-            }
-
             SpinnerCommon spinner = new SpinnerCommon(this);
             DrivetrainCommon drivetrain = new DrivetrainCommon(this);
             ConveyorCommon conveyor = new ConveyorCommon(this);
