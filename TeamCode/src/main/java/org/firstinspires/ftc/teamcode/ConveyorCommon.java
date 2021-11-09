@@ -27,6 +27,17 @@ public class ConveyorCommon {
             robot.conveyorServo.setPosition(180f/180f);
         }
 
+        boolean push = curOpMode.gamepad1.y;
+        boolean pull = curOpMode.gamepad1.a;
+
+        if(pull == true) {
+            robot.conveyorMotor.setPower(-1);
+        } else if (push){
+            robot.conveyorMotor.setPower(1);
+        } else {
+            robot.conveyorMotor.setPower(0);
+        }
+
         robot.conveyorMotor.setTargetPosition(2700);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.conveyorMotor.setPower(.8);
