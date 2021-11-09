@@ -11,7 +11,7 @@ public class OldDrivetrainHardware {
     public DcMotor leftDrive;
     public DcMotor rightDrive;
 
-    HardwareMap hwMap = null;
+    HardwareMap hwMap;
     private ElapsedTime period = new ElapsedTime();
 
     public void init(HardwareMap ahwMap){
@@ -23,7 +23,7 @@ public class OldDrivetrainHardware {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
     }
 }

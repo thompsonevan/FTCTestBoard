@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class ConveyorCommon {
 
@@ -12,8 +11,6 @@ public class ConveyorCommon {
     public ConveyorCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void excuteTeleop(){
@@ -37,32 +34,5 @@ public class ConveyorCommon {
         } else {
             robot.conveyorMotor.setPower(0);
         }
-
-        robot.conveyorMotor.setTargetPosition(2700);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.conveyorMotor.setPower(.8);
-        while (robot.conveyorMotor.isBusy()){
-            curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
-            curOpMode.telemetry.update();
-        }
-        robot.conveyorMotor.setPower(0);
-
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        curOpMode.sleep(3000);
-
-        robot.conveyorMotor.setTargetPosition(0);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.conveyorMotor.setPower(.8);
-        while (robot.conveyorMotor.isBusy()){
-            curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
-            curOpMode.telemetry.update();
-        }
-        robot.conveyorMotor.setPower(0);
-
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        curOpMode.sleep(3000);
-
     }
 }
