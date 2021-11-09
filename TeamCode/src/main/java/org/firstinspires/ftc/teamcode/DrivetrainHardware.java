@@ -57,8 +57,8 @@ public class DrivetrainHardware
         driveLF = hwMap.get(DcMotor.class, "drive_LF");
         driveRF = hwMap.get(DcMotor.class, "drive_RF");
 
-        driveRR.setDirection(DcMotor.Direction.FORWARD);
-        driveLR.setDirection(DcMotor.Direction.REVERSE);
+        driveRR.setDirection(DcMotor.Direction.REVERSE);
+        driveLR.setDirection(DcMotor.Direction.FORWARD);
         driveLF.setDirection(DcMotor.Direction.REVERSE);
         driveRF.setDirection(DcMotor.Direction.FORWARD);
 

@@ -11,7 +11,7 @@ public class TeleopAll extends LinearOpMode {
         @Override
         public void runOpMode() {
 
-            boolean old = false;
+            boolean old = true;
 
             if(old){
                 OldDrivetrainCommon drivetrain = new OldDrivetrainCommon(this);
