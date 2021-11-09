@@ -13,25 +13,23 @@ public class TeleopAll extends LinearOpMode {
 
             boolean old = false;
 
+            if(old){
+                OldDrivetrainCommon drivetrain = new OldDrivetrainCommon(this);
+            } else {
+                DrivetrainCommon drivetrain = new DrivetrainCommon(this);
+            }
+
             SpinnerCommon spinner = new SpinnerCommon(this);
+            DrivetrainCommon drivetrain = new DrivetrainCommon(this);
             ConveyorCommon conveyor = new ConveyorCommon(this);
-            ExtenderCommon extender = new ExtenderCommon(this);
 
             waitForStart();
 
             while (opModeIsActive()) {
 
-                if(old){
-                    OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
-                    oldDrivetrain.excuteTeleop();
-                } else {
-                    DrivetrainCommon drivetrain = new DrivetrainCommon(this);
-                    drivetrain.executeTeleop();
-                }
-
                 spinner.excuteTeleop();
+                drivetrain.executeTeleop();
                 conveyor.excuteTeleop();
-                extender.excuteTeleop();
 
                 telemetry.update();
             }
