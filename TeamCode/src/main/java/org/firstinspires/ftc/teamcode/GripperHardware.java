@@ -27,6 +27,8 @@ public class GripperHardware {
 
         grip = hwMap.get(Servo.class, "gripServo");
         turn = hwMap.get(Servo.class, "turnServo");
+
+        grip.setPosition(.5);
     }
 }
 
