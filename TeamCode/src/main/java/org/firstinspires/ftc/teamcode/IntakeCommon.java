@@ -16,7 +16,7 @@ public class IntakeCommon {
         robot.init(curOpMode.hardwareMap);
     }
 
-    public void excuteTeleop(){
+    public void executeTeleop(){
         if(curOpMode.gamepad1.right_trigger > .05) {
             val1 += .001;
         } else if(curOpMode.gamepad1.left_trigger > .05){

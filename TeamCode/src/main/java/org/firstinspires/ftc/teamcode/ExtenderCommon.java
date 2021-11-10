@@ -22,7 +22,7 @@ public class ExtenderCommon {
         robot.init(curOpMode.hardwareMap);
     }
 
-    public void excuteTeleop(){
+    public void executeTeleop(){
         if(curOpMode.gamepad1.start){
             state = 0;
         } else if (curOpMode.gamepad1.b){

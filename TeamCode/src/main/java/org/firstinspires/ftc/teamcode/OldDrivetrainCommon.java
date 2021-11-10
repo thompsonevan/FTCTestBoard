@@ -14,7 +14,7 @@ public class OldDrivetrainCommon {
         robot.init(curOpMode.hardwareMap);
     }
 
-    public void excuteTeleop(){
+    public void executeTeleop(){
         robot.leftDrive.setPower(curOpMode.gamepad1.left_stick_y);
         robot.rightDrive.setPower(curOpMode.gamepad1.right_stick_y);
     }

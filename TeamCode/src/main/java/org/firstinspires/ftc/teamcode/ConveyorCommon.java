@@ -24,7 +24,7 @@ public class ConveyorCommon {
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void excuteTeleop(){
+    public void executeTeleop(){
         if(curOpMode.gamepad1.dpad_up){
             robot.conveyorServo.setPosition(90f/180f);
         } else if (curOpMode.gamepad1.dpad_right){

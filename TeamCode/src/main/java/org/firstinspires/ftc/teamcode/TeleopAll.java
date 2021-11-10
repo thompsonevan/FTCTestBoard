@@ -20,11 +20,11 @@ public class TeleopAll extends LinearOpMode {
 
             while (opModeIsActive()) {
 
-//                spinner.excuteTeleop();
+//                spinner.executeTeleop();
 //                drivetrain.executeTeleop();
-//                conveyor.excuteTeleop();
-                oldDrivetrain.excuteTeleop();
-                intake.excuteTeleop();
+//                conveyor.executeTeleop();
+                oldDrivetrain.executeTeleop();
+                intake.executeTeleop();
 
 
                 telemetry.update();

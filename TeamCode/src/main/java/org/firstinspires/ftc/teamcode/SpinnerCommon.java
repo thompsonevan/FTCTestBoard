@@ -16,7 +16,7 @@ public class SpinnerCommon {
         robot.init(curOpMode.hardwareMap);
     }
 
-    public void excuteTeleop(){
+    public void executeTeleop(){
         if(curOpMode.gamepad1.left_trigger > .05){
             robot.spinnerMotor.setPower(-curOpMode.gamepad1.left_trigger);
         } else {
