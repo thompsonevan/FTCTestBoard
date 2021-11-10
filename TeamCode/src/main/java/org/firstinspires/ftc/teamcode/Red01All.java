@@ -70,84 +70,35 @@ import com.vuforia.CameraDevice;
 
 //@Disabled
 public class Red01All extends LinearOpMode {
-
-    /* Declare OpMode members. */
-
-
-
     private ElapsedTime     runtime = new ElapsedTime();
-
-    static final double     COUNTS_PER_MOTOR_REV    = 537.7 ;    // After gearbox
-    static final double     WHEEL_CIRCUMFERENCE_CM   = 30.4 ;
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
 
     AutoCommon auto=null;
 
     Boolean blue=false;
-    int encoderDesired=0;
+
     @Override
     public void runOpMode() {
-
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
-         */
         auto = new AutoCommon(this);
 
         auto.resetEncoders();
-        int distanceToRun = 31;
-/*
-       auto.liftClaw.robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       auto.liftClaw.disengageGrabbers();
-       auto.liftClaw.robot.claw.setPosition(.8);
-       auto.chassis.robot.leftGuide.setPosition(0);
-       auto.chassis.robot.rightGuide.setPosition(1);
-*/
-        // Wait for the game to start (driver presses PLAY)
+
         waitForStart();
-/*
-       //Open claw after start otherwise outside allowed size
-       auto.liftClaw.robot.claw.setPosition(0);
-*/
-        //Drive to position to view blocks with camera and detect duck
-        moveWithRamps(distanceToRun);
-        auto.encoderStrafe(-.3,5,-450,false,false,false);
 
+        // do detection stuff
 
-/*
-       //Run vuforia to detect location of skystone
-       VectorF blockLoc = auto.objectCheck(2);
-       // Evaluate location of block and determine which path to take, currently only evaluate 2 right blocks in a set
-       if (blockLoc != null) {
-           //This value indicates the skystone is in the right position
-           if (blockLoc.get(1) > 3) {
-               //Drive to right positioned skystone and close claw, backup and turn towards build zone
-               auto.GetRightOrLeftBlock(TURN_SPEED, blue, true);
-               //Drive to forward into the build zone and turn towards platform
-               auto.DriveToPlatformPosition(TURN_SPEED,blue, false, true,true);
-           //This value indicates the skystone is in the center position
-           } else if (blockLoc.get(1) < 3) {
-               //Drive to center positioned skystone and close claw, backup and turn towards build zone
-               auto.GetCenterBlock(TURN_SPEED,blue);
-               //Drive to forward into the build zone and turn towards platform
-               auto.DriveToPlatformPosition(TURN_SPEED,blue, true, false,true);
-           }
-       //Default value, if not identified as center or right it is assumed to be the left position
-       } else {
-           //Drive to left positioned skystone and close claw, backup and turn towards build zone
-           auto.GetRightOrLeftBlock(TURN_SPEED, blue, false);
-           //Drive to forward into the build zone and turn towards platform
-           auto.DriveToPlatformPosition(TURN_SPEED,blue, false, false, true);
-       }
-       //Drive forward and grab platform, backup then turn platform and push into corner
-       auto.GetAndPlacePlatform(DRIVE_SPEED, TURN_SPEED, blue,true);
- */
-    }
-    public void moveWithRamps (int distance){
-        encoderDesired = (int) (distance * COUNTS_PER_MOTOR_REV/WHEEL_CIRCUMFERENCE_CM);
-        auto.encoderDrive(.5, encoderDesired, 10, true);  // S1: Forward CMM with 5 Sec timeout
+        auto.encoderDrive(.3,-700,10, false);
 
+        auto.moveSpinner(.3, 2, true);
 
+        auto.encoderDrive(.3,1600,10, false);
+
+        auto.encoderStrafe(.3,10,1000,true,false,false);
+
+        // do conveyor stuff
+        sleep(2000);
+
+        auto.encoderStrafe(.3,10,1200,false,false,false);
+
+        auto.encoderDrive(.3, 3000, 10,false);
     }
 }
