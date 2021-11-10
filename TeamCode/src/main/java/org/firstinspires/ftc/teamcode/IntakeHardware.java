@@ -15,9 +15,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class GripperHardware {
-    public Servo grip;
-    public Servo turn;
+public class IntakeHardware {
+    public Servo frontGuide1;
+    public Servo backGuide1;
+    public Servo frontGuide2;
+    public Servo backGuide2;
+    public Servo frontLift;
+    public Servo backLift;
+    public Servo frontSpin;
+    public Servo backSpin;
 
     HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
@@ -25,10 +31,15 @@ public class GripperHardware {
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
-        grip = hwMap.get(Servo.class, "gripServo");
-        turn = hwMap.get(Servo.class, "turnServo");
+        frontGuide1 = hwMap.get(Servo.class, "front_guide_1");
+        backGuide1 = hwMap.get(Servo.class, "back_guide_1");
+        frontGuide2 = hwMap.get(Servo.class, "front_guide_2");
+        backGuide2 = hwMap.get(Servo.class, "back_guide_2");
+        frontLift = hwMap.get(Servo.class, "front_lift");
+        backLift = hwMap.get(Servo.class, "back_lift");
+        frontSpin = hwMap.get(Servo.class, "front_spin");
+        backSpin = hwMap.get(Servo.class, "back_spin");
 
-        grip.setPosition(.5);
     }
 }
 

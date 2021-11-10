@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -15,7 +14,7 @@ public class TeleopAll extends LinearOpMode {
 //            DrivetrainCommon drivetrain = new DrivetrainCommon(this);
 //            ConveyorCommon conveyor = new ConveyorCommon(this);
             OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
-            GripperCommon gripper = new GripperCommon(this);
+            IntakeCommon intake = new IntakeCommon(this);
 
             waitForStart();
 
@@ -25,7 +24,7 @@ public class TeleopAll extends LinearOpMode {
 //                drivetrain.executeTeleop();
 //                conveyor.excuteTeleop();
                 oldDrivetrain.excuteTeleop();
-                gripper.excuteTeleop();
+                intake.excuteTeleop();
 
 
                 telemetry.update();

@@ -2,16 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class GripperCommon {
+public class IntakeCommon {
 
-    public GripperHardware robot = new GripperHardware();
+    public IntakeHardware robot = new IntakeHardware();
 
     public LinearOpMode curOpMode;
 
     public double val1;
     public double val2;
 
-    public GripperCommon(LinearOpMode owningOpMode){
+    public IntakeCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
     }
@@ -27,7 +27,5 @@ public class GripperCommon {
         } else if (curOpMode.gamepad1.left_bumper){
             val2 -= .001;
         }
-        robot.grip.setPosition(val1);
-        robot.turn.setPosition(val2);
     }
 }

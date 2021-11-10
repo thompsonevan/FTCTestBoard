@@ -4,19 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Gripper Teleop", group="Pushbot")
+@TeleOp(name="Intake Teleop", group="Pushbot")
 @Disabled
-public class GripperTeleop extends LinearOpMode {
+public class IntakeTeleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        GripperCommon gripper = new GripperCommon(this);
+        IntakeCommon intake = new IntakeCommon(this);
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            gripper.excuteTeleop();
+            intake.excuteTeleop();
 
             telemetry.update();
         }
