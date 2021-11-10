@@ -16,7 +16,7 @@ public class ConveyorTeleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            conveyor.excuteTeleop();
+            conveyor.executeTeleop();
 
             telemetry.update();
         }

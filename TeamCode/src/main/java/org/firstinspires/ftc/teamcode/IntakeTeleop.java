@@ -16,7 +16,7 @@ public class IntakeTeleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            intake.excuteTeleop();
+            intake.executeTeleop();
 
             telemetry.update();
         }

@@ -14,7 +14,7 @@ public class OldDrivetrainTeleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            oldDrivetrain.excuteTeleop();
+            oldDrivetrain.executeTeleop();
 
             telemetry.update();
         }

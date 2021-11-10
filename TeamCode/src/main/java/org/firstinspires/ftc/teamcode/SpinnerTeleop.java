@@ -16,7 +16,7 @@ public class SpinnerTeleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            spinner.excuteTeleop();
+            spinner.executeTeleop();
 
             telemetry.update();
         }
