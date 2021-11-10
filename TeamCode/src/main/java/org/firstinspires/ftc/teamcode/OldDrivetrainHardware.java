@@ -17,8 +17,8 @@ public class OldDrivetrainHardware {
     public void init(HardwareMap ahwMap){
         hwMap = ahwMap;
 
-        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+        leftDrive = hwMap.get(DcMotor.class, "left_drive");
+        rightDrive = hwMap.get(DcMotor.class, "right_drive");
 
         leftDrive.setPower(0);
         rightDrive.setPower(0);

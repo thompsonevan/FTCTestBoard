@@ -26,10 +26,10 @@ public class ExtenderHardware {
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
-        s1 = hwMap.get(Servo.class, "s1");
-        s2 = hwMap.get(Servo.class, "s2");
-        s3 = hwMap.get(Servo.class, "s3");
-        s4 = hwMap.get(Servo.class, "s4");
-        s5 = hwMap.get(Servo.class, "s5");
+        s1 = hwMap.get(Servo.class, "s_1");
+        s2 = hwMap.get(Servo.class, "s_2");
+        s3 = hwMap.get(Servo.class, "s_3");
+        s4 = hwMap.get(Servo.class, "s_4");
+        s5 = hwMap.get(Servo.class, "s_5");
     }
 }
