@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.CameraDevice;
+// import com.vuforia.CameraDevice;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -23,23 +23,24 @@ public class AutoCommon {
 //    public LiftClawCommon liftClaw = null;
 //    public VuforiaSkyStoneCommon vuforiaCom = null;
 
-
+    //    static final double     COUNTS_PER_MOTOR_REV    = 537.7 ;    // After gearbox
+    //    static final double     WHEEL_CIRCUMFERENCE_CM   = 30.4 ;
+    static final double     COUNTS_PER_MOTOR_REV    =720 ;    // SkyStone motors
+    static final double     WHEEL_CIRCUMFERENCE_CM   = 31.0 ; // SkyStone wheels
+    static final double		COUNTS_PER_CM			= COUNTS_PER_MOTOR_REV
+                                                                / WHEEL_CIRCUMFERENCE_CM;
     public int BASE_DISTANCE = 2300;
-    public int SKY_OFFSET_DISTANCE = 1040;
     public int ADJUSTMENT_DISTANCE = 0;
     public int ARM_OFFSET = -173;
     public int BLOCK_OFFSET_DISTANCE=346;
 
     public VectorF blockLoc = null;
-    public CameraDevice vufCam = null;
+//    public CameraDevice vufCam = null;
 
     private ElapsedTime runtime = new ElapsedTime();
 
     private LinearOpMode curOpMode = null;
     Map<Integer, Integer> blockLocations = new HashMap<Integer,Integer>();
-    public ArrayList<Integer> patternA = new ArrayList<Integer>();
-    public ArrayList<Integer> patternB = new ArrayList<Integer>();
-    public ArrayList<Integer> patternC = new ArrayList<Integer>();
 
     public AutoCommon(LinearOpMode owningOpMode) {
 
@@ -65,26 +66,6 @@ public class AutoCommon {
         blockLocations.put(6,BASE_DISTANCE + (4*BLOCK_OFFSET_DISTANCE));
 
 
-        patternA.add(1);
-        patternA.add(4);
-        patternA.add(2);
-        patternA.add(3);
-        patternA.add(5);
-        patternA.add(6);
-
-        patternB.add(2);
-        patternB.add(5);
-        patternB.add(1);
-        patternB.add(3);
-        patternB.add(4);
-        patternB.add(6);
-
-        patternC.add(3);
-        patternC.add(6);
-        patternC.add(1);
-        patternC.add(2);
-        patternC.add(4);
-        patternC.add(5);
     }
 
 
@@ -97,10 +78,11 @@ public class AutoCommon {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,
-                             int encoderValue,
-                             double timeoutS, boolean pid) {
+                             double distance,  // distance in CM
+                             double timeoutS,
+                             boolean pid) {
+        int encoderValue = calcDesiredCount(distance);
         double correction = 0;
-
 
         resetEncoders();
         // Ensure that the opmode is still active
@@ -111,18 +93,9 @@ public class AutoCommon {
                 correction = chassis.pidDrive.performPID(chassis.getAngle());
             }
 
-            // Determine new target position, and pass to motor controller;
-            chassis.robot.driveLF.setTargetPosition(encoderValue);
-            chassis.robot.driveRF.setTargetPosition(encoderValue);
-            chassis.robot.driveLR.setTargetPosition(encoderValue);
-            chassis.robot.driveRR.setTargetPosition(encoderValue);
+            setAllTargetPosition(encoderValue);   //  pass encoderValue to all motors
 
-
-            // Turn On RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+			setAllRunToPosition();   // Turn on RUN_TO_POSITION
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -134,11 +107,13 @@ public class AutoCommon {
             double currentPower = speed;
 
             int decelStart = (int)(encoderValue*.75);
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // keep looping while we are still active, and there is time left, and both
+            // motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that
+            // when EITHER motor hits its target position, the motion will stop.  This
+            // is "safer" in the event that the robot will 
+            // always end the motion as soon as possible.  However, if you require that
+            // BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (curOpMode.opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
@@ -157,32 +132,14 @@ public class AutoCommon {
 
                 if(pid) {
                     correction = chassis.pidDrive.performPID(chassis.getAngle());
-
-                    if(correction>0)
-                    {
-
-                    }
-
-
                     if(encoderValue<0) {
                         correction=correction*(-1);
                     }
                 }
             }
 
-
-            // Stop all motion;
-            chassis.robot.driveLF.setPower(0);
-            chassis.robot.driveRF.setPower(0);
-            chassis.robot.driveLR.setPower(0);
-            chassis.robot.driveRR.setPower(0);
-
-
-            // Turn off RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            stopAllMotion();    			// set all to 0
+            setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
             //  sleep(250);   // optional pause after each move
         }
@@ -205,17 +162,9 @@ public class AutoCommon {
             }
 
             // Determine new target position, and pass to motor controller;
-            chassis.robot.driveLF.setTargetPosition(encoderValue);
-            chassis.robot.driveRF.setTargetPosition(encoderValue);
-            chassis.robot.driveLR.setTargetPosition(encoderValue);
-            chassis.robot.driveRR.setTargetPosition(encoderValue);
+            setAllTargetPosition(encoderValue);
 
-
-            // Turn On RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+			setAllRunToPosition();   // Turn on RUN_TO_POSITION
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -261,31 +210,14 @@ public class AutoCommon {
                 if(pid) {
                     correction = chassis.pidDrive.performPID(chassis.getAngle());
 
-                    if(correction>0)
-                    {
-
-                    }
-
-
                     if(encoderValue<0) {
                         correction=correction*(-1);
                     }
                 }
             }
 
-
-            // Stop all motion;
-            chassis.robot.driveLF.setPower(0);
-            chassis.robot.driveRF.setPower(0);
-            chassis.robot.driveLR.setPower(0);
-            chassis.robot.driveRR.setPower(0);
-
-
-            // Turn off RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            stopAllMotion();    			// set all to 0
+            setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
             //  sleep(250);   // optional pause after each move
         }
@@ -301,18 +233,9 @@ public class AutoCommon {
         // Ensure that the opmode is still active
         if (curOpMode.opModeIsActive()) {
 
-            // Determine new target position, and pass to motor controller;
-            chassis.robot.driveLF.setTargetPosition(encoderValue);
-            chassis.robot.driveRF.setTargetPosition(encoderValue);
-            chassis.robot.driveLR.setTargetPosition(encoderValue);
-            chassis.robot.driveRR.setTargetPosition(encoderValue);
+            setAllTargetPosition(encoderValue);   //  pass encoderValue to all motors
 
-
-            // Turn On RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+			setAllRunToPosition();   // Turn on RUN_TO_POSITION
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -341,19 +264,8 @@ public class AutoCommon {
 
             }
 
-
-            // Stop all motion;
-            chassis.robot.driveLF.setPower(0);
-            chassis.robot.driveRF.setPower(0);
-            chassis.robot.driveLR.setPower(0);
-            chassis.robot.driveRR.setPower(0);
-
-
-            // Turn off RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            stopAllMotion();    			// set all to 0
+            setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
             //  sleep(250);   // optional pause after each move
         }
@@ -403,18 +315,9 @@ public class AutoCommon {
                 correction = chassis.pidDrive.performPID(chassis.getAngle());
             }
 
-            // Determine new target position, and pass to motor controller;
-            chassis.robot.driveLF.setTargetPosition(encoderValue);
-            chassis.robot.driveRF.setTargetPosition(encoderValue);
-            chassis.robot.driveLR.setTargetPosition(encoderValue);
-            chassis.robot.driveRR.setTargetPosition(encoderValue);
+            setAllTargetPosition(encoderValue);   //  pass encoderValue to all motors
 
-
-            // Turn On RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+			setAllRunToPosition();   // Turn on RUN_TO_POSITION
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -424,7 +327,7 @@ public class AutoCommon {
             chassis.robot.driveRR.setPower(Math.abs(speed));
 
 
-            CameraDevice.getInstance().setFlashTorchMode(true);
+            //   CameraDevice.getInstance().setFlashTorchMode(true);
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
             // its target position, the motion will stop.  This is "safer" in the event that the robot will
@@ -453,21 +356,10 @@ public class AutoCommon {
             }
 
 
-            CameraDevice.getInstance().setFlashTorchMode(false);
+//            CameraDevice.getInstance().setFlashTorchMode(false);
 
-
-            // Stop all motion;
-            chassis.robot.driveLF.setPower(0);
-            chassis.robot.driveRF.setPower(0);
-            chassis.robot.driveLR.setPower(0);
-            chassis.robot.driveRR.setPower(0);
-
-
-            // Turn off RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            stopAllMotion();    			// set all to 0
+            setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
             //  sleep(250);   // optional pause after each move
         }
@@ -495,18 +387,9 @@ public class AutoCommon {
                 correction = chassis.pidDrive.performPID(chassis.getAngle());
             }
 
-            // Determine new target position, and pass to motor controller;
-            chassis.robot.driveLF.setTargetPosition(encoderValue);
-            chassis.robot.driveRF.setTargetPosition(encoderValue);
-            chassis.robot.driveLR.setTargetPosition(encoderValue);
-            chassis.robot.driveRR.setTargetPosition(encoderValue);
+            setAllTargetPosition(encoderValue);   //  pass encoderValue to all motors
 
-
-            // Turn On RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+			setAllRunToPosition();   // Turn on RUN_TO_POSITION
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -549,20 +432,9 @@ public class AutoCommon {
 
             }
 
-
-            // Stop all motion;
-            chassis.robot.driveLF.setPower(0);
-            chassis.robot.driveRF.setPower(0);
-            chassis.robot.driveLR.setPower(0);
-            chassis.robot.driveRR.setPower(0);
-
-
-            // Turn off RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+            stopAllMotion();    			// set all to 0
+            setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
+            
             //  sleep(250);   // optional pause after each move
         }
     }
@@ -584,12 +456,7 @@ public class AutoCommon {
             chassis.robot.driveLR.setTargetPosition(-encoderValue);
             chassis.robot.driveRR.setTargetPosition(encoderValue);
 
-
-            // Turn On RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+			setAllRunToPosition();   // Turn on RUN_TO_POSITION
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -618,18 +485,8 @@ public class AutoCommon {
 
             }
 
-            // Stop all motion;
-            chassis.robot.driveLF.setPower(0);
-            chassis.robot.driveRF.setPower(0);
-            chassis.robot.driveLR.setPower(0);
-            chassis.robot.driveRR.setPower(0);
-
-
-            // Turn off RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            stopAllMotion();    			// set all to 0
+            setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
 
             curOpMode.sleep(500);   // optional pause after each move
@@ -640,21 +497,6 @@ public class AutoCommon {
         }
     }
 
-
-    public void resetEncoders() {
-        //Reset the encoders
-        chassis.robot.driveLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        chassis.robot.driveRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        chassis.robot.driveLR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        chassis.robot.driveRR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //set all the motors to run using encoders
-        chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-    }
 
     public void driveToBlockPosition(double blockOffset){
         int encoderValue = (int)((blockOffset/25.4)*43.3);
@@ -674,9 +516,9 @@ public class AutoCommon {
 
     }
 
-    public VectorF encoderStrafe(double power, double timeoutS, int encoderValue, boolean strafeLeft,
+    public VectorF encoderLateral(double power, double timeoutS, double distance, boolean strafeLeft,
         boolean pid, boolean objectDetection) {
-
+        int encoderValue = calcDesiredCount(distance);
         chassis.rotation = chassis.getAngle();        // reset angle tracking on new heading.
         chassis.resetAngle();
 
@@ -716,12 +558,8 @@ public class AutoCommon {
         chassis.robot.driveLR.setTargetPosition(encoderValue*setB);
         chassis.robot.driveRR.setTargetPosition(encoderValue*setA);
 
-
+		setAllRunToPosition();
         // Turn On RUN_TO_POSITION
-        chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
         int startDecelerationAt = (int) (encoderValue * .95);
@@ -751,18 +589,8 @@ public class AutoCommon {
  */
         }
 
-        // Stop all motion;
-        chassis.robot.driveLF.setPower(0);
-        chassis.robot.driveRF.setPower(0);
-        chassis.robot.driveLR.setPower(0);
-        chassis.robot.driveRR.setPower(0);
-
-
-        // Turn off RUN_TO_POSITION
-        chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stopAllMotion();
+		setAllRunUsingEncoder();
 
    //     CameraDevice.getInstance().setFlashTorchMode(false);
 
@@ -808,10 +636,11 @@ public class AutoCommon {
         runtime.reset();
 
         VectorF blockLoc = null;
-
+/*
         if(objectDetection) {
             CameraDevice.getInstance().setFlashTorchMode(true);
         }
+        */
 
         while (curOpMode.opModeIsActive() &&
                 (runtime.seconds() < timeoutS) )
@@ -849,29 +678,18 @@ public class AutoCommon {
 
  */
         }
-
+/*
         if(objectDetection) {
             CameraDevice.getInstance().setFlashTorchMode(false);
         }
-
+*/
         chassis.robot.driveLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         chassis.robot.driveRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         chassis.robot.driveLR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         chassis.robot.driveRR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Stop all motion;
-        chassis.robot.driveLF.setPower(0);
-        chassis.robot.driveRF.setPower(0);
-        chassis.robot.driveLR.setPower(0);
-        chassis.robot.driveRR.setPower(0);
-
-
-        // Turn off RUN_TO_POSITION
-        chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        stopAllMotion();    			// set all to 0
+        setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
         return blockLoc;
     }
@@ -893,7 +711,7 @@ public class AutoCommon {
 
         VectorF blockLoc = null;
 
-        CameraDevice.getInstance().setFlashTorchMode(true);
+//        CameraDevice.getInstance().setFlashTorchMode(true);
 
         while (curOpMode.opModeIsActive() &&
                 (runtime.seconds() < timeoutS) && (sensor.getDistance(DistanceUnit.CM) < distance))
@@ -924,25 +742,15 @@ public class AutoCommon {
  */
         }
 
-        CameraDevice.getInstance().setFlashTorchMode(false);
+//        CameraDevice.getInstance().setFlashTorchMode(false);
 
         chassis.robot.driveLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         chassis.robot.driveRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         chassis.robot.driveLR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         chassis.robot.driveRR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Stop all motion;
-        chassis.robot.driveLF.setPower(0);
-        chassis.robot.driveRF.setPower(0);
-        chassis.robot.driveLR.setPower(0);
-        chassis.robot.driveRR.setPower(0);
-
-
-        // Turn off RUN_TO_POSITION
-        chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stopAllMotion();    			// set all to 0
+        setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
 
         return blockLoc;
@@ -957,7 +765,7 @@ public class AutoCommon {
         {
             if(blue)
             {
-                encoderStrafe(-.3,5,-450,false,false,false);
+                encoderLateral(-.3,5,-450,false,false,false);
                 /**encoderDrive(.5, 200, 5, false);
                 encoderTurn(.4, 400, 5);
 
@@ -967,7 +775,7 @@ public class AutoCommon {
             else
             {
 
-                encoderStrafe(.3,5,450,false,false,false);
+                encoderLateral(.3,5,450,false,false,false);
 
             }
         }
@@ -1036,12 +844,12 @@ public class AutoCommon {
         {
             chassis.turnToAngle(.1,90);
 
-            encoderStrafe(-.3,5,-500,false,false,false);
+            encoderLateral(-.3,5,-500,false,false,false);
         }
         else
         {
             chassis.turnToAngle(.1,-90);
-            encoderStrafe(.3,5,500,false,false,false);
+            encoderLateral(.3,5,500,false,false,false);
         }
 
 
@@ -1522,7 +1330,7 @@ public class AutoCommon {
         {
 
 
-            encoderStrafe(1, 10,2200,false,false ,false);
+            encoderLateral(1, 10,2200,false,false ,false);
 
             curOpMode.sleep(20000);
             encoderDrive(1, 2200 + blockOffset, 10, true);
@@ -1633,18 +1441,9 @@ public class AutoCommon {
                 correction = chassis.pidDrive.performPID(chassis.getAngle());
             }
 
-            // Determine new target position, and pass to motor controller;
-            chassis.robot.driveLF.setTargetPosition(encoderValue);
-            chassis.robot.driveRF.setTargetPosition(encoderValue);
-            chassis.robot.driveLR.setTargetPosition(encoderValue);
-            chassis.robot.driveRR.setTargetPosition(encoderValue);
+            setAllTargetPosition(encoderValue);   //  pass encoderValue to all motors
 
-
-            // Turn On RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+			setAllRunToPosition();   // Turn on RUN_TO_POSITION
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -1682,13 +1481,9 @@ public class AutoCommon {
 
  */
             }
+            
+            stopAllMotion();    			// set all to 0
 
-
-            // Stop all motion;
-            chassis.robot.driveLF.setPower(0);
-            chassis.robot.driveRF.setPower(0);
-            chassis.robot.driveLR.setPower(0);
-            chassis.robot.driveRR.setPower(0);
 /*
             if(liftClaw.robot.lift.getCurrentPosition()<liftPosition) {
                 while (curOpMode.opModeIsActive() && runtime.seconds() < timeoutS &&
@@ -1700,11 +1495,8 @@ public class AutoCommon {
 
             }
 */
-            // Turn off RUN_TO_POSITION
-            chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
 
          //   liftClaw.robot.lift.setPower(0);
             //  sleep(250);   // optional pause after each move
@@ -1727,4 +1519,74 @@ public class AutoCommon {
     }
 
  */
+ 
+	/**
+	 *  resetEncoders -- reset encoders for all motors, then turn on RUN_USING_ENCODER
+	 **/
+  
+    public void resetEncoders() {
+        //Reset the encoders
+        chassis.robot.driveLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        chassis.robot.driveRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        chassis.robot.driveLR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        chassis.robot.driveRR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        setAllRunUsingEncoder();  		// Turn on RUN_USING_ENCODER 
+
+    }
+
+ 
+    /**
+     * setAllTargetPosition -- set all motors to a common target encoder value
+     **/
+     
+    private void setAllTargetPosition(int encoderValue){
+        chassis.robot.driveLF.setTargetPosition(encoderValue);
+        chassis.robot.driveRF.setTargetPosition(encoderValue);
+        chassis.robot.driveLR.setTargetPosition(encoderValue);
+        chassis.robot.driveRR.setTargetPosition(encoderValue);
+
+    }
+ 
+    /**
+     *   setAllRunToPosition -- set all motors to RUN_TO_POSITION
+     */
+ 
+ 	private void setAllRunToPosition() {
+ 	    chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+	}
+
+    /**
+     *   setAllRunUsingEncoder -- set all motors to RUN_USING_ENCODER
+     */
+    private void setAllRunUsingEncoder() {
+        chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        chassis.robot.driveRR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    /**
+     *   stopAllMotion -- stop all 4 motors.
+     */
+    private void stopAllMotion(){
+        chassis.robot.driveLF.setPower(0);
+        chassis.robot.driveRF.setPower(0);
+        chassis.robot.driveLR.setPower(0);
+        chassis.robot.driveRR.setPower(0);
+    }
+
+    /**
+     *  calculateDesiredCount:  Use desired distance to calculate the counts needed for
+     *   the move.
+     *
+     **/
+
+    public int calcDesiredCount (double distance){
+        int count = (int) (distance * COUNTS_PER_CM);
+        return count;
+    }
 }
