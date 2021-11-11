@@ -595,8 +595,8 @@ public class DrivetrainCommon {
     }
 
     public void printData(){
-        curOpMode.telemetry.addData("Distance 1", robot.ds1.getDistance(DistanceUnit.INCH));
-        curOpMode.telemetry.addData("Distance 2", robot.ds2.getDistance(DistanceUnit.INCH));
+//        curOpMode.telemetry.addData("Distance 1", robot.ds1.getDistance(DistanceUnit.INCH));
+//        curOpMode.telemetry.addData("Distance 2", robot.ds2.getDistance(DistanceUnit.INCH));
         curOpMode.telemetry.addData("Position", spawnpoint());
     }
 
@@ -606,7 +606,7 @@ public class DrivetrainCommon {
     public int spawnpoint(){
         double read1 = 0;
         double read2 = 0;
-
+/*
         double curRead1 = robot.ds1.getDistance(DistanceUnit.INCH);
         double curRead2 = robot.ds2.getDistance(DistanceUnit.INCH);
 
@@ -626,7 +626,7 @@ public class DrivetrainCommon {
         Neither Caught : 3
         Both caught : 0
          */
-
+/*
         if (read1 > 50 && read2 > 50){
             return 0;
         } else if (read1 > 50){
@@ -636,6 +636,8 @@ public class DrivetrainCommon {
         } else {
             return 3;
         }
+ */
+        return 0;
     }
 
 
