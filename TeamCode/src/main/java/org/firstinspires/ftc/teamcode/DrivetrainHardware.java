@@ -23,6 +23,7 @@ public class DrivetrainHardware
     public BNO055IMU imu;
 
     public DistanceSensor ds1;
+    public DistanceSensor ds2;
 
     public static final double MID_SERVO       =  0.3 ;
 
@@ -80,6 +81,8 @@ public class DrivetrainHardware
         driveRR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         ds1 = hwMap.get(DistanceSensor.class, "ds1");
+        ds2 = hwMap.get(DistanceSensor.class, "ds2");
+
 
     }
 

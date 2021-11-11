@@ -96,7 +96,7 @@ public class _Red01_All extends LinearOpMode {
        auto = new AutoCommon(this);
 
        auto.resetEncoders();
-       int distanceToRun = 31;
+       int distanceToRun = 31;  //  distances in CM
 /*
        auto.liftClaw.robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
        auto.liftClaw.disengageGrabbers();
@@ -114,7 +114,8 @@ public class _Red01_All extends LinearOpMode {
        auto.liftClaw.robot.claw.setPosition(0);
 */
        //Drive to position to view blocks with camera and detect duck
-       moveWithRamps(distanceToRun);
+        auto.encoderDrive(.5, calculateDesiredCount(distanceToRun), 10, true); 
+        // S1: Forward CMM with 5 Sec timeout
        auto.encoderStrafe(-.3,5,-450,false,false,false);
 
 
@@ -158,11 +159,17 @@ public class _Red01_All extends LinearOpMode {
 
 
  */
+ 
    }
-    public void moveWithRamps (int distance){
-        encoderDesired = (int) (distance * COUNTS_PER_MOTOR_REV/WHEEL_CIRCUMFERENCE_CM);
-        auto.encoderDrive(.5, encoderDesired, 10, true);  // S1: Forward CMM with 5 Sec timeout
-
-
+   
+ /**
+  *  calculateDesiredCount:  Use desired distance to calculate the counts needed for
+  *   the move.
+  *
+  **/
+  
+    public int calculateDesiredCount (int distance){
+    int count = (int) (distance * COUNTS_PER_MOTOR_REV / WHEEL_CIRCUMFERENCE_CM);
+    return count;
     }
 }
