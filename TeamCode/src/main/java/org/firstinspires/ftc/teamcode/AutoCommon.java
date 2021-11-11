@@ -24,9 +24,9 @@ public class AutoCommon {
 //    public VuforiaSkyStoneCommon vuforiaCom = null;
 
     //    static final double     COUNTS_PER_MOTOR_REV    = 537.7 ;    // After gearbox
-    //    static final double     WHEEL_CIRCUMFERENCE_CM   = 30.4 ;
+    static final double     WHEEL_CIRCUMFERENCE_CM   = 30.4 ;
     static final double     COUNTS_PER_MOTOR_REV    =720 ;    // SkyStone motors
-    static final double     WHEEL_CIRCUMFERENCE_CM   = 31.0 ; // SkyStone wheels
+    //static final double     WHEEL_CIRCUMFERENCE_CM   = 31.0 ; // SkyStone wheels
     static final double		COUNTS_PER_CM			= COUNTS_PER_MOTOR_REV
                                                                 / WHEEL_CIRCUMFERENCE_CM;
     public int BASE_DISTANCE = 2300;

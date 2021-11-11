@@ -82,10 +82,12 @@ public class _Red_Carousel extends LinearOpMode {
     public ConveyorHardware robot = new ConveyorHardware();
 
     static double distanceFromWall = 41.0;
-    static double distanceToShippingHub = 59.0;
-    static double moveToShippingHub = 15.0;
-    static double distanceToTurntable = 59.0;
-    static double distanceToStorage = 18.0;
+    static double distanceToShippingHub = 47.0;
+    static double moveToWall = 45;
+    static double moveToShippingHub = 10.0;
+    static double distanceToTurntable = 90.0;
+    static double distanceToStorage = 58.0;
+    static double distanceToCenter = 10.0;
 
     AutoCommon auto=null;
 
@@ -135,14 +137,15 @@ public class _Red_Carousel extends LinearOpMode {
                 true, false, false);
         // step 2
         // step 3
-        auto.encoderDrive(-0.5, distanceToShippingHub, 10, true);  // step 4
+        auto.encoderDrive(0.5, distanceToShippingHub, 10, false);  // step 4
         auto.encoderLateral(-0.3, 5, moveToShippingHub,  // step 5
                 true, false, false);
         // step 6
-        auto.encoderLateral(0.3, 5, moveToShippingHub,  // step 7
+        auto.encoderLateral(0.3, 5, moveToWall,  // step 7
                 false, false, false);
-//        auto.encoderDrive(0.5, distanceToTurntable, 10, true);
-//        auto.encoderLateral(-.3, 5, distanceToStorage,
-//                true, false, false);
+        auto.encoderDrive(0.5, - distanceToTurntable, 10, true); // step 8
+        auto.encoderLateral(-.3, 5, distanceToStorage,  // step 10
+                true, false, false);
+        auto.encoderDrive(0.5, - distanceToCenter, 10, true); // step 11
     }
 }
