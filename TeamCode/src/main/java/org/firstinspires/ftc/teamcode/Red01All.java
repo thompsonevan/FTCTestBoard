@@ -75,6 +75,11 @@ public class Red01All extends LinearOpMode {
 
     Boolean blue=false;
 
+    double driveSpeed = .3;
+    double strafeSpeed = .3;
+    double conveyorSpeed = 1;
+    double spinnerSpeed = .3;
+
     @Override
     public void runOpMode() {
         auto = new AutoCommon(this);
@@ -85,18 +90,18 @@ public class Red01All extends LinearOpMode {
 
         int pos = auto.getPos();
 
-        auto.encoderDrive(.3,-700,10, false);
+        auto.encoderDrive(driveSpeed,-700,10, false);
 
-        auto.moveSpinner(.3, 2, true);
+        auto.moveSpinner(spinnerSpeed, 2, true);
 
-        auto.encoderDrive(.3,1600,10, false);
+        auto.encoderDrive(driveSpeed,1600,10, false);
 
-        auto.encoderStrafe(.3,10,1000,true,false,false);
+        auto.encoderStrafe(strafeSpeed,10,1000,true,false,false);
 
-        auto.doConveyor(pos,1, 10);
+        auto.doConveyor(pos,conveyorSpeed, 10);
 
-        auto.encoderStrafe(.3,10,1200,false,false,false);
+        auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
 
-        auto.encoderDrive(.3, 3000, 10,false);
+        auto.encoderDrive(driveSpeed, 3000, 10,false);
     }
 }
