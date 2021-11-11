@@ -94,7 +94,7 @@ public class Blue01All extends LinearOpMode {
 
         auto.encoderStrafe(.3,10,1000,true,false,false);
 
-
+        auto.doConveyor(pos,1, 10);
 
         auto.encoderStrafe(.3,10,1200,false,false,false);
 
