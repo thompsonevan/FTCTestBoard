@@ -680,7 +680,24 @@ public class AutoCommon {
         }
     }
 
-    public int getPos(){
-        return conveyor.spawnpoint();
+    public int getPos(boolean blue){
+        int collector = conveyor.spawnpoint();
+
+        if(collector == 3){
+            if (blue){
+                return 1;
+            } else {
+                return 3;
+            }
+        } else if (collector == 1){
+            if (blue){
+                return 3;
+            } else{
+                return 1;
+            }
+        } else {
+            return collector;
+        }
+
     }
 }

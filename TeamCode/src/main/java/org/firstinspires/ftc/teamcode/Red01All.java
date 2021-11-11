@@ -88,7 +88,7 @@ public class Red01All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = auto.getPos();
+        int pos = auto.getPos(false);
 
         auto.encoderDrive(driveSpeed,-700,10, false);
 

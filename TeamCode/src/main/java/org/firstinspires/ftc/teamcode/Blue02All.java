@@ -89,7 +89,7 @@ public class Blue02All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = auto.getPos();
+        int pos = auto.getPos(true);
 
         auto.encoderDrive(driveSpeed,500,10, false);
 
