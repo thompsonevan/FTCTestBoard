@@ -27,10 +27,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autons;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.teamcode.AutoCommon;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -66,15 +67,15 @@ import com.vuforia.CameraDevice;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RED 02 (All Actions)", group="OnBot")
+@Autonomous(name="Blue 01 (All Actions)", group="OnBot")
 
 //@Disabled
-public class Red02All extends LinearOpMode {
+public class Blue01All extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
 
-    Boolean blue=false;
+    Boolean blue=true;
 
     double driveSpeed = .3;
     double strafeSpeed = .3;
@@ -89,9 +90,13 @@ public class Red02All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = auto.getPos(false);
+        int pos = auto.getPos(true);
 
-        auto.encoderDrive(driveSpeed,-500,10, false);
+        auto.encoderDrive(driveSpeed,700,10, false);
+
+        auto.moveSpinner(spinnerSpeed, 2, true);
+
+        auto.encoderDrive(driveSpeed,-1600,10, false);
 
         auto.encoderStrafe(strafeSpeed,10,1000,true,false,false);
 
@@ -99,9 +104,6 @@ public class Red02All extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
 
-        auto.encoderDrive(driveSpeed,2000,10, false);
-
-        auto.encoderStrafe(strafeSpeed,10,1200,true,false,false);
-
+        auto.encoderDrive(driveSpeed, -3000, 10,false);
     }
 }
