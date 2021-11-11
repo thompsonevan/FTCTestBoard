@@ -84,7 +84,7 @@ public class Blue01All extends LinearOpMode {
 
         waitForStart();
 
-        // do detection stuff
+        int pos = auto.getPos();
 
         auto.encoderDrive(.3,700,10, false);
 
@@ -94,8 +94,7 @@ public class Blue01All extends LinearOpMode {
 
         auto.encoderStrafe(.3,10,1000,true,false,false);
 
-        // do conveyor stuff
-        sleep(2000);
+
 
         auto.encoderStrafe(.3,10,1200,false,false,false);
 

@@ -26,60 +26,64 @@ public class ConveyorCommon {
 
     public void executeTeleop(){
         if(curOpMode.gamepad1.dpad_up){
-            robot.conveyorServo.setPosition(90f/180f);
+            liftConveyor(0);
         } else if (curOpMode.gamepad1.dpad_right){
-            robot.conveyorServo.setPosition(100f/180f);
+            liftConveyor(1);
         } else if (curOpMode.gamepad1.dpad_down){
-            robot.conveyorServo.setPosition(135f/180f);
+            liftConveyor(2);
         } else if (curOpMode.gamepad1.dpad_left){
-            robot.conveyorServo.setPosition(180f/180f);
+            liftConveyor(3);
         }
 
-        boolean push = curOpMode.gamepad1.y;
-        boolean pull = curOpMode.gamepad1.a;
-
-        if(pull == true) {
-            robot.conveyorMotor.setPower(-1);
-        } else if (push){
-            robot.conveyorMotor.setPower(1);
-        } else {
-            robot.conveyorMotor.setPower(0);
+        if(curOpMode.gamepad1.a){
+            pushConveyor(1);
         }
-
-//        robot.conveyorMotor.setTargetPosition(2700);
-//        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.conveyorMotor.setPower(.8);
-//        while (robot.conveyorMotor.isBusy()){
-//            curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
-//            curOpMode.telemetry.update();
-//        }
-//        robot.conveyorMotor.setPower(0);
-//
-//        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        curOpMode.sleep(3000);
-//
-//        robot.conveyorMotor.setTargetPosition(0);
-//        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.conveyorMotor.setPower(.8);
-//        while (robot.conveyorMotor.isBusy()){
-//            curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
-//            curOpMode.telemetry.update();
-//        }
-//        robot.conveyorMotor.setPower(0);
 
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         printData();
-
-
-//        curOpMode.sleep(3000);
     }
 
     public void printData(){
         curOpMode.telemetry.addData("Distance 1", read1);
         curOpMode.telemetry.addData("Distance 2", read2);
         curOpMode.telemetry.addData("Position", spawnpoint());
+    }
+
+    public void liftConveyor(int pos){
+        if(pos == 0){
+            robot.conveyorServo.setPosition(90f/180f);
+        } else if (pos == 1){
+            robot.conveyorServo.setPosition(100f/180f);
+        } else if (pos == 2){
+            robot.conveyorServo.setPosition(135f/180f);
+        } else if (pos == 3){
+            robot.conveyorServo.setPosition(180f/180f);
+        }
+    }
+
+    public void pushConveyor(double speed){
+        robot.conveyorMotor.setTargetPosition(2700);
+        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.conveyorMotor.setPower(speed);
+        while (robot.conveyorMotor.isBusy()){
+            curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
+            curOpMode.telemetry.update();
+        }
+        robot.conveyorMotor.setPower(0);
+
+        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        curOpMode.sleep(3000);
+
+        robot.conveyorMotor.setTargetPosition(0);
+        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.conveyorMotor.setPower(speed);
+        while (robot.conveyorMotor.isBusy()){
+            curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
+            curOpMode.telemetry.update();
+        }
+        robot.conveyorMotor.setPower(0);
     }
 
     public int spawnpoint(){

@@ -38,7 +38,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.vuforia.CameraDevice;
 
-
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
  * It uses the common Pushbot hardware class to define the drive on the robot.
@@ -84,7 +83,7 @@ public class Red01All extends LinearOpMode {
 
         waitForStart();
 
-        // do detection stuff
+        int pos = auto.getPos();
 
         auto.encoderDrive(.3,-700,10, false);
 
@@ -94,8 +93,7 @@ public class Red01All extends LinearOpMode {
 
         auto.encoderStrafe(.3,10,1000,true,false,false);
 
-        // do conveyor stuff
-        sleep(2000);
+        auto.doConveyor(pos,1, 10);
 
         auto.encoderStrafe(.3,10,1200,false,false,false);
 

@@ -668,4 +668,19 @@ public class AutoCommon {
             }
         }
     }
+
+    public void doConveyor(int pos, double speed, double timeoutS){
+        if (curOpMode.opModeIsActive()){
+            runtime.reset();
+            while (curOpMode.opModeIsActive() && runtime.seconds() < timeoutS) {
+                conveyor.liftConveyor(pos);
+                conveyor.pushConveyor(speed);
+                conveyor.liftConveyor(0);
+            }
+        }
+    }
+
+    public int getPos(){
+        return conveyor.spawnpoint();
+    }
 }
