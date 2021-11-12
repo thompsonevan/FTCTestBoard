@@ -12,11 +12,10 @@ public class TeleopAll extends LinearOpMode {
         public void runOpMode() {
 
 //            OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
-
             SpinnerCommon spinner = new SpinnerCommon(this);
             DrivetrainCommon drivetrain = new DrivetrainCommon(this);
             ConveyorCommon conveyor = new ConveyorCommon(this);
-//            IntakeCommon intake = new IntakeCommon(this);
+            IntakeCommon intake = new IntakeCommon(this);
 
             waitForStart();
 
@@ -26,7 +25,7 @@ public class TeleopAll extends LinearOpMode {
                 spinner.executeTeleop();
                 drivetrain.executeTeleop();
                 conveyor.executeTeleop();
-//                intake.executeTeleop();
+                intake.executeTeleop();
 
                 telemetry.update();
             }
