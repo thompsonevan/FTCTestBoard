@@ -9,7 +9,7 @@ public class SpinnerCommon {
     public LinearOpMode curOpMode;
 
     double speed = 0;
-    double increment = .00001;
+    double increment = .0001;
 
     public SpinnerCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
@@ -26,7 +26,7 @@ public class SpinnerCommon {
         if(curOpMode.gamepad1.a){
             speed += increment;
             robot.spinnerMotor.setPower(speed);
-            increment *= 2;
+            increment *= 1.1;
         }
     }
 }
