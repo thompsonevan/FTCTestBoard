@@ -33,12 +33,12 @@ public class IntakeHardware {
 
         frontGuide1 = hwMap.get(Servo.class, "front_guide_1");
         backGuide1 = hwMap.get(Servo.class, "back_guide_1");
-        frontGuide2 = hwMap.get(Servo.class, "front_guide_2");
-        backGuide2 = hwMap.get(Servo.class, "back_guide_2");
-        frontLift = hwMap.get(Servo.class, "front_lift");
-        backLift = hwMap.get(Servo.class, "back_lift");
-        frontSpin = hwMap.get(Servo.class, "front_spin");
-        backSpin = hwMap.get(Servo.class, "back_spin");
+//        frontGuide2 = hwMap.get(Servo.class, "front_guide_2");
+//        backGuide2 = hwMap.get(Servo.class, "back_guide_2");
+//        frontLift = hwMap.get(Servo.class, "front_lift");
+//        backLift = hwMap.get(Servo.class, "back_lift");
+//        frontSpin = hwMap.get(Servo.class, "front_spin");
+//        backSpin = hwMap.get(Servo.class, "back_spin");
 
     }
 }

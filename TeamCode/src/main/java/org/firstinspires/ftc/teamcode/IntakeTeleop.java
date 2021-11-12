@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Intake Teleop", group="Pushbot")
-@Disabled
+//@Disabled
 public class IntakeTeleop extends LinearOpMode {
 
     @Override
