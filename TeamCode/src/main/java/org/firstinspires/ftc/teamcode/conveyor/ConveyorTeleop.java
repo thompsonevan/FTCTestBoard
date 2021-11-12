@@ -1,22 +1,24 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.conveyor;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Extender Teleop", group="Pushbot")
+import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
+
+@TeleOp(name="Conveyor Teleop", group="Pushbot")
 @Disabled
-public class ExtenderTeleop extends LinearOpMode {
+public class ConveyorTeleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        ExtenderCommon extender = new ExtenderCommon(this);
+        ConveyorCommon conveyor = new ConveyorCommon(this);
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            extender.executeTeleop();
+            conveyor.executeTeleop();
 
             telemetry.update();
         }
