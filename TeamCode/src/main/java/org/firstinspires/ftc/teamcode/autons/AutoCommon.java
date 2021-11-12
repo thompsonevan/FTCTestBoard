@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autons;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,12 +8,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
+import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
+import org.firstinspires.ftc.teamcode.drivetrain.DrivetrainCommon;
+import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 public class AutoCommon {
 

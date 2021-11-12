@@ -1,14 +1,14 @@
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.drivetrain;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import java.util.Locale;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.teamcode.PIDController;
 
 public class DrivetrainCommon {
 
@@ -25,8 +25,8 @@ public class DrivetrainCommon {
     Orientation angles;
 
     Orientation lastAngles = new Orientation();
-    double globalAngle, currentAngle, power = .30, correction, rotation;
-    PIDController pidRotate, pidDrive;
+    public double globalAngle, currentAngle, power = .30, correction, rotation;
+    public PIDController pidRotate, pidDrive;
 
     double powerRightRear;
     double powerLeftRear;

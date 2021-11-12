@@ -6,7 +6,7 @@ of them so they can be used in the code to run them
  */
 
 // This just tells the code where this file is located in the file structure
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.conveyor;
 
 // This imports all the different dependencies and libraries and other classes we use in this file
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
