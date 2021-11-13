@@ -4,10 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.drivetrain.DrivetrainCommon;
+import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
+import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 public class ConveyorCommon {
 
     public ConveyorHardware robot = new ConveyorHardware();
+
+    SpinnerCommon spinner;
+    DrivetrainCommon drivetrain;
+    IntakeCommon intake;
 
     public LinearOpMode curOpMode;
 
@@ -17,6 +24,17 @@ public class ConveyorCommon {
     double read1 = 0;
     double read2 = 0;
 
+    public ConveyorCommon(LinearOpMode owningOpMode, DrivetrainCommon owningDrivetrain, IntakeCommon owningIntake, SpinnerCommon owningSpinner){
+        curOpMode = owningOpMode;
+        robot.init(curOpMode.hardwareMap);
+        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        spinner = owningSpinner;
+        drivetrain = owningDrivetrain;
+        intake = owningIntake;
+    }
+
     public ConveyorCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
@@ -25,17 +43,17 @@ public class ConveyorCommon {
     }
 
     public void executeTeleop(){
-        if(curOpMode.gamepad1.dpad_up){
+        if(curOpMode.gamepad2.dpad_up){
             liftConveyor(0);
-        } else if (curOpMode.gamepad1.dpad_right){
+        } else if (curOpMode.gamepad2.dpad_right){
             liftConveyor(1);
-        } else if (curOpMode.gamepad1.dpad_down){
+        } else if (curOpMode.gamepad2.dpad_down){
             liftConveyor(2);
-        } else if (curOpMode.gamepad1.dpad_left){
+        } else if (curOpMode.gamepad2.dpad_left){
             liftConveyor(3);
         }
 
-        if(curOpMode.gamepad1.a){
+        if(curOpMode.gamepad2.back){
             pushConveyor(1);
         }
 
@@ -52,7 +70,7 @@ public class ConveyorCommon {
 
     public void liftConveyor(int pos){
         if(pos == 0){
-            robot.conveyorServo.setPosition(90f/180f);
+            robot.conveyorServo.setPosition(100f/180f);
         } else if (pos == 1){
             robot.conveyorServo.setPosition(100f/180f);
         } else if (pos == 2){
@@ -63,27 +81,26 @@ public class ConveyorCommon {
     }
 
     public void pushConveyor(double speed){
-        robot.conveyorMotor.setTargetPosition(2700);
+        moveConveyor(2700, speed);
+        moveConveyor(0, speed);
+    }
+
+    public void moveConveyor(int encoder, double speed) {
+        robot.conveyorMotor.setTargetPosition(encoder);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.conveyorMotor.setPower(speed);
-        while (robot.conveyorMotor.isBusy()){
+        while (robot.conveyorMotor.isBusy()) {
+            checkInputs();
             curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
             curOpMode.telemetry.update();
         }
         robot.conveyorMotor.setPower(0);
+    }
 
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        curOpMode.sleep(3000);
-
-        robot.conveyorMotor.setTargetPosition(0);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.conveyorMotor.setPower(speed);
-        while (robot.conveyorMotor.isBusy()){
-            curOpMode.telemetry.addData("Encoder Position", robot.conveyorMotor.getCurrentPosition());
-            curOpMode.telemetry.update();
-        }
-        robot.conveyorMotor.setPower(0);
+    public void checkInputs(){
+        drivetrain.executeTeleop();
+        spinner.executeTeleop();
+        intake.executeTeleop();
     }
 
     public int spawnpoint(){

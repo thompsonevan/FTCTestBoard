@@ -39,7 +39,6 @@ public class IntakeHardware {
         backLift = hwMap.get(Servo.class, "back_lift");
         frontSpin = hwMap.get(Servo.class, "front_spin");
         backSpin = hwMap.get(Servo.class, "back_spin");
-
     }
 }
 

@@ -40,7 +40,7 @@ public class ConveyorHardware {
 
         conveyorMotor.setPower(0);
 
-        conveyorServo.setPosition(0);
+//        conveyorServo.setPosition(0);
 
         ds1 = hwMap.get(DistanceSensor.class, "ds_1");
         ds2 = hwMap.get(DistanceSensor.class, "ds_2");

@@ -9,6 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
+import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
+import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 public class DrivetrainCommon {
 
@@ -50,11 +53,18 @@ public class DrivetrainCommon {
     double max = 1;
     double turnMax = 1;
 
-    public DrivetrainCommon(LinearOpMode owningOpMode) {
+    SpinnerCommon spinner;
+    ConveyorCommon conveyor;
+    IntakeCommon intake;
+
+    public DrivetrainCommon(LinearOpMode owningOpMode, SpinnerCommon owningSpinner, ConveyorCommon owningConveyor, IntakeCommon owningIntake) {
 
         curOpMode = owningOpMode;
         initHardware();
 
+        spinner = owningSpinner;
+        intake = owningIntake;
+        conveyor = owningConveyor;
 
         pidRotate = new PIDController(0, 0, 0);
         pidDrive = new PIDController(.05, 0, 0);
@@ -75,6 +85,36 @@ public class DrivetrainCommon {
     //        curOpMode.sleep(50);
      //       curOpMode.idle();
      //   }
+
+        composeTelemetry();
+        curOpMode.telemetry.addData("Mode", "waiting for start");
+        curOpMode.telemetry.addData("imu calib status", robot.imu.getCalibrationStatus().toString());
+        curOpMode.telemetry.update();
+    }
+    public DrivetrainCommon(LinearOpMode owningOpMode) {
+
+        curOpMode = owningOpMode;
+        initHardware();
+
+        pidRotate = new PIDController(0, 0, 0);
+        pidDrive = new PIDController(.05, 0, 0);
+
+        // Set up parameters for driving in a straight line.
+        pidDrive.setSetpoint(setPointAngle);
+        pidDrive.setOutputRange(0, .9);
+        pidDrive.setInputRange(-180, 180);
+        pidDrive.enable();
+
+        resetAngle();
+
+        curOpMode.telemetry.addData("Mode", "calibrating...");
+        curOpMode.telemetry.update();
+
+
+        //    while (!curOpMode.isStopRequested() && !robot.imu.isGyroCalibrated()) {
+        //        curOpMode.sleep(50);
+        //       curOpMode.idle();
+        //   }
 
         composeTelemetry();
         curOpMode.telemetry.addData("Mode", "waiting for start");
@@ -148,6 +188,8 @@ public class DrivetrainCommon {
         if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
             if (Math.abs(yVal) == 0) {
                 while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
+
+                    checkInputs();
 
                     turnVal = curOpMode.gamepad1.right_stick_x;
 
@@ -599,6 +641,17 @@ public class DrivetrainCommon {
         curOpMode.telemetry.addData("Left Rear: ", robot.driveLR.getCurrentPosition());
         curOpMode.telemetry.addData("Right Front: ", robot.driveRF.getCurrentPosition());
         curOpMode.telemetry.addData("Right Rear: ", robot.driveRR.getCurrentPosition());
+
+    }
+
+    public void checkInputs(){
+        try{
+            conveyor.executeTeleop();
+            spinner.executeTeleop();
+            intake.executeTeleop();
+        } catch(NullPointerException e){
+
+        }
 
     }
 

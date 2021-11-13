@@ -6,20 +6,26 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
 import org.firstinspires.ftc.teamcode.drivetrain.DrivetrainCommon;
+import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
 import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 @TeleOp(name="Teleop All", group="Pushbot")
-@Disabled
+//@Disabled
 public class TeleopAll extends LinearOpMode {
+
+        SpinnerCommon spinner;
+        DrivetrainCommon drivetrain;
+        IntakeCommon intake;
+        ConveyorCommon conveyor;
 
         @Override
         public void runOpMode() {
 
 //            OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
-            SpinnerCommon spinner = new SpinnerCommon(this);
-            DrivetrainCommon drivetrain = new DrivetrainCommon(this);
-            ConveyorCommon conveyor = new ConveyorCommon(this);
-            IntakeCommon intake = new IntakeCommon(this);
+            spinner = new SpinnerCommon(this);
+            drivetrain = new DrivetrainCommon(this, spinner, conveyor, intake);
+            intake = new IntakeCommon(this);
+            conveyor = new ConveyorCommon(this, drivetrain, intake, spinner);
 
             waitForStart();
 

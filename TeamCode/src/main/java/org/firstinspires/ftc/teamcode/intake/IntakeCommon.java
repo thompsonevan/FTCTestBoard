@@ -9,7 +9,8 @@ public class IntakeCommon {
     public LinearOpMode curOpMode;
 
     public double val1 = 0;
-    public double val2 = 0;
+    public double val2 = 1;
+    public double val3 = 1;
 
     public IntakeCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
@@ -17,32 +18,30 @@ public class IntakeCommon {
     }
 
     public void executeTeleop(){
-        double incrementVal = .1;
-
-        if(curOpMode.gamepad1.right_trigger > .05 && val1 < 1) {
-            val1 += incrementVal;
-        } else if(curOpMode.gamepad1.left_trigger > .05 && val1 > 0){
-            val1 -= incrementVal;
-        }
-
-        if(curOpMode.gamepad1.right_bumper && val2 < 1){
-            val2 += incrementVal;
-        } else if (curOpMode.gamepad1.left_bumper && val2 > 0){
-            val2 -= incrementVal;
-        }
-
-        if (curOpMode.gamepad1.a){
-            val1 = 1;
-            val2 = 0;
-        } else if (curOpMode.gamepad1.b){
+        if (curOpMode.gamepad2.right_trigger > .05){
             val1 = 0;
+        } else if (curOpMode.gamepad2.right_bumper){
+            val1 = 1;
+        }
+
+        if (curOpMode.gamepad2.left_trigger > .05){
             val2 = 1;
+        } else if (curOpMode.gamepad2.left_bumper){
+            val2 = 0;
+        }
+
+        if(curOpMode.gamepad2.x){
+            val3 = 0;
+        } else if (curOpMode.gamepad2.y){
+            val3 = 1;
         }
 
         curOpMode.telemetry.addData("val1", val1);
         curOpMode.telemetry.addData("val2", val2);
+        curOpMode.telemetry.addData("val3", val3);
 
         robot.frontGuide1.setPosition(val1);
-        robot.backGuide1.setPosition(val2);
+        robot.frontGuide2.setPosition(val2);
+        robot.frontLift.setPosition(val3);
     }
 }
