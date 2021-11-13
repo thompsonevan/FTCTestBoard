@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,29 +12,27 @@ import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 //@Disabled
 public class TeleopAll extends LinearOpMode {
 
-        SpinnerCommon spinner;
-        DrivetrainCommon drivetrain;
-        IntakeCommon intake;
-        ConveyorCommon conveyor;
+        GlobalAll global = new GlobalAll();
 
         @Override
         public void runOpMode() {
 
 //            OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
-            spinner = new SpinnerCommon(this);
-            drivetrain = new DrivetrainCommon(this, spinner, conveyor, intake);
-            intake = new IntakeCommon(this);
-            conveyor = new ConveyorCommon(this, drivetrain, intake, spinner);
+            global.spinner = new SpinnerCommon(this);
+            global.drivetrain = new DrivetrainCommon(this, global);
+            global.intake = new IntakeCommon(this);
+            global.conveyor = new ConveyorCommon(this, global);
 
             waitForStart();
 
             while (opModeIsActive()) {
 //                oldDrivetrain.executeTeleop();
 
-                spinner.executeTeleop();
-                drivetrain.executeTeleop();
-                conveyor.executeTeleop();
-                intake.executeTeleop();
+                global.spinner.executeTeleop();
+                global.drivetrain.executeTeleop();
+                global.conveyor.executeTeleop();
+                global
+                        .intake.executeTeleop();
 
                 telemetry.update();
             }

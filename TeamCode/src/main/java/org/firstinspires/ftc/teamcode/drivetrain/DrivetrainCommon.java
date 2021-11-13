@@ -1,6 +1,8 @@
 
 package org.firstinspires.ftc.teamcode.drivetrain;
 
+import android.provider.Settings;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import java.util.Locale;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -8,7 +10,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.teamcode.GlobalAll;
 import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.TeleopAll;
 import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
 import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
 import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
@@ -53,18 +57,13 @@ public class DrivetrainCommon {
     double max = 1;
     double turnMax = 1;
 
-    SpinnerCommon spinner;
-    ConveyorCommon conveyor;
-    IntakeCommon intake;
+    GlobalAll ga;
 
-    public DrivetrainCommon(LinearOpMode owningOpMode, SpinnerCommon owningSpinner, ConveyorCommon owningConveyor, IntakeCommon owningIntake) {
-
+    public DrivetrainCommon(LinearOpMode owningOpMode, GlobalAll gaP) {
         curOpMode = owningOpMode;
         initHardware();
 
-        spinner = owningSpinner;
-        intake = owningIntake;
-        conveyor = owningConveyor;
+        ga = gaP;
 
         pidRotate = new PIDController(0, 0, 0);
         pidDrive = new PIDController(.05, 0, 0);
@@ -91,8 +90,8 @@ public class DrivetrainCommon {
         curOpMode.telemetry.addData("imu calib status", robot.imu.getCalibrationStatus().toString());
         curOpMode.telemetry.update();
     }
-    public DrivetrainCommon(LinearOpMode owningOpMode) {
 
+    public DrivetrainCommon(LinearOpMode owningOpMode) {
         curOpMode = owningOpMode;
         initHardware();
 
@@ -121,7 +120,6 @@ public class DrivetrainCommon {
         curOpMode.telemetry.addData("imu calib status", robot.imu.getCalibrationStatus().toString());
         curOpMode.telemetry.update();
     }
-
 
     public void executeTeleop() {
 
@@ -189,7 +187,7 @@ public class DrivetrainCommon {
             if (Math.abs(yVal) == 0) {
                 while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
 
-                    checkInputs();
+//                    checkInputs();
 
                     turnVal = curOpMode.gamepad1.right_stick_x;
 
@@ -641,14 +639,13 @@ public class DrivetrainCommon {
         curOpMode.telemetry.addData("Left Rear: ", robot.driveLR.getCurrentPosition());
         curOpMode.telemetry.addData("Right Front: ", robot.driveRF.getCurrentPosition());
         curOpMode.telemetry.addData("Right Rear: ", robot.driveRR.getCurrentPosition());
-
     }
 
     public void checkInputs(){
         try{
-            conveyor.executeTeleop();
-            spinner.executeTeleop();
-            intake.executeTeleop();
+            ga.spinner.executeTeleop();
+            ga.conveyor.executeTeleop();
+            ga.intake.executeTeleop();
         } catch(NullPointerException e){
 
         }

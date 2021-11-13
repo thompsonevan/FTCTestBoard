@@ -8,8 +8,9 @@ public class SpinnerCommon {
 
     public LinearOpMode curOpMode;
 
+//    double increment = .0001;
+
     double speed = 0;
-    double increment = .0001;
 
     public SpinnerCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
@@ -17,16 +18,21 @@ public class SpinnerCommon {
     }
 
     public void executeTeleop(){
+
+
         if(curOpMode.gamepad1.left_trigger > .05){
             robot.spinnerMotor.setPower(-curOpMode.gamepad1.left_trigger);
         } else {
             robot.spinnerMotor.setPower(curOpMode.gamepad1.right_trigger);
         }
 
-        if(curOpMode.gamepad1.a){
-            speed += increment;
+        if(curOpMode.gamepad1.a && speed < 1){
+            speed *= 1.04;
+            curOpMode.telemetry.addData("Spinner speed:", speed);
             robot.spinnerMotor.setPower(speed);
-            increment *= 1.1;
+//            increment *= 1.05;
+        } else {
+            speed = .02;
         }
     }
 }

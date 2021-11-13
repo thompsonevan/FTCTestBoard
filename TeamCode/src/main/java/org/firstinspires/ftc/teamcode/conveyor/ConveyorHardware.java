@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class ConveyorHardware {
 
-    public Servo conveyorServo;
+    public DcMotor armMotor;
     public DcMotor conveyorMotor;
 
     public DistanceSensor ds1;
@@ -32,13 +32,16 @@ public class ConveyorHardware {
         hwMap = ahwMap;
 
         conveyorMotor = hwMap.get(DcMotor.class, "conveyor_motor");
-        conveyorServo = hwMap.get(Servo.class, "conveyor_servo");
+        armMotor = hwMap.get(DcMotor.class, "arm_motor");
 
         conveyorMotor.setDirection(DcMotor.Direction.REVERSE);
+        armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         conveyorMotor.setPower(0);
+        armMotor.setPower(0);
 
 //        conveyorServo.setPosition(0);
 
