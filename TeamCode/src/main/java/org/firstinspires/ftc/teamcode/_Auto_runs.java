@@ -40,19 +40,31 @@ import com.vuforia.CameraDevice;
 
 /**
  *
- * This code is for _Red_Carousel
+ * This code is for _Auto_runs
  *
- * Autonomous programs:  These are the main programs and are named for the starting
- *  position.
+ * Changes to this program will run an autonomous path
  *
- *  _Red_Carousel is used when starting from the block nearest the Carousel when
- *      part of the Red Alliance.
- *  _Red_Freight is used when starting from the block nearest the Freight when
- *      part of the Red Alliance.
- *  _Blue_Carousel is used when starting from the block nearest the Carousel when
- *      part of the Vlue Alliance.
- *  _Blue_Freight is used when starting from the block nearest the Freight when
- *      part of the Blue Alliance.
+ * To run with a Red allience, set alliance = RED.
+ * To run with a Blue allience, set alliance = BLUE.
+ *
+ * in the method "tasks" invoke the methods desired in sequence from
+ *   shippingHub  // to move to the hub and deposit the block in the conveyor
+ *   carousel     // to move to the carousel and rotate to drop the duck
+ *
+ *  then to the desired parking location
+ *   storage      // enter storage
+ *   freight      // enter freight
+ *   freight_park // move to an alternate location in freight
+ *
+ *  Between each operation, and optional sleep value may be specified to avoid
+ *  alliance collisions.
+ *
+ *  The variable "loc" has the x and y coordinates for the starting location.  This is
+ *  used as a seed to start the robot, and each of the methods above use the result of
+ *  the previous method to advancce to the desired position.
+ *
+ *  Note that all distance measurements are in centimeters (CM).
+ *
  **/
 
 /**
@@ -79,16 +91,26 @@ public class _Auto_runs extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 //    public ConveyorCommon robot = new ConveyorCommon();
 //    public SpinnerCommon spinner = new SpinnerCommon();
+    static boolean RED = true;
+    static boolean BLUE = false;
+    static boolean alliance = RED;
 
-    static boolean alliance = true;  //  true for RED, false for BLUE
-
-    static double widthOfRobot = 17.0;
-    location loc = new location(widthOfRobot,96);  //Start Using Center of Robot, 2nd tile from front
-    location car_loc = new location (widthOfRobot,25);
-    location hub_loc = new location (93, 150);
-    location freight_loc = new location (widthOfRobot,400);
-    location freight_park_loc = new location (90,400);
-    location storage_loc = new location (90,30);
+    /**
+     *   location definitions
+     *
+     *   the class "location" contains two values, the x and the y values for that location.
+     *   The x value has its origin at the right wall for the Red Alliance and the left wall
+     *   for the Blue Alliance.  The y value has its origin at the wall closest to the
+     *   audience.
+     *
+     */
+    location loc = new location(0,96);  //Start using the side of robot closest to the
+                                            // enclosing wall, 2nd tile from front
+    location car_loc = new location (0,25);
+    location hub_loc = new location (110, 150);
+    location freight_loc = new location (0,400);
+    location freight_park_loc = new location (105,400);
+    location storage_loc = new location (105,30);
 
     int myLevel = 0;
 
@@ -106,13 +128,6 @@ public class _Auto_runs extends LinearOpMode {
        auto = new AutoCommon(this);
 
        auto.resetEncoders();
-/*
-       auto.liftClaw.robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       auto.liftClaw.disengageGrabbers();
-
-       auto.liftClaw.robot.claw.setPosition(.8);
-
-*/
        // Wait for the game to start (driver presses PLAY)
        waitForStart();
        tasks();
@@ -120,50 +135,60 @@ public class _Auto_runs extends LinearOpMode {
 
 
     /**
-     *   tasks() -- steps to achieve points
      *
-     *   1.  Move away from wall
-     *   2.  Identify level to place block
-     *   3.  Adjust level of conveyer
-     *   4.  Lateral to center on shipping hub
-     *   5.  Move in to shipping hub for placement of block
-     *   6.  Load block onto shipping hub       26 points (assuming Team Shipping Element)
-     *   7.  Move back from shipping hub
-     *   8.  Lateral over to Carousel
-     *   9.  Turn Carousel to drop duck         10 points
-     *  10.  Move to Storage Unit
-     *  11.  Center in Storage Unit.             6 points
-     *
-     *
+     *  tasks -- this method runs the sequece of operations as specified.
      **/
     public void tasks() {
         myLevel = getLevel();
+        //  sleep(1000);    //  option wait for alliance member to move away.
         loc = carousel(loc);
+        //  sleep(1000);    //  option wait for alliance member to move away.
         loc = shippingHub(loc);
+        //  sleep(1000);    //  option wait for alliance member to move away.
         loc = freight(loc);
+        //  sleep(1000);    //  option wait for alliance member to move away.
         loc = freight_park(loc);
     }
+
+    /**
+     *
+     * Return the level of the shipping hub on which the pre-loaded block should be placed.
+     *
+     */
     public int getLevel(){
         return 0; //Detail to be Defined Later
     }
+
+    /**
+     *   Move from loc to the storage parking place.
+     */
     public location storage (location loc) {
         auto.encoderLateral(-0.3, 5, storage_loc.x - loc.x,
                 alliance, false, false);
         auto.encoderDrive(0.5, storage_loc.y - loc.y, 10, false);
         return storage_loc;
     }
+    /**
+     *   Move from loc to the freight parking place.
+     */
     public location freight (location loc) {
         auto.encoderLateral(-0.3, 5, freight_loc.x - loc.x,
                 alliance, false, false);
         auto.encoderDrive(0.5, freight_loc.y - loc.y, 10, false);
         return freight_loc;
     }
+    /**
+     *   Move from loc in freight to a new location in freight.
+     */
     public location freight_park (location loc) {
         auto.encoderLateral(-0.3, 5, freight_park_loc.x - loc.x,
                 alliance, false, false);
         auto.encoderDrive(0.5, freight_park_loc.y - loc.y, 10, false);
         return freight_loc;
     }
+    /**
+     *   Move from loc to the shipping hub and place the block based on the value in level.
+     */
     public location shippingHub(location loc) {
         auto.encoderLateral(-0.3, 5, hub_loc.x - loc.x,
                 alliance, false, false);
@@ -171,6 +196,9 @@ public class _Auto_runs extends LinearOpMode {
         //  add code to load block on shipping hub using level
         return hub_loc;
     }
+    /**
+     *   Move from loc to the carousel and rotate it to deliver a duck.
+     */
     public location carousel(location loc) {
         auto.encoderLateral(0.3, 5, car_loc.x - loc.x,
                 alliance, false, false);
@@ -179,6 +207,9 @@ public class _Auto_runs extends LinearOpMode {
         //  add code to rotate carousel
         return car_loc;
     }
+    /**
+     *   location class to hold x and y values
+     */
     public class location{
         public double x;
         public double y;
