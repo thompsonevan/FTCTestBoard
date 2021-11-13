@@ -69,25 +69,28 @@ import com.vuforia.CameraDevice;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  **/
 
-@Autonomous(name="RED CAROUSEL", group="OnBot")
+@Autonomous(name="AUTONOMOUS RUNS", group="OnBot")
 
 //@Disabled
-public class _Red_Carousel extends LinearOpMode {
+public class _Auto_runs extends LinearOpMode {
 
     /* Declare OpMode members. */
 
-
-
     private ElapsedTime     runtime = new ElapsedTime();
-    public ConveyorHardware robot = new ConveyorHardware();
+//    public ConveyorCommon robot = new ConveyorCommon();
+//    public SpinnerCommon spinner = new SpinnerCommon();
 
-    static double distanceFromWall = 41.0;
-    static double distanceToShippingHub = 47.0;
-    static double moveToWall = 45;
-    static double moveToShippingHub = 10.0;
-    static double distanceToTurntable = 90.0;
-    static double distanceToStorage = 58.0;
-    static double distanceToCenter = 10.0;
+    static boolean alliance = true;  //  true for RED, false for BLUE
+
+    static double widthOfRobot = 17.0;
+    location loc = new location(widthOfRobot,96);  //Start Using Center of Robot, 2nd tile from front
+    location car_loc = new location (widthOfRobot,25);
+    location hub_loc = new location (93, 150);
+    location freight_loc = new location (widthOfRobot,400);
+    location freight_park_loc = new location (90,400);
+    location storage_loc = new location (90,30);
+
+    int myLevel = 0;
 
     AutoCommon auto=null;
 
@@ -131,21 +134,57 @@ public class _Red_Carousel extends LinearOpMode {
      *  10.  Move to Storage Unit
      *  11.  Center in Storage Unit.             6 points
      *
+     *
      **/
     public void tasks() {
-        auto.encoderLateral(-0.3, 5, distanceFromWall,  // step 1
-                true, false, false);
-        // step 2
-        // step 3
-        auto.encoderDrive(0.5, distanceToShippingHub, 10, false);  // step 4
-        auto.encoderLateral(-0.3, 5, moveToShippingHub,  // step 5
-                true, false, false);
-        // step 6
-        auto.encoderLateral(0.3, 5, moveToWall,  // step 7
-                false, false, false);
-        auto.encoderDrive(0.5, - distanceToTurntable, 10, true); // step 8
-        auto.encoderLateral(-.3, 5, distanceToStorage,  // step 10
-                true, false, false);
-        auto.encoderDrive(0.5, - distanceToCenter, 10, true); // step 11
+        myLevel = getLevel();
+        loc = carousel(loc);
+        loc = shippingHub(loc);
+        loc = freight(loc);
+        loc = freight_park(loc);
+    }
+    public int getLevel(){
+        return 0; //Detail to be Defined Later
+    }
+    public location storage (location loc) {
+        auto.encoderLateral(-0.3, 5, storage_loc.x - loc.x,
+                alliance, false, false);
+        auto.encoderDrive(0.5, storage_loc.y - loc.y, 10, false);
+        return storage_loc;
+    }
+    public location freight (location loc) {
+        auto.encoderLateral(-0.3, 5, freight_loc.x - loc.x,
+                alliance, false, false);
+        auto.encoderDrive(0.5, freight_loc.y - loc.y, 10, false);
+        return freight_loc;
+    }
+    public location freight_park (location loc) {
+        auto.encoderLateral(-0.3, 5, freight_park_loc.x - loc.x,
+                alliance, false, false);
+        auto.encoderDrive(0.5, freight_park_loc.y - loc.y, 10, false);
+        return freight_loc;
+    }
+    public location shippingHub(location loc) {
+        auto.encoderLateral(-0.3, 5, hub_loc.x - loc.x,
+                alliance, false, false);
+        auto.encoderDrive(0.5, hub_loc.y - loc.y, 10, false);
+        //  add code to load block on shipping hub using level
+        return hub_loc;
+    }
+    public location carousel(location loc) {
+        auto.encoderLateral(0.3, 5, car_loc.x - loc.x,
+                alliance, false, false);
+
+        auto.encoderDrive(0.5, - (car_loc.y - loc.y), 10, true);
+        //  add code to rotate carousel
+        return car_loc;
+    }
+    public class location{
+        public double x;
+        public double y;
+        public location(double ix, double iy){
+            x = ix;
+            y = iy;
+        }
     }
 }
