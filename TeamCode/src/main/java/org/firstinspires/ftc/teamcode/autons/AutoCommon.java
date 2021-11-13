@@ -670,9 +670,9 @@ public class AutoCommon {
         if (curOpMode.opModeIsActive()){
             runtime.reset();
             while (curOpMode.opModeIsActive() && runtime.seconds() < timeoutS) {
-                conveyor.liftConveyor(pos);
+                conveyor.liftConveyor(pos, .8);
                 conveyor.pushConveyor(speed);
-                conveyor.liftConveyor(0);
+                conveyor.liftConveyor(0, .8);
             }
         }
     }

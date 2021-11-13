@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 @TeleOp(name="Spinner Teleop", group="Pushbot")
-@Disabled
+//@Disabled
 public class SpinnerTeleop extends LinearOpMode {
 
     @Override

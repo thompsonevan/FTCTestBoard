@@ -29,7 +29,10 @@ public class ConveyorCommon {
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
         robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         ga = gaP;
     }
@@ -37,10 +40,15 @@ public class ConveyorCommon {
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
         robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     public void executeTeleop(){
+        curOpMode.telemetry.addData("Conveyor Level:", robot.armMotor.getCurrentPosition());
+
         if(curOpMode.gamepad2.dpad_up){
             liftConveyor(0, .8);
         } else if (curOpMode.gamepad2.dpad_right){
@@ -70,11 +78,11 @@ public class ConveyorCommon {
         if(pos == 0){
             moveConveyor(robot.armMotor, 1, speed);
         } else if (pos == 1){
-            moveConveyor(robot.armMotor, 215, speed);
+            moveConveyor(robot.armMotor, 390, speed);
         } else if (pos == 2){
-            moveConveyor(robot.armMotor, 928, speed);
+            moveConveyor(robot.armMotor, 900, speed);
         } else if (pos == 3){
-            moveConveyor(robot.armMotor, 1527, speed);
+            moveConveyor(robot.armMotor, 1777, speed);
         }
     }
 
