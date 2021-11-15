@@ -185,9 +185,7 @@ public class DrivetrainCommon {
 
         if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
             if (Math.abs(yVal) == 0) {
-                while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
-
-//                    checkInputs();
+                if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
 
                     turnVal = curOpMode.gamepad1.right_stick_x;
 
