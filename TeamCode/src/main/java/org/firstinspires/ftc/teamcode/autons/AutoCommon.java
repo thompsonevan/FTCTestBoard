@@ -667,18 +667,17 @@ public class AutoCommon {
         }
     }
 
-//    public void doConveyor(int pos, double speed, double timeoutS){
-//        if (curOpMode.opModeIsActive()){
-//            runtime.reset();
-//            while (curOpMode.opModeIsActive() && runtime.seconds() < timeoutS && conveyor.robot.armMotor.isBusy()) {
-//                conveyor.liftConveyor(pos, .8);
-//                conveyor.pushConveyor(speed);
-//                conveyor.liftConveyor(0, .8);
-//            }
-//        }
-//    }
-
-//    public
+    public int getDistFromHub(int pos){
+        if(pos == 3){
+            return 1240;
+        } else if (pos == 2){
+            return 1160;
+        } else if (pos == 1){
+            return 1030;
+        } else{
+            return 1240;
+        }
+    }
 
     public int getPos(boolean blue){
         int collector = conveyor.spawnpoint();

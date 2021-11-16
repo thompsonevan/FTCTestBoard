@@ -68,7 +68,7 @@ public class ConveyorCommon {
             pushConveyor(.8, 10);
         }
 
-        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         printData();
     }
@@ -94,6 +94,7 @@ public class ConveyorCommon {
     public void pushConveyor(double speed, double timeout){
         moveConveyor(robot.conveyorMotor, 2300, speed, timeout);
         moveConveyor(robot.conveyorMotor, 0, speed, timeout);
+        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void moveConveyor(DcMotor motor, int encoder, double speed, double timeout) {
@@ -105,14 +106,15 @@ public class ConveyorCommon {
         runtime.reset();
 
         while (motor.isBusy() && runtime.seconds() < timeout) {
-            //checkInputs();
+            checkInputs();
             curOpMode.telemetry.addData("Encoder Position", motor.getCurrentPosition());
             curOpMode.telemetry.update();
         }
         motor.setPower(0);
 
-        double currentEncoderValue = motor.getCurrentPosition();
+//        double currentEncoderValue = motor.getCurrentPosition();
 
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void checkInputs(){

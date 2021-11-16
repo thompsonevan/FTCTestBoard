@@ -96,17 +96,7 @@ public class Red01All extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,-1900,10, false);
 
-        int encoderPos = 0;
-
-        if(pos == 3){
-            encoderPos = 1240;
-        } else if (pos == 2){
-            encoderPos = 1160;
-        } else if (pos == 1){
-            encoderPos = 1030;
-        } else if (pos == 0){
-            encoderPos = 0;
-        }
+        int encoderPos = auto.getDistFromHub(pos);
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
 

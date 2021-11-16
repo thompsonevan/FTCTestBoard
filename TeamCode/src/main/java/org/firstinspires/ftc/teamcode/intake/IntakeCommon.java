@@ -8,9 +8,9 @@ public class IntakeCommon {
 
     public LinearOpMode curOpMode;
 
-    public double val1 = 0;
-    public double val2 = 1;
-    public double val3 = 1;
+    public double val1 = 1;
+    public double val2 = 0;
+    public double val3 = .5;
 
     public IntakeCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
@@ -40,8 +40,9 @@ public class IntakeCommon {
         curOpMode.telemetry.addData("val2", val2);
         curOpMode.telemetry.addData("val3", val3);
 
+        robot.frontLift.setPosition(val3);
         robot.frontGuide1.setPosition(val1);
         robot.frontGuide2.setPosition(val2);
-        robot.frontLift.setPosition(val3);
+
     }
 }
