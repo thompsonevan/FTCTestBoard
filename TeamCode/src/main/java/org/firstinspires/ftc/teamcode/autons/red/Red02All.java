@@ -87,19 +87,25 @@ public class Red02All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = auto.getPos(false);
+        int pos = 2; // auto.getPos(false);
 
-        auto.encoderDrive(driveSpeed,-500,10, false);
+        auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderStrafe(strafeSpeed,10,1000,true,false,false);
+        auto.encoderDrive(driveSpeed,900,10, false);
 
-//        auto.doConveyor(pos,conveyorSpeed, 10);
+        int encoderPos = auto.getDistFromHub(pos);
+
+        auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
+
+        auto.conveyor.pushConveyor(conveyorSpeed, 10);
+
+        auto.conveyor.liftConveyor(3, .8, 4);
+
+        auto.encoderStrafe(strafeSpeed,10,encoderPos+60,true,false,false);
+
+        auto.encoderDrive(driveSpeed,-2200,10, false);
 
         auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
-
-        auto.encoderDrive(driveSpeed,2000,10, false);
-
-        auto.encoderStrafe(strafeSpeed,10,1200,true,false,false);
 
     }
 }
