@@ -67,19 +67,6 @@ import com.vuforia.CameraDevice;
  *
  **/
 
-/**
- * The code REQUIRES that you DO have encoders on the wheels,
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *  This methods assumes that each movement is relative to the last stopping place.
- *  There are other ways to perform encoder based moves, but this method is probably the simplest.
- *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run
- *  profile
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- **/
 
 @Autonomous(name="AUTONOMOUS RUNS", group="OnBot")
 
@@ -104,15 +91,12 @@ public class _Auto_runs extends LinearOpMode {
      *   audience.
      *
      */
-    location loc = new location(0,96);  //Start using the side of robot closest to the
-                                            // enclosing wall, 2nd tile from front
-    location car_loc = new location (0,25);
-    location hub_loc = new location (110, 150);
-    location freight_loc = new location (0,400);
-    location freight_park_loc = new location (105,400);
-    location storage_loc = new location (105,30);
+    location loc_a = new location(0,96);  //Start using the side of robot closest to the
+    // enclosing wall, 2nd tile from front
+    location loc_b = new location(0,218);  //Start using the side of robot closest to the
+    // enclosing wall, 4th tile from front
 
-    int myLevel = 0;
+    location my_loc = loc_a;  // set to loc_a or loc_b as desired.
 
     AutoCommon auto=null;
 
@@ -121,10 +105,6 @@ public class _Auto_runs extends LinearOpMode {
    @Override
     public void runOpMode() {
 
-       /*
-        * Initialize the drive system variables.
-        * The init() method of the hardware class does all the work here
-        */
        auto = new AutoCommon(this);
 
        auto.resetEncoders();
@@ -133,22 +113,29 @@ public class _Auto_runs extends LinearOpMode {
        tasks();
    }
 
+    public void tasks() {
+        int myLevel = getLevel();
+        //  sleep(1000);    //  option wait for alliance member to move away.
+        my_loc = carousel(my_loc);
+        //  sleep(1000);    //  option wait for alliance member to move away.
+        my_loc = shippingHub(my_loc);
+        //  sleep(1000);    //  option wait for alliance member to move away.
+        my_loc = freight(my_loc);
+        //  sleep(1000);    //  option wait for alliance member to move away.
+        my_loc = freight_park(my_loc);
+    }
+    /*
+     *  end of configuration code
+     */
 
     /**
-     *
-     *  tasks -- this method runs the sequece of operations as specified.
-     **/
-    public void tasks() {
-        myLevel = getLevel();
-        //  sleep(1000);    //  option wait for alliance member to move away.
-        loc = carousel(loc);
-        //  sleep(1000);    //  option wait for alliance member to move away.
-        loc = shippingHub(loc);
-        //  sleep(1000);    //  option wait for alliance member to move away.
-        loc = freight(loc);
-        //  sleep(1000);    //  option wait for alliance member to move away.
-        loc = freight_park(loc);
-    }
+     * field location definitions
+     */
+    location car_loc = new location (0,25);
+    location hub_loc = new location (110, 150);
+    location freight_loc = new location (0,400);
+    location freight_park_loc = new location (105,400);
+    location storage_loc = new location (105,30);
 
     /**
      *
@@ -213,9 +200,9 @@ public class _Auto_runs extends LinearOpMode {
     public class location{
         public double x;
         public double y;
-        public location(double ix, double iy){
-            x = ix;
-            y = iy;
+        public location(double locx, double locy){
+            x = locx;
+            y = locy;
         }
     }
 }
