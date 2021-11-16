@@ -12,7 +12,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
@@ -54,7 +53,6 @@ public class AutoCommon {
     private ElapsedTime runtime = new ElapsedTime();
 
     private LinearOpMode curOpMode = null;
-    Map<Integer, Integer> blockLocations = new HashMap<Integer,Integer>();
 
     public AutoCommon(LinearOpMode owningOpMode) {
 
@@ -70,14 +68,6 @@ public class AutoCommon {
 
      //   liftClaw.robot.sideClaw.setPosition(0.1);
     //    vufCam = CameraDevice.getInstance();
-
-    //    liftClaw.robot.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blockLocations.put(1,BASE_DISTANCE - (1*BLOCK_OFFSET_DISTANCE));
-        blockLocations.put(2,BASE_DISTANCE - (0*BLOCK_OFFSET_DISTANCE));
-        blockLocations.put(3,BASE_DISTANCE + (1*BLOCK_OFFSET_DISTANCE));
-        blockLocations.put(4,BASE_DISTANCE + (2*BLOCK_OFFSET_DISTANCE));
-        blockLocations.put(5,BASE_DISTANCE + (3*BLOCK_OFFSET_DISTANCE));
-        blockLocations.put(6,BASE_DISTANCE + (4*BLOCK_OFFSET_DISTANCE));
 
 
     }
@@ -1277,108 +1267,6 @@ public class AutoCommon {
     }
 
 
-    public void runBlocks(ArrayList<Integer> blockPattern)
-    {
-
-        double DRIVE_SPEED=1;
-
-        getBlockFromSide(2);
-
-        encoderDrive(DRIVE_SPEED, blockLocations.get(blockPattern.get(0)),15,false);
-
-        dropBlockFromSide(2);
-
-
-        for(int i=1;i<6;i++)
-        {
-
-            encoderDrive(DRIVE_SPEED, - blockLocations.get(blockPattern.get(i)),15,false);
-
-      //      double currentError =chassis.robot.leftCheck.getDistance(DistanceUnit.CM)-20;
-
-
-/*
-            if(Math.abs(currentError)>5)
-            {
-
-                if(currentError>0) {
-                    strafeToDistance(.2, 5, 25, chassis.robot.leftCheck, false);
-                }
-                else
-                {
-                    strafeToDistance(-.2, 5, 20 ,chassis.robot.leftCheck, false);
-                }
-            }
-
-
- */
-      //      curOpMode.telemetry.addData("Distance:", chassis.robot.leftCheck.getDistance(DistanceUnit.CM));
-      //      curOpMode.telemetry.addData("Error:", currentError);
-            curOpMode.telemetry.update();
-
-           curOpMode.sleep(20000);
-
-
-
-            getBlockFromSide(2);
-
-            encoderDrive(DRIVE_SPEED,  blockLocations.get(blockPattern.get(i)),15,false);
-
-            dropBlockFromSide(2);
-
-        }
-
-    }
-
-
-    //Drive to common position for start of approach to platform
-    public void DriveToDropPosition(double TURN_SPEED, boolean blue, boolean center, boolean right, boolean setA){
-        int blockOffset;
-        if (setA) {
-            blockOffset = 0;
-        } else {
-            blockOffset = 1040;
-        }
-
-        if(center)
-        {
-
-
-            encoderLateral(1, 10,2200,false,false ,false);
-
-            curOpMode.sleep(20000);
-            encoderDrive(1, 2200 + blockOffset, 10, true);
-        }
-        else {
-            if (blue) {
-
-                //First check if we are driving from Right or Left block position
-                if (right) {
-
-                    encoderDrive(1, 2500 + blockOffset, 10, true);
-
-                } else {
-                    encoderDrive(1, 2000 + blockOffset, 10, true);
-
-                }
-            } else {
-                if (right) {
-                    encoderDrive(1, 2000 + blockOffset, 10, true);
-                } else {
-                    encoderDrive(1, 2500 + blockOffset, 10, true);
-                }
-
-            }
-        }
-/*
-        liftClaw.openClaw();
-        chassis.robot.leftGuide.setPosition(0);
-        chassis.robot.rightGuide.setPosition(1);
-
-
- */
-
-    }
 
     //Drive to common position for start of approach to platform
     public void DriveToPickupPosition(double DRIVE_SPEED, boolean blue, boolean center, boolean right, boolean setA) {
