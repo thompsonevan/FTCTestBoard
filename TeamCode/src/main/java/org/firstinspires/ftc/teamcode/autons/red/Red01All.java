@@ -90,7 +90,7 @@ public class Red01All extends LinearOpMode {
 
         auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderDrive(driveSpeed,700,10, false);
+        auto.encoderDrive(driveSpeed,685,10, false);
 
         auto.moveSpinner(spinnerSpeed, 2, true);
 
@@ -103,7 +103,7 @@ public class Red01All extends LinearOpMode {
         } else if (pos == 2){
             encoderPos = 1160;
         } else if (pos == 1){
-            encoderPos = 1080;
+            encoderPos = 1030;
         } else if (pos == 0){
             encoderPos = 0;
         }

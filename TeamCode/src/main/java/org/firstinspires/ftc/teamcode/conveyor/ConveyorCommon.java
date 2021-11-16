@@ -83,7 +83,7 @@ public class ConveyorCommon {
         if(pos == 0){
             moveConveyor(robot.armMotor, 1770, speed, timeout); // 1
         } else if (pos == 1){
-            moveConveyor(robot.armMotor, 1380, speed, timeout); //390
+            moveConveyor(robot.armMotor, 1550, speed, timeout); //390
         } else if (pos == 2){
             moveConveyor(robot.armMotor, 870, speed, timeout); // 900
         } else if (pos == 3){
