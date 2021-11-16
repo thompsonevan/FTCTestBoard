@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
 import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 @TeleOp(name="Teleop All", group="Pushbot")
-@Disabled
+//@Disabled
 public class TeleopAll extends LinearOpMode {
 
         GlobalAll global = new GlobalAll();
@@ -32,8 +32,7 @@ public class TeleopAll extends LinearOpMode {
                 global.spinner.executeTeleop();
                 global.drivetrain.executeTeleop();
                 global.conveyor.executeTeleop();
-                global
-                        .intake.executeTeleop();
+                global.intake.executeTeleop();
 
                 telemetry.update();
             }

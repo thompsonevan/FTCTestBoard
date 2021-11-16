@@ -4,6 +4,7 @@ import android.provider.Settings;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.GlobalAll;
@@ -19,6 +20,8 @@ public class ConveyorCommon {
 
     public LinearOpMode curOpMode;
 
+    private ElapsedTime runtime = new ElapsedTime();
+
     double lastRead1 = 0;
     double lastRead2 = 0;
 
@@ -28,19 +31,21 @@ public class ConveyorCommon {
     public ConveyorCommon(LinearOpMode owningOpMode, GlobalAll gaP){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        moveConveyor(robot.conveyorMotor, 0, .8, 10);
+//        moveConveyor(robot.armMotor, 0, .8, 10);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
 
         ga = gaP;
     }
     public ConveyorCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        moveConveyor(robot.conveyorMotor, 0, .8, 10);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -50,17 +55,17 @@ public class ConveyorCommon {
         curOpMode.telemetry.addData("Conveyor Level:", robot.armMotor.getCurrentPosition());
 
         if(curOpMode.gamepad2.dpad_up){
-            liftConveyor(0, .8);
+            liftConveyor(0, .8, 10);
         } else if (curOpMode.gamepad2.dpad_right){
-            liftConveyor(1, .8);
+            liftConveyor(1, .8, 10);
         } else if (curOpMode.gamepad2.dpad_down){
-            liftConveyor(2, .8);
+            liftConveyor(2, .8, 10);
         } else if (curOpMode.gamepad2.dpad_left){
-            liftConveyor(3, .8);
+            liftConveyor(3, .8, 10);
         }
 
         if(curOpMode.gamepad2.back){
-            pushConveyor(.8);
+            pushConveyor(.8, 10);
         }
 
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -74,33 +79,40 @@ public class ConveyorCommon {
         curOpMode.telemetry.addData("Position", spawnpoint());
     }
 
-    public void liftConveyor(int pos, double speed){
+    public void liftConveyor(int pos, double speed, double timeout){
         if(pos == 0){
-            moveConveyor(robot.armMotor, 1, speed);
+            moveConveyor(robot.armMotor, 1770, speed, timeout); // 1
         } else if (pos == 1){
-            moveConveyor(robot.armMotor, 390, speed);
+            moveConveyor(robot.armMotor, 1380, speed, timeout); //390
         } else if (pos == 2){
-            moveConveyor(robot.armMotor, 900, speed);
+            moveConveyor(robot.armMotor, 870, speed, timeout); // 900
         } else if (pos == 3){
-            moveConveyor(robot.armMotor, 1777, speed);
+            moveConveyor(robot.armMotor, 1, speed, timeout); // 1777
         }
     }
 
-    public void pushConveyor(double speed){
-        moveConveyor(robot.conveyorMotor, 2300, speed);
-        moveConveyor(robot.conveyorMotor, 0, speed);
+    public void pushConveyor(double speed, double timeout){
+        moveConveyor(robot.conveyorMotor, 2300, speed, timeout);
+        moveConveyor(robot.conveyorMotor, 0, speed, timeout);
     }
 
-    public void moveConveyor(DcMotor motor, int encoder, double speed) {
+    public void moveConveyor(DcMotor motor, int encoder, double speed, double timeout) {
         motor.setTargetPosition(encoder);
+
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(speed);
-        while (motor.isBusy()) {
-            checkInputs();
+
+        runtime.reset();
+
+        while (motor.isBusy() && runtime.seconds() < timeout) {
+            //checkInputs();
             curOpMode.telemetry.addData("Encoder Position", motor.getCurrentPosition());
             curOpMode.telemetry.update();
         }
         motor.setPower(0);
+
+        double currentEncoderValue = motor.getCurrentPosition();
+
     }
 
     public void checkInputs(){

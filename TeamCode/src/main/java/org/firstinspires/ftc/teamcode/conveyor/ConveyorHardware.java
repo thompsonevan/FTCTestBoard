@@ -35,7 +35,7 @@ public class ConveyorHardware {
         armMotor = hwMap.get(DcMotor.class, "arm_motor");
 
         conveyorMotor.setDirection(DcMotor.Direction.REVERSE);
-        armMotor.setDirection(DcMotor.Direction.REVERSE);
+        armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

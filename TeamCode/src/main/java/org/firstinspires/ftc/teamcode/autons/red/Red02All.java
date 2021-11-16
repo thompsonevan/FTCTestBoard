@@ -27,12 +27,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autons;
+package org.firstinspires.ftc.teamcode.autons.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.autons.AutoCommon;
+
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -61,19 +64,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RED 01 (All Actions)", group="OnBot")
+@Autonomous(name="RED 02 (All Actions)", group="OnBot")
 
 //@Disabled
-public class Red01All extends LinearOpMode {
+public class Red02All extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
 
     Boolean blue=false;
 
-    double driveSpeed = .3;
-    double strafeSpeed = .3;
-    double conveyorSpeed = 1;
+    double driveSpeed = .5;
+    double strafeSpeed = .5;
+    double conveyorSpeed = .8;
     double spinnerSpeed = .3;
 
     @Override
@@ -86,18 +89,17 @@ public class Red01All extends LinearOpMode {
 
         int pos = auto.getPos(false);
 
-        auto.encoderDrive(driveSpeed,-700,10, false);
-
-        auto.moveSpinner(spinnerSpeed, 2, true);
-
-        auto.encoderDrive(driveSpeed,1600,10, false);
+        auto.encoderDrive(driveSpeed,-500,10, false);
 
         auto.encoderStrafe(strafeSpeed,10,1000,true,false,false);
 
-        auto.doConveyor(pos,conveyorSpeed, 10);
+//        auto.doConveyor(pos,conveyorSpeed, 10);
 
         auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
 
-        auto.encoderDrive(driveSpeed, 3000, 10,false);
+        auto.encoderDrive(driveSpeed,2000,10, false);
+
+        auto.encoderStrafe(strafeSpeed,10,1200,true,false,false);
+
     }
 }

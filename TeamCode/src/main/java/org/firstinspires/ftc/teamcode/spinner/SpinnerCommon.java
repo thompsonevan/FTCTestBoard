@@ -21,8 +21,6 @@ public class SpinnerCommon {
     }
 
     public void executeTeleop(){
-
-
         if(curOpMode.gamepad1.a) {
             //speed *= 1.04;
 

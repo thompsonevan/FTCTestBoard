@@ -27,13 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autons;
+package org.firstinspires.ftc.teamcode.autons.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.autons.AutoCommon;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -62,19 +63,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RED 02 (All Actions)", group="OnBot")
+@Autonomous(name="RED 01 (All Actions)", group="OnBot")
 
 //@Disabled
-public class Red02All extends LinearOpMode {
+public class Red01All extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
 
     Boolean blue=false;
 
-    double driveSpeed = .3;
-    double strafeSpeed = .3;
-    double conveyorSpeed = 1;
+    double driveSpeed = .5;
+    double strafeSpeed = .5;
+    double conveyorSpeed = .8;
     double spinnerSpeed = .3;
 
     @Override
@@ -85,19 +86,36 @@ public class Red02All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = auto.getPos(false);
+        int pos = 1; //auto.getPos(false);
 
-        auto.encoderDrive(driveSpeed,-500,10, false);
+        auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderStrafe(strafeSpeed,10,1000,true,false,false);
+        auto.encoderDrive(driveSpeed,700,10, false);
 
-        auto.doConveyor(pos,conveyorSpeed, 10);
+        auto.moveSpinner(spinnerSpeed, 2, true);
 
-        auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
+        auto.encoderDrive(driveSpeed,-1900,10, false);
 
-        auto.encoderDrive(driveSpeed,2000,10, false);
+        int encoderPos = 0;
 
-        auto.encoderStrafe(strafeSpeed,10,1200,true,false,false);
+        if(pos == 3){
+            encoderPos = 1240;
+        } else if (pos == 2){
+            encoderPos = 1160;
+        } else if (pos == 1){
+            encoderPos = 1080;
+        } else if (pos == 0){
+            encoderPos = 0;
+        }
 
+        auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
+
+        auto.conveyor.pushConveyor(conveyorSpeed, 10);
+
+        auto.conveyor.liftConveyor(3, .8, 4);
+
+        auto.encoderStrafe(strafeSpeed,10,encoderPos + 60,true,false,false);
+
+        auto.encoderDrive(driveSpeed, -2500, 10,false);
     }
 }

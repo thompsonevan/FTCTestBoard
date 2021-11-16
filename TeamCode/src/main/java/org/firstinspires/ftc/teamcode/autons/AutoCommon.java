@@ -663,19 +663,22 @@ public class AutoCommon {
                     spinner.robot.spinnerMotor.setPower(-speed);
                 }
             }
+            spinner.robot.spinnerMotor.setPower(0);
         }
     }
 
-    public void doConveyor(int pos, double speed, double timeoutS){
-        if (curOpMode.opModeIsActive()){
-            runtime.reset();
-            while (curOpMode.opModeIsActive() && runtime.seconds() < timeoutS) {
-                conveyor.liftConveyor(pos, .8);
-                conveyor.pushConveyor(speed);
-                conveyor.liftConveyor(0, .8);
-            }
-        }
-    }
+//    public void doConveyor(int pos, double speed, double timeoutS){
+//        if (curOpMode.opModeIsActive()){
+//            runtime.reset();
+//            while (curOpMode.opModeIsActive() && runtime.seconds() < timeoutS && conveyor.robot.armMotor.isBusy()) {
+//                conveyor.liftConveyor(pos, .8);
+//                conveyor.pushConveyor(speed);
+//                conveyor.liftConveyor(0, .8);
+//            }
+//        }
+//    }
+
+//    public
 
     public int getPos(boolean blue){
         int collector = conveyor.spawnpoint();
