@@ -91,9 +91,9 @@ public class _Auto_runs extends LinearOpMode {
      *   audience.
      *
      */
-    location loc_a = new location(0,96);  //Start using the side of robot closest to the
+    location loc_a = new location(0,70);  //Start using the side of robot closest to the
     // enclosing wall, 2nd tile from front
-    location loc_b = new location(0,218);  //Start using the side of robot closest to the
+    location loc_b = new location(0,211);  //Start using the side of robot closest to the
     // enclosing wall, 4th tile from front
 
     location my_loc = loc_a;  // set to loc_a or loc_b as desired.
@@ -117,12 +117,12 @@ public class _Auto_runs extends LinearOpMode {
         int myLevel = getLevel();
         //  sleep(1000);    //  option wait for alliance member to move away.
         my_loc = carousel(my_loc);
-        //  sleep(1000);    //  option wait for alliance member to move away.
+        sleep(3000);    //  option wait for alliance member to move away.
         my_loc = shippingHub(my_loc);
-        //  sleep(1000);    //  option wait for alliance member to move away.
+        sleep(3000);    //  option wait for alliance member to move away.
         my_loc = freight(my_loc);
         //  sleep(1000);    //  option wait for alliance member to move away.
-        my_loc = freight_park(my_loc);
+//        my_loc = freight_park(my_loc);
     }
     /*
      *  end of configuration code
@@ -131,11 +131,11 @@ public class _Auto_runs extends LinearOpMode {
     /**
      * field location definitions
      */
-    location car_loc = new location (0,25);
-    location hub_loc = new location (110, 150);
+    location car_loc = new location (0,27);
+    location hub_loc = new location (20, 146);
     location freight_loc = new location (0,400);
-    location freight_park_loc = new location (105,400);
-    location storage_loc = new location (105,30);
+    location freight_park_loc = new location (50,400);
+    location storage_loc = new location (60,0);
 
     /**
      *
@@ -150,36 +150,40 @@ public class _Auto_runs extends LinearOpMode {
      *   Move from loc to the storage parking place.
      */
     public location storage (location loc) {
-        auto.encoderLateral(-0.3, 5, storage_loc.x - loc.x,
-                alliance, false, false);
-        auto.encoderDrive(0.5, storage_loc.y - loc.y, 10, false);
+        auto.encoderLateral(0.3, 5,  Math.abs(loc.x - storage_loc.x),
+                x_direction(loc.x, storage_loc.x), false, false);
+        double new_y = calc_y(loc.y, storage_loc.y, alliance) ;
+        auto.encoderDrive(0.5, new_y, 10, false);
         return storage_loc;
     }
     /**
      *   Move from loc to the freight parking place.
      */
     public location freight (location loc) {
-        auto.encoderLateral(-0.3, 5, freight_loc.x - loc.x,
-                alliance, false, false);
-        auto.encoderDrive(0.5, freight_loc.y - loc.y, 10, false);
+        auto.encoderLateral(0.3, 5,  Math.abs(loc.x - freight_loc.x),
+                x_direction(loc.x, freight_loc.x), false, false);
+        double new_y = calc_y(loc.y, freight_loc.y, alliance) ;
+        auto.encoderDrive(0.5, new_y, 10, false);
         return freight_loc;
     }
     /**
      *   Move from loc in freight to a new location in freight.
      */
     public location freight_park (location loc) {
-        auto.encoderLateral(-0.3, 5, freight_park_loc.x - loc.x,
-                alliance, false, false);
-        auto.encoderDrive(0.5, freight_park_loc.y - loc.y, 10, false);
+        auto.encoderLateral(0.3, 5,  Math.abs(loc.x - freight_park_loc.x),
+                x_direction(loc.x, freight_park_loc.x), false, false);
+        double new_y = calc_y(loc.y, freight_park_loc.y, alliance) ;
+        auto.encoderDrive(0.5, new_y, 10, false);
         return freight_loc;
     }
     /**
      *   Move from loc to the shipping hub and place the block based on the value in level.
      */
     public location shippingHub(location loc) {
-        auto.encoderLateral(-0.3, 5, hub_loc.x - loc.x,
-                alliance, false, false);
-        auto.encoderDrive(0.5, hub_loc.y - loc.y, 10, false);
+        auto.encoderLateral(0.3, 5,  Math.abs(loc.x - hub_loc.x),
+                x_direction(loc.x, hub_loc.x), false, false);
+        double new_y = calc_y(loc.y, hub_loc.y, alliance) ;
+        auto.encoderDrive(0.5, new_y, 10, false);
         //  add code to load block on shipping hub using level
         return hub_loc;
     }
@@ -187,12 +191,45 @@ public class _Auto_runs extends LinearOpMode {
      *   Move from loc to the carousel and rotate it to deliver a duck.
      */
     public location carousel(location loc) {
-        auto.encoderLateral(0.3, 5, car_loc.x - loc.x,
-                alliance, false, false);
-
-        auto.encoderDrive(0.5, - (car_loc.y - loc.y), 10, true);
+        auto.encoderLateral(0.3, 5,  Math.abs(loc.x - car_loc.x),
+                x_direction(loc.x, car_loc.x), false, false);
+        double new_y = calc_y(loc.y, car_loc.y, alliance) ;
+        auto.encoderDrive(0.5, new_y, 10, true);
         //  add code to rotate carousel
         return car_loc;
+    }
+    /**
+     *   calculate directed x distance value
+     *  	x distances are based on the following assumption:
+     *      1.  The robot is making a lateral move (straif).
+     *		2.	Since the robot is reversed regardless of alliance,
+     *		    - 	if the desired position is greater than the current position, the
+     *         		robot should move away from the wall (left)
+     *          -  	if the desired position is less than the current position, the 
+     *             	robot should move toward the wall (right)
+     *		3.  Robot moves left when the left: parameter is TRUE
+     *
+     **/
+     public boolean x_direction( double current, double desired){
+     	return (desired > current);
+     }
+     
+    /**
+     *   calculate directed y distance value
+     *
+     *		y distances are based on the following assumptions:
+     *		1.  The front of the robot is away from the audience for the RED alliance,
+     *			and towards the audience for the BLUE alliance.
+     *		2.  The robot is moving from its current position to the desired position.
+     *
+     **/
+    public double calc_y ( double current, double desired, boolean alnc){
+		double displacement = Math.abs(desired - current);  // raw distance to move
+		if (((desired < current) && alnc) || ((desired > current) && !alnc)) {
+		  // change sign for RED moving toward audience or BLUE moving away
+            displacement = 0 - displacement;
+		}
+		return displacement;
     }
     /**
      *   location class to hold x and y values
