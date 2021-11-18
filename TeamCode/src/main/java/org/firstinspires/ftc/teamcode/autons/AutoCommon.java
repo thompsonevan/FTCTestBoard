@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
 import org.firstinspires.ftc.teamcode.drivetrain.DrivetrainCommon;
+import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
 import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 public class AutoCommon {
@@ -18,6 +19,8 @@ public class AutoCommon {
     public DrivetrainCommon chassis = null;
     public ConveyorCommon conveyor = null;
     public SpinnerCommon spinner = null;
+    public IntakeCommon intake = null;
+
 
     public VectorF blockLoc = null;
     public CameraDevice vufCam = null;
@@ -35,6 +38,7 @@ public class AutoCommon {
         robot = new AutoHardware();
         conveyor = new ConveyorCommon(curOpMode);
         spinner = new SpinnerCommon(curOpMode);
+        intake = new IntakeCommon(curOpMode);
 
 
         robot.init(curOpMode.hardwareMap);

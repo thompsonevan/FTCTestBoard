@@ -90,17 +90,29 @@ public class Blue02All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = auto.getPos(true);
+        int pos = 2; //auto.getPos(true);
 
-        auto.encoderDrive(driveSpeed,500,10, false);
+        auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderStrafe(strafeSpeed,10,1000,true,false,false);
+        auto.encoderDrive(driveSpeed,-900,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
+        auto.encoderStrafe(strafeSpeed,10, 100,true,false,false);
 
-        auto.encoderDrive(driveSpeed,-2000,10, false);
+        int encoderPos = auto.getDistFromHub(pos);
 
-        auto.encoderStrafe(strafeSpeed,10,1200,true,false,false);
+        auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
+
+        auto.conveyor.pushConveyor(conveyorSpeed, 30);
+
+        auto.conveyor.liftConveyor(3, .8, 30);
+
+        auto.encoderStrafe(strafeSpeed,10,encoderPos+60,true,false,false);
+
+        auto.encoderDrive(driveSpeed, -1100, 10,false);
+
+        auto.encoderStrafe(strafeSpeed,10,300,false,false,false);
+
+        auto.encoderTurn(.5, 200, 30);
 
     }
 }

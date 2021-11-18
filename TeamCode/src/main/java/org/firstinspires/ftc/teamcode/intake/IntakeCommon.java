@@ -9,16 +9,11 @@ public class IntakeCommon {
 
     public LinearOpMode curOpMode;
 
-    public double guide1Val = 1;
-    public double guide2Val = 0;
-    public double liftVal = .5;
-    public double spinRotateVal = 0;
-    public double spinVal = 0;
-
     public enum intakeState{
         start,
         intake,
-        lift
+        lift,
+        onlyLift
     }
 
     intakeState state;
@@ -36,6 +31,8 @@ public class IntakeCommon {
         robot.init(curOpMode.hardwareMap);
 
         state = intakeState.start;
+
+//        autoIntake(state);
     }
 
     public void executeTeleop(){
@@ -47,6 +44,9 @@ public class IntakeCommon {
             } else if (curOpMode.gamepad2.x){
                 state = intakeState.lift;
             }
+
+//            autoIntake(state);
+
         }
 
         if (curOpMode.gamepad2.left_bumper){
@@ -77,7 +77,7 @@ public class IntakeCommon {
                 }
 
                 firstLift = false;
-            break;
+                break;
             case intake:
                 firstLift = true;
                 firstStart = true;
@@ -88,7 +88,72 @@ public class IntakeCommon {
 
                 robot.frontSpin.setPower(1);
 
-            break;
+                break;
+            case lift:
+                firstStart = true;
+
+                if(firstLift){
+                    runtime.reset();
+                }
+
+                robot.frontSpin.setPower(0);
+                robot.frontSpinRotate.setPosition(.5);
+
+                if (runtime.seconds() < 1 && runtime.seconds() > .2) {
+                    robot.frontLift.setPosition(1);
+                    liftIsMoving = true;
+                } else if (runtime.seconds() > 1 && runtime.seconds() < 1.5){
+                    robot.frontLift.setPosition(.5);
+                } else {
+                    liftIsMoving = false;
+                }
+
+                firstLift = false;
+                break;
+            case onlyLift:
+                robot.frontSpinRotate.setPosition(.5);
+                break;
+        }
+
+        curOpMode.telemetry.addData("Lift Position", robot.frontLift.getPosition());
+        curOpMode.telemetry.addData("Guide 1 Position", robot.frontGuide1.getPosition());
+        curOpMode.telemetry.addData("Guide 2 Position", robot.frontGuide2.getPosition());
+        curOpMode.telemetry.addData("Dropper Position", robot.frontSpinRotate.getPosition());
+        curOpMode.telemetry.addData("Spinner Speed", robot.frontSpin.getPower());
+        curOpMode.telemetry.addData("Lift is moving", liftIsMoving);
+
+    }
+
+    public void autoIntake(intakeState givenState){
+        switch(givenState){
+            case start:
+                firstLift = true;
+
+                if(firstLift){
+                    runtime.reset();
+                }
+
+                robot.frontSpin.setPower(0);
+
+                robot.frontSpinRotate.setPosition(.5);
+
+                if (runtime.seconds() < .2){
+                    robot.frontLift.setPosition(.5);
+                }
+
+                firstLift = false;
+                break;
+            case intake:
+                firstLift = true;
+                firstStart = true;
+
+                robot.frontLift.setPosition(0);
+
+                robot.frontSpinRotate.setPosition(1);
+
+                robot.frontSpin.setPower(1);
+
+                break;
             case lift:
                 firstStart = true;
 
@@ -111,13 +176,5 @@ public class IntakeCommon {
                 firstLift = false;
                 break;
         }
-
-        curOpMode.telemetry.addData("Lift Position", robot.frontLift.getPosition());
-        curOpMode.telemetry.addData("Guide 1 Position", robot.frontGuide1.getPosition());
-        curOpMode.telemetry.addData("Guide 2 Position", robot.frontGuide2.getPosition());
-        curOpMode.telemetry.addData("Dropper Position", robot.frontSpinRotate.getPosition());
-        curOpMode.telemetry.addData("Spinner Speed", robot.frontSpin.getPower());
-        curOpMode.telemetry.addData("Lift is moving", liftIsMoving);
-
     }
 }

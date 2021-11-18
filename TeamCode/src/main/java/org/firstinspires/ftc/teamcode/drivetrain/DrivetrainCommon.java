@@ -129,8 +129,8 @@ public class DrivetrainCommon {
 //        }
 
 
-        yVal = -curOpMode.gamepad1.left_stick_y;
-        xVal = curOpMode.gamepad1.left_stick_x;
+        yVal = -curOpMode.gamepad1.left_stick_y * .5;
+        xVal = curOpMode.gamepad1.left_stick_x * .5;
 
 
         if (Math.abs(yVal) < .7) {
@@ -185,7 +185,7 @@ public class DrivetrainCommon {
             if (Math.abs(yVal) == 0) {
                 while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
 
-                    turnVal = curOpMode.gamepad1.right_stick_x;
+                    turnVal = curOpMode.gamepad1.right_stick_x * .5;
 
                     if (Math.abs(turnVal) < .7) {
                         turnVal = (turnVal * .71);
@@ -216,13 +216,13 @@ public class DrivetrainCommon {
 
             } else {
 
-                turnVal = curOpMode.gamepad1.right_stick_x;
+
+                turnVal = curOpMode.gamepad1.right_stick_x * .5;
 
                 if (Math.abs(turnVal) < .7) {
                     turnVal = (turnVal * .71);
                 } else {
                     turnVal = ((Math.abs(turnVal) * 1.67) - .67) * Math.signum(turnVal);
-                    ;
                 }
 
                 if (Math.abs(turnVal) > 0 && Math.abs(turnVal) > turnMax) {
