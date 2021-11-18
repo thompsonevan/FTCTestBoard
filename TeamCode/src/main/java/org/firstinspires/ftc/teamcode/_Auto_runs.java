@@ -76,8 +76,8 @@ public class _Auto_runs extends LinearOpMode {
     /* Declare OpMode members. */
 
     private ElapsedTime     runtime = new ElapsedTime();
-//    public ConveyorCommon robot = new ConveyorCommon();
-//    public SpinnerCommon spinner = new SpinnerCommon();
+    public ConveyorCommon robot = new ConveyorCommon(null);
+    public SpinnerCommon spinner = new SpinnerCommon(null);
     static boolean RED = true;
     static boolean BLUE = false;
     static boolean alliance = RED;
