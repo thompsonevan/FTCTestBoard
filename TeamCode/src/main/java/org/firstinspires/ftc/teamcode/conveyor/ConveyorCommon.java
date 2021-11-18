@@ -81,11 +81,11 @@ public class ConveyorCommon {
 
     public void liftConveyor(int pos, double speed, double timeout){
         if(pos == 0){
-            moveConveyor(robot.armMotor, 1770, speed, timeout); // 1
+            moveConveyor(robot.armMotor, 1760, speed, timeout); // 1
         } else if (pos == 1){
             moveConveyor(robot.armMotor, 1550, speed, timeout); //390
         } else if (pos == 2){
-            moveConveyor(robot.armMotor, 870, speed, timeout); // 900
+            moveConveyor(robot.armMotor, 800, speed, timeout); // 900
         } else if (pos == 3){
             moveConveyor(robot.armMotor, 1, speed, timeout); // 1777
         }

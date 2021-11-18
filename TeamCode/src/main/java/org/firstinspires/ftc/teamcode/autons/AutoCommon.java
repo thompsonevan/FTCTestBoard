@@ -699,4 +699,17 @@ public class AutoCommon {
         }
 
     }
+
+    public void checkDistances(){
+        if(curOpMode.opModeIsActive()){
+
+        } else {
+            curOpMode.telemetry.addData("Sensor 1", conveyor.robot.ds1.getDistance(DistanceUnit.INCH));
+            curOpMode.telemetry.addData("Sensor 2", conveyor.robot.ds2.getDistance(DistanceUnit.INCH));
+
+            curOpMode.telemetry.update();
+
+            checkDistances();
+        }
+    }
 }

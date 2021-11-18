@@ -31,9 +31,11 @@ package org.firstinspires.ftc.teamcode.autons.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.autons.AutoCommon;
 
 /**
@@ -83,6 +85,8 @@ public class Red01All extends LinearOpMode {
         auto = new AutoCommon(this);
 
         auto.resetEncoders();
+
+        auto.checkDistances();
 
         waitForStart();
 

@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.autons.blue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -84,6 +85,8 @@ public class Blue01All extends LinearOpMode {
         auto = new AutoCommon(this);
 
         auto.resetEncoders();
+
+        auto.checkDistances();
 
         waitForStart();
 
