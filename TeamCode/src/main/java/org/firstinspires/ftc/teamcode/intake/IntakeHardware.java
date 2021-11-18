@@ -46,6 +46,8 @@ public class IntakeHardware {
         backSpinRotate = hwMap.get(Servo.class, "back_spin_rotate");
 
         frontSpin.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        frontSpin.setPower(0);
     }
 }
 

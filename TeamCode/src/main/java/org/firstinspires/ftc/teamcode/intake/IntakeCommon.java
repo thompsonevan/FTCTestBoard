@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.intake;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class IntakeCommon {
 
@@ -17,75 +18,106 @@ public class IntakeCommon {
     public enum intakeState{
         start,
         intake,
-        lift,
-        lock
+        lift
     }
 
     intakeState state;
 
+    ElapsedTime runtime = new ElapsedTime();
+
+    boolean firstIntake = true;
+    boolean firstLift = true;
+    boolean firstStart = true;
+
+    boolean liftIsMoving = false;
 
     public IntakeCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
+
+        state = intakeState.start;
     }
 
     public void executeTeleop(){
-//        if (curOpMode.gamepad2.right_trigger > .05){
-//            val1 = 0;
-//        } else if (curOpMode.gamepad2.right_bumper){
-//            val1 = 1;
-//        }
-//
-//        if (curOpMode.gamepad2.left_trigger > .05){
-//            val2 = 1;
-//        } else if (curOpMode.gamepad2.left_bumper){
-//            val2 = 0;
-//        }
-//
-//        if(curOpMode.gamepad2.x){
-//            val3 = 0;
-//        } else if (curOpMode.gamepad2.y){
-//            val3 = 1;
-//        }
-//
-//        if(curOpMode.gamepad2.a){
-//            val4 = 1;
-//            robot.frontSpin.setPower(1);
-//        } else if (curOpMode.gamepad2.b){
-//            val4 = 0;
-//            robot.frontSpin.setPower(0);
-//        }
-//
-//        curOpMode.telemetry.addData("Guide 1", val1);
-//        curOpMode.telemetry.addData("Guide 2", val2);
-//        curOpMode.telemetry.addData("Lift", val3);
-//        curOpMode.telemetry.addData("Spinner", val4);
-//
-//        robot.frontLift.setPosition(val3);
-//        robot.frontGuide1.setPosition(val1);
-//        robot.frontGuide2.setPosition(val2);
-//        robot.frontSpinRotate.setPosition(val4);
+        if(!liftIsMoving){
+            if(curOpMode.gamepad2.a){
+                state = intakeState.start;
+            } else if (curOpMode.gamepad2.b){
+                state = intakeState.intake;
+            } else if (curOpMode.gamepad2.x){
+                state = intakeState.lift;
+            }
+        }
 
-        state = intakeState.start;
+        if (curOpMode.gamepad2.left_bumper){
+            robot.frontGuide1.setPosition(1);
+        } else {
+            robot.frontGuide1.setPosition(.2);
+        }
+        if (curOpMode.gamepad2.right_bumper){
+            robot.frontGuide2.setPosition(0);
+        } else {
+            robot.frontGuide2.setPosition(.7);
+        }
 
         switch(state){
             case start:
-                robot.frontGuide1.setPosition(1);
-                robot.frontGuide2.setPosition(0);
+                firstLift = true;
+
+                if(firstLift){
+                    runtime.reset();
+                }
+
                 robot.frontSpin.setPower(0);
-                robot.frontSpinRotate.setPosition(0);
-                robot.frontLift.setPosition(.5);
+
+                robot.frontSpinRotate.setPosition(.5);
+
+                if (runtime.seconds() < .2){
+                    robot.frontLift.setPosition(.5);
+                }
+
+                firstLift = false;
             break;
             case intake:
+                firstLift = true;
+                firstStart = true;
+
+                robot.frontLift.setPosition(0);
+
+                robot.frontSpinRotate.setPosition(1);
+
+                robot.frontSpin.setPower(1);
 
             break;
             case lift:
+                firstStart = true;
 
-            break;
-            case lock:
+                if(firstLift){
+                    runtime.reset();
+                }
 
-            break;
+                robot.frontSpin.setPower(0);
+                robot.frontSpinRotate.setPosition(.5);
+
+                if (runtime.seconds() < 1 && runtime.seconds() > .2) {
+                    robot.frontLift.setPosition(1);
+                    liftIsMoving = true;
+                } else if (runtime.seconds() > 1 && runtime.seconds() < 1.5){
+                    robot.frontLift.setPosition(.5);
+                } else {
+                    liftIsMoving = false;
+                }
+
+                firstLift = false;
+                break;
         }
+
+        curOpMode.telemetry.addData("Lift Position", robot.frontLift.getPosition());
+        curOpMode.telemetry.addData("Guide 1 Position", robot.frontGuide1.getPosition());
+        curOpMode.telemetry.addData("Guide 2 Position", robot.frontGuide2.getPosition());
+        curOpMode.telemetry.addData("Dropper Position", robot.frontSpinRotate.getPosition());
+        curOpMode.telemetry.addData("Spinner Speed", robot.frontSpin.getPower());
+        curOpMode.telemetry.addData("Lift is moving", liftIsMoving);
 
     }
 }
