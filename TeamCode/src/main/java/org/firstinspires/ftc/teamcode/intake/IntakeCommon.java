@@ -33,6 +33,16 @@ public class IntakeCommon {
         state = intakeState.start;
 
 //        autoIntake(state);
+
+        runtime.reset();
+
+        robot.frontSpin.setPower(0);
+
+        robot.frontSpinRotate.setPosition(.4);
+
+        curOpMode.sleep(300);
+
+        robot.frontLift.setPosition(.5);
     }
 
     public void executeTeleop(){
@@ -70,9 +80,9 @@ public class IntakeCommon {
 
                 robot.frontSpin.setPower(0);
 
-                robot.frontSpinRotate.setPosition(.5);
+                robot.frontSpinRotate.setPosition(.4);
 
-                if (runtime.seconds() < .2){
+                if (runtime.seconds() < .4){
                     robot.frontLift.setPosition(.5);
                 }
 
@@ -84,7 +94,7 @@ public class IntakeCommon {
 
                 robot.frontLift.setPosition(0);
 
-                robot.frontSpinRotate.setPosition(1);
+                robot.frontSpinRotate.setPosition(.95);
 
                 robot.frontSpin.setPower(1);
 
@@ -97,7 +107,7 @@ public class IntakeCommon {
                 }
 
                 robot.frontSpin.setPower(0);
-                robot.frontSpinRotate.setPosition(.5);
+                robot.frontSpinRotate.setPosition(.4);
 
                 if (runtime.seconds() < 1 && runtime.seconds() > .2) {
                     robot.frontLift.setPosition(1);
@@ -111,7 +121,7 @@ public class IntakeCommon {
                 firstLift = false;
                 break;
             case onlyLift:
-                robot.frontSpinRotate.setPosition(.5);
+                robot.frontSpinRotate.setPosition(.4);
                 break;
         }
 

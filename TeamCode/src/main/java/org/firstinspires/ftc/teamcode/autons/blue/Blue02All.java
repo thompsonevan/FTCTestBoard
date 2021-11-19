@@ -73,7 +73,7 @@ public class Blue02All extends LinearOpMode {
 
     AutoCommon auto=null;
 
-    Boolean blue=true;
+    boolean red=false;
 
     double driveSpeed = .5;
     double strafeSpeed = .5;
@@ -82,7 +82,7 @@ public class Blue02All extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        auto = new AutoCommon(this);
+        auto = new AutoCommon(this, red);
 
         auto.resetEncoders();
 
@@ -90,11 +90,11 @@ public class Blue02All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = 2; //auto.getPos(true);
+        int pos = auto.getPos(!red);
 
         auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderDrive(driveSpeed,-900,10, false);
+        auto.encoderDrive(driveSpeed,-750,10, false);
 
         auto.encoderStrafe(strafeSpeed,10, 100,true,false,false);
 
@@ -104,15 +104,17 @@ public class Blue02All extends LinearOpMode {
 
         auto.conveyor.pushConveyor(conveyorSpeed, 30);
 
+        auto.encoderStrafe(strafeSpeed,10,encoderPos+100,true,false,false);
+
         auto.conveyor.liftConveyor(3, .8, 30);
 
-        auto.encoderStrafe(strafeSpeed,10,encoderPos+60,true,false,false);
+        auto.encoderDrive(driveSpeed, 2450, 10,false);
 
-        auto.encoderDrive(driveSpeed, -1100, 10,false);
+        auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
 
-        auto.encoderStrafe(strafeSpeed,10,300,false,false,false);
+        auto.encoderTurn(.5, 300, 30);
 
-        auto.encoderTurn(.5, 200, 30);
+
 
     }
 }

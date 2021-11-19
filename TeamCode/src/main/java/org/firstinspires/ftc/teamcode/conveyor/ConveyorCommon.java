@@ -31,8 +31,11 @@ public class ConveyorCommon {
     public ConveyorCommon(LinearOpMode owningOpMode, GlobalAll gaP){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        moveConveyor(robot.armMotor, 0, .8, 30);
+        moveConveyor(robot.conveyorMotor, 0, .8, 30);
+
         moveConveyor(robot.conveyorMotor, 0, .8, 10);
 //        moveConveyor(robot.armMotor, 0, .8, 10);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -72,8 +75,10 @@ public class ConveyorCommon {
     }
 
     public void printData(){
-        curOpMode.telemetry.addData("Distance 1", read1);
-        curOpMode.telemetry.addData("Distance 2", read2);
+        curOpMode.telemetry.addData("Distance 1", robot.ds1.getDistance(DistanceUnit.INCH));
+        curOpMode.telemetry.addData("Distance 2", robot.ds2.getDistance(DistanceUnit.INCH));
+        curOpMode.telemetry.addData("Final Distance 1", read1);
+        curOpMode.telemetry.addData("Final Distance 2", read2);
         curOpMode.telemetry.addData("Position", spawnpoint());
         curOpMode.telemetry.addData("Arm Position", robot.armMotor.getCurrentPosition());
         curOpMode.telemetry.addData("Conveyor Position", robot.conveyorMotor.getCurrentPosition());

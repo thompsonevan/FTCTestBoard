@@ -73,7 +73,7 @@ public class Red02All extends LinearOpMode {
 
     AutoCommon auto=null;
 
-    Boolean blue=false;
+    boolean red = true;
 
     double driveSpeed = .5;
     double strafeSpeed = .5;
@@ -82,7 +82,7 @@ public class Red02All extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        auto = new AutoCommon(this);
+        auto = new AutoCommon(this, red);
 
         auto.resetEncoders();
 
@@ -90,7 +90,7 @@ public class Red02All extends LinearOpMode {
 
         waitForStart();
 
-        int pos = 2; // auto.getPos(false);
+        int pos = auto.getPos(!red);
 
         auto.conveyor.liftConveyor(pos, .8, 4);
 

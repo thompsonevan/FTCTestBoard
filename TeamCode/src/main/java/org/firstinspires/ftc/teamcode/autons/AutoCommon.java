@@ -29,7 +29,7 @@ public class AutoCommon {
 
     private LinearOpMode curOpMode = null;
 
-    public AutoCommon(LinearOpMode owningOpMode) {
+    public AutoCommon(LinearOpMode owningOpMode, boolean red) {
 
 
         curOpMode = owningOpMode;
@@ -37,7 +37,7 @@ public class AutoCommon {
         chassis = new DrivetrainCommon(curOpMode);
         robot = new AutoHardware();
         conveyor = new ConveyorCommon(curOpMode);
-        spinner = new SpinnerCommon(curOpMode);
+        spinner = new SpinnerCommon(curOpMode, red);
         intake = new IntakeCommon(curOpMode);
 
 
@@ -647,7 +647,7 @@ public class AutoCommon {
         chassis.robot.driveRR.setPower(0);
 
 
-        // Turn off RUN_TO_POSITION
+        // Turn off RUN_TO_POSITIONssss
         chassis.robot.driveLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         chassis.robot.driveRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         chassis.robot.driveLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -657,17 +657,19 @@ public class AutoCommon {
         return blockLoc;
     }
 
-    public void moveSpinner(double speed, double timeoutS, boolean red){
+    public void moveSpinner(double speed, double timeoutS){
+        boolean red = spinner.red;
         if (curOpMode.opModeIsActive()){
             runtime.reset();
             while (curOpMode.opModeIsActive() && runtime.seconds() < timeoutS){
                 if(red){
-                    spinner.robot.spinnerMotor.setPower(speed);
+                    spinner.robot.spinnerMotorRed.setPower(speed);
                 } else {
-                    spinner.robot.spinnerMotor.setPower(-speed);
+                    spinner.robot.spinnerMotorBlue.setPower(speed);
                 }
             }
-            spinner.robot.spinnerMotor.setPower(0);
+            spinner.robot.spinnerMotorRed.setPower(0);
+            spinner.robot.spinnerMotorBlue.setPower(0);
         }
     }
 
@@ -686,17 +688,15 @@ public class AutoCommon {
     public int getPos(boolean blue){
         int collector = conveyor.spawnpoint();
 
-        if(collector == 3){
-            if (blue){
+        if (blue){
+            if(collector == 1){
+                return 2;
+            } else if (collector == 2){
+                return 3;
+            } else if (collector == 3){
                 return 1;
             } else {
                 return 3;
-            }
-        } else if (collector == 1){
-            if (blue){
-                return 3;
-            } else{
-                return 1;
             }
         } else {
             return collector;

@@ -15,9 +15,14 @@ public class SpinnerCommon {
 
     boolean fisrtPass=true;
 
-    public SpinnerCommon(LinearOpMode owningOpMode){
+    public boolean red;
+
+    public SpinnerCommon(LinearOpMode owningOpMode, boolean isRed){
+        red = isRed;
+
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
+
     }
 
     public void executeTeleop(){
@@ -39,18 +44,31 @@ public class SpinnerCommon {
 
             }
 
-            robot.spinnerMotor.setPower(speed);
+            if(red){
+                robot.spinnerMotorRed.setPower(speed);
+            } else {
+                robot.spinnerMotorBlue.setPower(speed);
+            }
         }
         else
         {
             if(curOpMode.gamepad1.left_trigger > .05){
-                robot.spinnerMotor.setPower(-curOpMode.gamepad1.left_trigger);
+                if(red){
+                    robot.spinnerMotorRed.setPower(-curOpMode.gamepad1.left_trigger);
+                } else {
+                    robot.spinnerMotorBlue.setPower(-curOpMode.gamepad1.left_trigger);
+                }
             } else if (curOpMode.gamepad1.right_trigger > .05) {
-                robot.spinnerMotor.setPower(curOpMode.gamepad1.right_trigger);
+                if(red){
+                    robot.spinnerMotorRed.setPower(curOpMode.gamepad1.left_trigger);
+                } else {
+                    robot.spinnerMotorBlue.setPower(curOpMode.gamepad1.left_trigger);
+                }
             }
             else
             {
-                robot.spinnerMotor.setPower(0);
+                robot.spinnerMotorRed.setPower(0);
+                robot.spinnerMotorBlue.setPower(0);
             }
         }
 

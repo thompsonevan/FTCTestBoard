@@ -12,10 +12,9 @@ public class SpinnerTeleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        SpinnerCommon spinner = new SpinnerCommon(this);
+        SpinnerCommon spinner = new SpinnerCommon(this, true);
 
         waitForStart();
-
 
         while (opModeIsActive()) {
 

@@ -1,8 +1,6 @@
 
 package org.firstinspires.ftc.teamcode.drivetrain;
 
-import android.provider.Settings;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import java.util.Locale;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -12,10 +10,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.teamcode.GlobalAll;
 import org.firstinspires.ftc.teamcode.PIDController;
-import org.firstinspires.ftc.teamcode.TeleopAll;
-import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
-import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
-import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
 public class DrivetrainCommon {
 

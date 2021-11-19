@@ -71,7 +71,7 @@ public class Red01StorageEnd extends LinearOpMode {
 
     AutoCommon auto=null;
 
-    Boolean blue=false;
+    boolean red = true;
 
     double driveSpeed = .5;
     double strafeSpeed = .5;
@@ -80,7 +80,7 @@ public class Red01StorageEnd extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        auto = new AutoCommon(this);
+        auto = new AutoCommon(this, red);
 
         auto.resetEncoders();
 
@@ -94,7 +94,7 @@ public class Red01StorageEnd extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,685,10, false);
 
-        auto.moveSpinner(spinnerSpeed, 2, true);
+        auto.moveSpinner(spinnerSpeed, 2);
 
         auto.encoderDrive(driveSpeed,-1900,10, false);
 
