@@ -102,13 +102,20 @@ public class Red02All extends LinearOpMode {
 
         auto.conveyor.pushConveyor(conveyorSpeed, 10);
 
-        auto.conveyor.liftConveyor(3, .8, 4);
-
         auto.encoderStrafe(strafeSpeed,10,encoderPos+60,true,false,false);
+
+        auto.conveyor.liftConveyor(3, .8, 4);
 
         auto.encoderDrive(driveSpeed,-2200,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10,1200,false,false,false);
+        auto.encoderStrafe(strafeSpeed,10,1300,false,false,false);
+        
+        auto.encoderTurn(.5, 700, 30);
+
+        auto.encoderStrafe(strafeSpeed,10,1300,true,false,false);
+
+//        auto.encoderDrive(driveSpeed,200,10, false);
+
 
     }
 }

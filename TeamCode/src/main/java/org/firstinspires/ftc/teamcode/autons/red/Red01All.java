@@ -98,7 +98,7 @@ public class Red01All extends LinearOpMode {
 
         auto.moveSpinner(spinnerSpeed, 2);
 
-        auto.encoderDrive(driveSpeed,-2000,10, false);
+        auto.encoderDrive(driveSpeed,-1900,10, false);
 
         int encoderPos = auto.getDistFromHub(pos);
 
@@ -106,10 +106,10 @@ public class Red01All extends LinearOpMode {
 
         auto.conveyor.pushConveyor(conveyorSpeed, 30);
 
-        auto.conveyor.liftConveyor(3, .8, 30);
-
         auto.encoderStrafe(strafeSpeed,10,encoderPos + 60,true,false,false);
 
-        auto.encoderDrive(driveSpeed, -2500, 10,false);
+        auto.conveyor.liftConveyor(3, .8, 30);
+
+        auto.encoderDrive(driveSpeed, -2300, 10,false);
     }
 }

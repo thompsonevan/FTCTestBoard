@@ -688,20 +688,26 @@ public class AutoCommon {
     public int getPos(boolean blue){
         int collector = conveyor.spawnpoint();
 
+        int returnVal;
+
         if (blue){
             if(collector == 1){
-                return 2;
+                returnVal = 2;
             } else if (collector == 2){
-                return 3;
+                returnVal = 3;
             } else if (collector == 3){
-                return 1;
+                returnVal = 1;
             } else {
-                return 3;
+                returnVal = 3;
             }
         } else {
-            return collector;
+            returnVal = collector;
         }
 
+        curOpMode.telemetry.addData("Position", returnVal);
+        curOpMode.telemetry.update();
+
+        return returnVal;
     }
 
     public void checkDistances(){

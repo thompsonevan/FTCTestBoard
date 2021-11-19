@@ -53,6 +53,8 @@ public class IntakeCommon {
                 state = intakeState.intake;
             } else if (curOpMode.gamepad2.x){
                 state = intakeState.lift;
+            } else if (curOpMode.gamepad2.y){
+                state = intakeState.onlyLift;
             }
 
 //            autoIntake(state);
@@ -109,10 +111,10 @@ public class IntakeCommon {
                 robot.frontSpin.setPower(0);
                 robot.frontSpinRotate.setPosition(.4);
 
-                if (runtime.seconds() < 1 && runtime.seconds() > .2) {
+                if (runtime.seconds() < 2 && runtime.seconds() > .3) {
                     robot.frontLift.setPosition(1);
                     liftIsMoving = true;
-                } else if (runtime.seconds() > 1 && runtime.seconds() < 1.5){
+                } else if (runtime.seconds() > 2 && runtime.seconds() < 2.5){
                     robot.frontLift.setPosition(.5);
                 } else {
                     liftIsMoving = false;
@@ -121,6 +123,9 @@ public class IntakeCommon {
                 firstLift = false;
                 break;
             case onlyLift:
+                firstLift = true;
+                firstStart = true;
+
                 robot.frontSpinRotate.setPosition(.4);
                 break;
         }

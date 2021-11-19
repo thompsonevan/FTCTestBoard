@@ -27,8 +27,8 @@ public class SpinnerHardware {
         spinnerMotorRed  = hwMap.get(DcMotor.class, "spinner_motor_red");
         spinnerMotorBlue  = hwMap.get(DcMotor.class, "spinner_motor_blue");
 
-        spinnerMotorRed.setDirection(DcMotor.Direction.FORWARD);
-        spinnerMotorBlue.setDirection(DcMotor.Direction.FORWARD);
+        spinnerMotorRed.setDirection(DcMotor.Direction.REVERSE);
+        spinnerMotorBlue.setDirection(DcMotor.Direction.REVERSE);
 
         spinnerMotorRed.setPower(0);
         spinnerMotorBlue.setPower(0);
