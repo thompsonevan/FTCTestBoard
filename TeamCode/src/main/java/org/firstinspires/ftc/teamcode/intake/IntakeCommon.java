@@ -117,6 +117,7 @@ public class IntakeCommon {
                 } else if (runtime.seconds() > 2 && runtime.seconds() < 2.5){
                     robot.frontLift.setPosition(.5);
                 } else {
+                    robot.frontLift.setPosition(.5);
                     liftIsMoving = false;
                 }
 

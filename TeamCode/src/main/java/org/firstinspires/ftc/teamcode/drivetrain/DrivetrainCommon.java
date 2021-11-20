@@ -115,6 +115,8 @@ public class DrivetrainCommon {
         curOpMode.telemetry.update();
     }
 
+    public double scaleVal = .75;
+
     public void executeTeleop() {
 
 
@@ -123,8 +125,8 @@ public class DrivetrainCommon {
 //        }
 
 
-        yVal = -curOpMode.gamepad1.left_stick_y * .5;
-        xVal = curOpMode.gamepad1.left_stick_x * .5;
+        yVal = -curOpMode.gamepad1.left_stick_y * scaleVal;
+        xVal = curOpMode.gamepad1.left_stick_x * scaleVal;
 
 
         if (Math.abs(yVal) < .7) {
@@ -179,7 +181,7 @@ public class DrivetrainCommon {
             if (Math.abs(yVal) == 0) {
                 while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
 
-                    turnVal = curOpMode.gamepad1.right_stick_x * .5;
+                    turnVal = curOpMode.gamepad1.right_stick_x * scaleVal;
 
                     if (Math.abs(turnVal) < .7) {
                         turnVal = (turnVal * .71);
@@ -211,7 +213,7 @@ public class DrivetrainCommon {
             } else {
 
 
-                turnVal = curOpMode.gamepad1.right_stick_x * .5;
+                turnVal = curOpMode.gamepad1.right_stick_x * scaleVal;
 
                 if (Math.abs(turnVal) < .7) {
                     turnVal = (turnVal * .71);
