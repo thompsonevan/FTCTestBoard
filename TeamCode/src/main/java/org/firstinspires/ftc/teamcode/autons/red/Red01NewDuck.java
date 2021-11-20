@@ -75,7 +75,7 @@ public class Red01NewDuck extends LinearOpMode {
     double driveSpeed = .5;
     double strafeSpeed = .5;
     double conveyorSpeed = .8;
-    double spinnerSpeed = .2;
+    double spinnerSpeed = .1;
 
     @Override
     public void runOpMode() {

@@ -75,7 +75,7 @@ public class Red01Avoid extends LinearOpMode {
     double driveSpeed = .5;
     double strafeSpeed = .5;
     double conveyorSpeed = .8;
-    double spinnerSpeed = .3;
+    double spinnerSpeed = .1;
 
     @Override
     public void runOpMode() {
@@ -91,24 +91,30 @@ public class Red01Avoid extends LinearOpMode {
 
         auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderDrive(driveSpeed,700,10, false);
+        auto.encoderStrafe(strafeSpeed, 30, 250, false, false, false);
+
+        auto.encoderDrive(driveSpeed,800,10, false);
 
         auto.moveSpinner(spinnerSpeed, 2);
 
-        auto.encoderDrive(driveSpeed,-1900,10, false);
+        auto.encoderDrive(driveSpeed,-900,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10, 100,true,false,false);
+        auto.encoderStrafe(strafeSpeed, 30, 350, true, false, false);
 
         int encoderPos = auto.getDistFromHub(pos);
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
 
+        auto.encoderDrive(driveSpeed, -1000, 10,false);
+
         auto.conveyor.pushConveyor(conveyorSpeed, 30);
+
+        auto.encoderDrive(driveSpeed, -1000, 10,false);
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos + 60,true,false,false);
 
         auto.conveyor.liftConveyor(3, .8, 30);
 
-        auto.encoderDrive(driveSpeed, -2300, 10,false);
+        auto.encoderDrive(driveSpeed, -1400, 10,false);
     }
 }

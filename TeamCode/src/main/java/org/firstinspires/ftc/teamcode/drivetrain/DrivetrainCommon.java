@@ -115,8 +115,6 @@ public class DrivetrainCommon {
         curOpMode.telemetry.update();
     }
 
-    public double scaleVal = .75;
-
     public void executeTeleop() {
 
 
@@ -125,8 +123,8 @@ public class DrivetrainCommon {
 //        }
 
 
-        yVal = -curOpMode.gamepad1.left_stick_y * scaleVal;
-        xVal = curOpMode.gamepad1.left_stick_x * scaleVal;
+        yVal = -curOpMode.gamepad1.left_stick_y * .5;
+        xVal = curOpMode.gamepad1.left_stick_x * .5;
 
 
         if (Math.abs(yVal) < .7) {
@@ -178,10 +176,10 @@ public class DrivetrainCommon {
         double rightTurnCorrection = 0;
 
         if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
-            if (Math.abs(yVal) == 0) {
-                while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
-
-                    turnVal = curOpMode.gamepad1.right_stick_x * scaleVal;
+            if (Math.abs(yVal) == 0 && Math.abs(xVal)==0) {
+                //while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
+                if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
+                    turnVal = curOpMode.gamepad1.right_stick_x * .5;
 
                     if (Math.abs(turnVal) < .7) {
                         turnVal = (turnVal * .71);
@@ -204,16 +202,18 @@ public class DrivetrainCommon {
                     robot.driveLF.setPower(powerLeftFront);
                     robot.driveRF.setPower(powerRightFront);
                 }
+                else if (Math.abs(curOpMode.gamepad1.right_stick_x)==0){
 
-                robot.driveRR.setPower(0);
-                robot.driveLR.setPower(0);
-                robot.driveLF.setPower(0);
-                robot.driveRF.setPower(0);
+                    robot.driveRR.setPower(0);
+                    robot.driveLR.setPower(0);
+                    robot.driveLF.setPower(0);
+                    robot.driveRF.setPower(0);
+                }
 
-            } else {
+            } else  {
 
 
-                turnVal = curOpMode.gamepad1.right_stick_x * scaleVal;
+                turnVal = curOpMode.gamepad1.right_stick_x * .5;
 
                 if (Math.abs(turnVal) < .7) {
                     turnVal = (turnVal * .71);
@@ -262,7 +262,7 @@ public class DrivetrainCommon {
         }
 
         //Slide Left/Right
-        else if (Math.abs(xVal) > 0) {
+        else if (Math.abs(xVal) > 0 && Math.abs(curOpMode.gamepad1.right_stick_x)==0) {
 
             correction = 0;//pidDrive.performPID(getAngle());//*Math.max(Math.abs(yVal),Math.abs(xVal));
 
@@ -275,7 +275,52 @@ public class DrivetrainCommon {
             powerLeftRear = -xVal - correction;
 
 
-        } else {
+        }
+        else if (Math.abs(xVal) > 0 && Math.abs(curOpMode.gamepad1.right_stick_x)>0) {
+
+            correction = curOpMode.gamepad1.right_stick_x;
+
+            if(xVal<0 && curOpMode.gamepad1.right_stick_x>0) {
+                //Front Motors
+                powerLeftFront = xVal + correction;
+                powerRightFront = -xVal - correction;
+
+                //Rear Motors
+                powerRightRear = xVal;
+                powerLeftRear = -xVal;
+            }
+            else if(xVal<0 && curOpMode.gamepad1.right_stick_x<0)
+            {
+                //Front Motors
+                powerLeftFront = xVal;
+                powerRightFront = -xVal;
+
+                //Rear Motors
+                powerRightRear = xVal - correction;
+                powerLeftRear = -xVal + correction;
+            }
+            else if(xVal>0 && curOpMode.gamepad1.right_stick_x>0)
+            {
+                //Front Motors
+                powerLeftFront = xVal;
+                powerRightFront = -xVal;
+
+                //Rear Motors
+                powerRightRear = xVal - correction;
+                powerLeftRear = -xVal + correction;
+            }
+            else if(xVal>0 && curOpMode.gamepad1.right_stick_x<0)
+            {
+                //Front Motors
+                powerLeftFront = xVal + correction;
+                powerRightFront = -xVal - correction;
+
+                //Rear Motors
+                powerRightRear = xVal;
+                powerLeftRear = -xVal;
+            }
+        }
+        else if(Math.abs(curOpMode.gamepad1.right_stick_x)==0) {
             powerRightRear = 0;
             powerLeftRear = 0;
             powerLeftFront = 0;
