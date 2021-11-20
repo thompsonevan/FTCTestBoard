@@ -27,14 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autons.red;
+package org.firstinspires.ftc.teamcode.autons.blue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autons.AutoCommon;
+
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -63,20 +63,20 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RED 01 (Storage End)", group="OnBot")
+@Autonomous(name="Blue 01 (New Duck)", group="OnBot")
 
 //@Disabled
-public class Red01StorageEnd extends LinearOpMode {
+public class Blue01NewDuck extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
 
-    boolean red = true;
+    boolean red=false;
 
     double driveSpeed = .5;
     double strafeSpeed = .5;
     double conveyorSpeed = .8;
-    double spinnerSpeed = .3;
+    double spinnerSpeed = .2;
 
     @Override
     public void runOpMode() {
@@ -88,15 +88,21 @@ public class Red01StorageEnd extends LinearOpMode {
 
         waitForStart();
 
-        int pos = auto.getPos(false);
+        int pos = auto.getPos(!red);
 
         auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderDrive(driveSpeed,685,10, false);
+        auto.encoderStrafe(strafeSpeed,10, 250,false,false,false);
+
+        auto.encoderDrive(driveSpeed,-650,10, false);
 
         auto.moveSpinner(spinnerSpeed, 2);
 
-        auto.encoderDrive(driveSpeed,-1900,10, false);
+        auto.encoderDrive(driveSpeed,750,10, false);
+
+        auto.encoderStrafe(strafeSpeed,10, 350,true,false,false);
+
+        auto.encoderDrive(driveSpeed,1150,10, false);
 
         auto.encoderStrafe(strafeSpeed,10, 100,true,false,false);
 
@@ -104,14 +110,12 @@ public class Red01StorageEnd extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
 
-        auto.conveyor.pushConveyor(conveyorSpeed, 10);
+        auto.conveyor.pushConveyor(conveyorSpeed, 30);
 
-        auto.conveyor.liftConveyor(3, .8, 4);
+        auto.encoderStrafe(strafeSpeed,10,encoderPos+100,true,false,false);
 
-        auto.encoderDrive(driveSpeed, 2500, 30, false);
+        auto.conveyor.liftConveyor(3, .8, 30);
 
-        auto.encoderStrafe(strafeSpeed, 30, 300, false, false, false);
-
-
+        auto.encoderDrive(driveSpeed, 2450, 10,false);
     }
 }

@@ -96,6 +96,8 @@ public class Red02All extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,900,10, false);
 
+        auto.encoderStrafe(strafeSpeed,10, 100,true,false,false);
+
         int encoderPos = auto.getDistFromHub(pos);
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
