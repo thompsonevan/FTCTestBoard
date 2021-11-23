@@ -63,7 +63,7 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Blue 01 (New Duck)", group="OnBot")
+@Autonomous(name="_Blue 01 (New Duck)", group="OnBot")
 
 //@Disabled
 public class Blue01NewDuck extends LinearOpMode {
@@ -94,17 +94,19 @@ public class Blue01NewDuck extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed,10, 250,false,false,false);
 
-        auto.encoderDrive(driveSpeed,-650,10, false);
+        auto.encoderDrive(driveSpeed,-500,10, false);
 
         auto.moveSpinner(spinnerSpeed, 2);
 
-        auto.encoderDrive(driveSpeed,750,10, false);
+        auto.encoderDrive(driveSpeed,800,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10, 350,true,false,false);
+        auto.encoderStrafe(strafeSpeed,4, 350,true,false,false);
 
-        auto.encoderDrive(driveSpeed,1150,10, false);
+        sleep(5000);
 
-        auto.encoderStrafe(strafeSpeed,10, 100,true,false,false);
+        auto.encoderDrive(driveSpeed,1200,10, false);
+
+        auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
 
         int encoderPos = auto.getDistFromHub(pos);
 
@@ -116,6 +118,6 @@ public class Blue01NewDuck extends LinearOpMode {
 
         auto.conveyor.liftConveyor(3, .8, 30);
 
-        auto.encoderDrive(driveSpeed, 2450, 10,false);
+        auto.encoderDrive(driveSpeed, 2500, 10,false);
     }
 }

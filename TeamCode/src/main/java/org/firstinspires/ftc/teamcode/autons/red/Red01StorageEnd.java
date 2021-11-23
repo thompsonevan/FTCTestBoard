@@ -98,7 +98,7 @@ public class Red01StorageEnd extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,-1900,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10, 100,true,false,false);
+        auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
 
         int encoderPos = auto.getDistFromHub(pos);
 

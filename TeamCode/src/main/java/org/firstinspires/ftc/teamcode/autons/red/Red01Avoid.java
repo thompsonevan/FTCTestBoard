@@ -99,7 +99,7 @@ public class Red01Avoid extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,-900,10, false);
 
-        auto.encoderStrafe(strafeSpeed, 30, 350, true, false, false);
+        auto.encoderStrafe(strafeSpeed, 4, 350, true, false, false);
 
         int encoderPos = auto.getDistFromHub(pos);
 

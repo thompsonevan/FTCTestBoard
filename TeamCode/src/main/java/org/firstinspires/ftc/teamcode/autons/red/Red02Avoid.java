@@ -30,13 +30,11 @@
 package org.firstinspires.ftc.teamcode.autons.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.autons.AutoCommon;
+
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -65,20 +63,20 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RED 01 (All Actions)", group="OnBot")
+@Autonomous(name="RED 02 (Avoid)", group="OnBot")
 
 //@Disabled
-public class Red01All extends LinearOpMode {
+public class Red02Avoid extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
 
-    boolean red=true;
+    boolean red = true;
 
     double driveSpeed = .5;
     double strafeSpeed = .5;
     double conveyorSpeed = .8;
-    double spinnerSpeed = .3;
+    double spinnerSpeed = .1;
 
     @Override
     public void runOpMode() {
@@ -94,11 +92,7 @@ public class Red01All extends LinearOpMode {
 
         auto.conveyor.liftConveyor(pos, .8, 4);
 
-        auto.encoderDrive(driveSpeed,700,10, false);
-
-        auto.moveSpinner(spinnerSpeed, 2);
-
-        auto.encoderDrive(driveSpeed,-1900,10, false);
+        auto.encoderDrive(driveSpeed,900,10, false);
 
         auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
 
@@ -106,12 +100,32 @@ public class Red01All extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
 
-        auto.conveyor.pushConveyor(conveyorSpeed, 30);
+        auto.conveyor.pushConveyor(conveyorSpeed, 10);
 
-        auto.encoderStrafe(strafeSpeed,10,encoderPos + 60,true,false,false);
+        auto.encoderStrafe(strafeSpeed,10,encoderPos+60,true,false,false);
 
-        auto.conveyor.liftConveyor(3, .8, 30);
+        auto.conveyor.liftConveyor(3, .8, 4);
 
-        auto.encoderDrive(driveSpeed, -2300, 10,false);
+        sleep(7000);
+
+        auto.encoderDrive(driveSpeed, 1150, 10, false);
+
+        auto.encoderStrafe(strafeSpeed,1,100,true,false,false);
+
+        auto.encoderStrafe(strafeSpeed,10,250,false,false,false);
+
+        auto.encoderDrive(driveSpeed,900,10, false);
+
+        auto.moveSpinner(spinnerSpeed, 2);
+
+        auto.encoderDrive(driveSpeed,-1000,10, false);
+
+        auto.encoderStrafe(strafeSpeed,4,450,true,false,false);
+
+        auto.encoderDrive(driveSpeed,-3500,10, false);
+
+//        auto.encoderDrive(driveSpeed,200,10, false);
+
+
     }
 }

@@ -100,7 +100,7 @@ public class Blue01Avoid extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,750,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10, 350,true,false,false);
+        auto.encoderStrafe(strafeSpeed,4, 350,true,false,false);
 
         int encoderPos = auto.getDistFromHub(pos);
 
