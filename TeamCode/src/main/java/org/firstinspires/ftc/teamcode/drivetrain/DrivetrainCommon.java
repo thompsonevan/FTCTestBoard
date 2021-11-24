@@ -51,6 +51,8 @@ public class DrivetrainCommon {
     double max = 1;
     double turnMax = 1;
 
+    double speed = .75;
+
     GlobalAll ga;
 
     public DrivetrainCommon(LinearOpMode owningOpMode, GlobalAll gaP) {
@@ -122,10 +124,17 @@ public class DrivetrainCommon {
 //            ReturnToZero();
 //        }
 
+        if (Math.abs(curOpMode.gamepad1.left_stick_x) < .95){
+            xVal = curOpMode.gamepad1.left_stick_x * speed;
+        } else if (Math.abs(curOpMode.gamepad1.left_stick_x) > .95){
+            xVal = Math.signum(curOpMode.gamepad1.left_stick_x) * 1;
+        }
 
-        yVal = -curOpMode.gamepad1.left_stick_y * .5;
-        xVal = curOpMode.gamepad1.left_stick_x * .5;
-
+        if (Math.abs(curOpMode.gamepad1.left_stick_y) < .95){
+            yVal = -curOpMode.gamepad1.left_stick_y * speed;
+        } else if (Math.abs(curOpMode.gamepad1.left_stick_y) > .95){
+            yVal = -Math.signum(curOpMode.gamepad1.left_stick_y) * 1;
+        }
 
         if (Math.abs(yVal) < .7) {
             yVal = (yVal * .71);
@@ -179,7 +188,11 @@ public class DrivetrainCommon {
             if (Math.abs(yVal) == 0 && Math.abs(xVal)==0) {
                 //while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
                 if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
-                    turnVal = curOpMode.gamepad1.right_stick_x * .5;
+                    if(Math.abs(curOpMode.gamepad1.right_stick_x) < .95){
+                        turnVal = curOpMode.gamepad1.right_stick_x * speed;
+                    } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > .95){
+                        turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * 1;
+                    }
 
                     if (Math.abs(turnVal) < .7) {
                         turnVal = (turnVal * .71);
@@ -212,8 +225,11 @@ public class DrivetrainCommon {
 
             } else  {
 
-
-                turnVal = curOpMode.gamepad1.right_stick_x * .5;
+                if(Math.abs(curOpMode.gamepad1.right_stick_x) < .95){
+                    turnVal = curOpMode.gamepad1.right_stick_x * speed;
+                } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > .95){
+                    turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * 1;
+                }
 
                 if (Math.abs(turnVal) < .7) {
                     turnVal = (turnVal * .71);
@@ -232,7 +248,8 @@ public class DrivetrainCommon {
                     leftTurnCorrection = turnVal;
                 }
             }
-
+//yo this some code woop woop
+            //this code kinda legitly lit
             rotation = getAngle();        // reset angle tracking on new heading.
             resetAngle();
         }

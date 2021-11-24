@@ -97,7 +97,7 @@ public class ConveyorCommon {
     }
 
     public void pushConveyor(double speed, double timeout){
-        moveConveyor(robot.conveyorMotor, 2300, speed, timeout);
+        moveConveyor(robot.conveyorMotor, 2500, speed, timeout);
         moveConveyor(robot.conveyorMotor, 0, speed, timeout);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
