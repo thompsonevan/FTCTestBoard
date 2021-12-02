@@ -99,7 +99,7 @@ public class Red01NewDuck extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,-900,10, false);
 
-        auto.encoderStrafe(strafeSpeed, 4, 350, true, false, false);
+        auto.encoderStrafe(strafeSpeed, 3, 350, true, false, false);
 
         auto.encoderDrive(driveSpeed,-1150,10, false);
 

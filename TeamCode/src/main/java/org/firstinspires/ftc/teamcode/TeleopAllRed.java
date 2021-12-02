@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
 import org.firstinspires.ftc.teamcode.drivetrain.DrivetrainCommon;
+import org.firstinspires.ftc.teamcode.gripper.GripperCommon;
 import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
 import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
@@ -23,6 +24,7 @@ public class TeleopAllRed extends LinearOpMode {
             global.drivetrain = new DrivetrainCommon(this, global);
             global.intake = new IntakeCommon(this);
             global.conveyor = new ConveyorCommon(this, global);
+            global.gripper = new GripperCommon(this);
 
             waitForStart();
 
@@ -33,6 +35,7 @@ public class TeleopAllRed extends LinearOpMode {
                 global.drivetrain.executeTeleop();
                 global.conveyor.executeTeleop();
                 global.intake.executeTeleop();
+                global.gripper.executeTeleop();
 
                 telemetry.update();
             }

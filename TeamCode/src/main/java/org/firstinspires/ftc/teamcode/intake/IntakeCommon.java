@@ -96,7 +96,7 @@ public class IntakeCommon {
 
                 robot.frontLift.setPosition(0);
 
-                robot.frontSpinRotate.setPosition(.95);
+                robot.frontSpinRotate.setPosition(.9);
 
                 robot.frontSpin.setPower(1);
 

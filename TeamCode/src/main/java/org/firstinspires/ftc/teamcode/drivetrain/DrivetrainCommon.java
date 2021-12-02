@@ -51,7 +51,17 @@ public class DrivetrainCommon {
     double max = 1;
     double turnMax = 1;
 
+
+
+
+    // Important Stuff:
+    double maxSpeed = 1;
+    double controllerCap = .95;
     double speed = .75;
+    // Important Stuff
+
+
+
 
     GlobalAll ga;
 
@@ -124,16 +134,16 @@ public class DrivetrainCommon {
 //            ReturnToZero();
 //        }
 
-        if (Math.abs(curOpMode.gamepad1.left_stick_x) < .95){
+        if (Math.abs(curOpMode.gamepad1.left_stick_x) < controllerCap){
             xVal = curOpMode.gamepad1.left_stick_x * speed;
-        } else if (Math.abs(curOpMode.gamepad1.left_stick_x) > .95){
-            xVal = Math.signum(curOpMode.gamepad1.left_stick_x) * 1;
+        } else if (Math.abs(curOpMode.gamepad1.left_stick_x) > controllerCap){
+            xVal = Math.signum(curOpMode.gamepad1.left_stick_x) * maxSpeed;
         }
 
-        if (Math.abs(curOpMode.gamepad1.left_stick_y) < .95){
+        if (Math.abs(curOpMode.gamepad1.left_stick_y) < controllerCap){
             yVal = -curOpMode.gamepad1.left_stick_y * speed;
-        } else if (Math.abs(curOpMode.gamepad1.left_stick_y) > .95){
-            yVal = -Math.signum(curOpMode.gamepad1.left_stick_y) * 1;
+        } else if (Math.abs(curOpMode.gamepad1.left_stick_y) > controllerCap){
+            yVal = -Math.signum(curOpMode.gamepad1.left_stick_y) * maxSpeed;
         }
 
         if (Math.abs(yVal) < .7) {
@@ -188,10 +198,10 @@ public class DrivetrainCommon {
             if (Math.abs(yVal) == 0 && Math.abs(xVal)==0) {
                 //while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
                 if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
-                    if(Math.abs(curOpMode.gamepad1.right_stick_x) < .95){
+                    if(Math.abs(curOpMode.gamepad1.right_stick_x) < controllerCap){
                         turnVal = curOpMode.gamepad1.right_stick_x * speed;
-                    } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > .95){
-                        turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * 1;
+                    } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > controllerCap){
+                        turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * maxSpeed;
                     }
 
                     if (Math.abs(turnVal) < .7) {
@@ -225,10 +235,10 @@ public class DrivetrainCommon {
 
             } else  {
 
-                if(Math.abs(curOpMode.gamepad1.right_stick_x) < .95){
+                if(Math.abs(curOpMode.gamepad1.right_stick_x) < controllerCap){
                     turnVal = curOpMode.gamepad1.right_stick_x * speed;
-                } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > .95){
-                    turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * 1;
+                } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > controllerCap){
+                    turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * maxSpeed;
                 }
 
                 if (Math.abs(turnVal) < .7) {
