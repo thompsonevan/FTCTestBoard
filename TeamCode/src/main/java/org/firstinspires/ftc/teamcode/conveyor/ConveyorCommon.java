@@ -135,6 +135,7 @@ public class ConveyorCommon {
             ga.drivetrain.executeTeleop();
             ga.spinner.executeTeleop();
             ga.intake.executeTeleop();
+            ga.gripper.executeTeleop();
         } catch(NullPointerException e) {
             String errorMessage = e.getMessage();
         }

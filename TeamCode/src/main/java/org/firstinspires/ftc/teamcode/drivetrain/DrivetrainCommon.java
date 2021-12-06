@@ -49,8 +49,8 @@ public class DrivetrainCommon {
     double min =0 ;
     double setPointAngle = 0;
 
-    double slowPower = .15;
-    double slideSlowPower = .15;
+    double slowPower = .25;
+    double slideSlowPower = .25;
 
     double max = 1;
     double turnMax = 1;
@@ -370,7 +370,7 @@ public class DrivetrainCommon {
             {
                 //Left motors
                 powerLeftRear = 0;
-                powerLeftFront =slowPower;     
+                powerLeftFront =slowPower;
 
                 //Right Motors
                 powerRightRear =slowPower;
@@ -388,13 +388,38 @@ public class DrivetrainCommon {
         }
         //Slow backward
         else if (curOpMode.gamepad1.dpad_down) {
-            //Left motors
-            powerLeftRear = -slowPower;
-            powerLeftFront = -slowPower;
 
-            //Right Motors
-            powerRightRear = -slowPower;
-            powerRightFront = -slowPower;
+            if(curOpMode.gamepad1.dpad_right)
+            {
+                //Left motors
+                powerLeftRear = -slowPower;
+                powerLeftFront = 0;
+
+                //Right Motors
+                powerRightRear = 0;
+                powerRightFront = -slowPower;
+            }
+            else if(curOpMode.gamepad1.dpad_left)
+            {
+                //Left motors
+                powerLeftRear = 0;
+                powerLeftFront =-slowPower;
+
+                //Right Motors
+                powerRightRear =-slowPower;
+                powerRightFront = 0;
+            }
+            else {
+
+
+                //Left motors
+                powerLeftRear = -slowPower;
+                powerLeftFront = -slowPower;
+
+                //Right Motors
+                powerRightRear = -slowPower;
+                powerRightFront = -slowPower;
+            }
         }
         //Slow slide left
         else if (curOpMode.gamepad1.dpad_left) {
