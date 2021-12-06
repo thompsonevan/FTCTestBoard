@@ -66,7 +66,7 @@ public class ConveyorCommon {
         } else if (curOpMode.gamepad2.dpad_left){
             liftConveyor(3, .8, 10);
         } else if (curOpMode.gamepad1.x){
-            liftConveyor(4, .8, 10);
+            liftConveyor(4, .2, 10);
         } else if (curOpMode.gamepad1.y){
             liftConveyor(5, .8, 10);
         }
@@ -98,9 +98,9 @@ public class ConveyorCommon {
         } else if (pos == 3){
             moveConveyor(robot.armMotor, 0, speed, timeout); // 1777
         } else if (pos == 4){
-            moveConveyor(robot.armMotor, 630, speed, timeout); // 630
+            moveConveyor(robot.armMotor, 600, speed, timeout); // 630
         } else if (pos == 5){
-            moveConveyor(robot.armMotor, 320, speed, timeout); // 630
+            moveConveyor(robot.armMotor, 130, speed, timeout); // 630
         }
     }
 
