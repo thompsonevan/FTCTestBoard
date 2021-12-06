@@ -2,6 +2,8 @@
 package org.firstinspires.ftc.teamcode.drivetrain;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
+
 import java.util.Locale;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -38,11 +40,13 @@ public class DrivetrainCommon {
     double yVal = 0;
     double xVal = 0;
 
+    double xVal_rs=0;
+
     double turnVal = 0;
     double diagVal = 0;
 
 
-    double min = 0;
+    double min =0 ;
     double setPointAngle = 0;
 
     double slowPower = .15;
@@ -51,13 +55,15 @@ public class DrivetrainCommon {
     double max = 1;
     double turnMax = 1;
 
-
+    Gamepad driverControl;
 
 
     // Important Stuff:
     double maxSpeed = 1;
     double controllerCap = .95;
     double speed = .75;
+
+    double powerShift = .1;
     // Important Stuff
 
 
@@ -67,6 +73,8 @@ public class DrivetrainCommon {
 
     public DrivetrainCommon(LinearOpMode owningOpMode, GlobalAll gaP) {
         curOpMode = owningOpMode;
+
+
         initHardware();
 
         ga = gaP;
@@ -130,35 +138,10 @@ public class DrivetrainCommon {
     public void executeTeleop() {
 
 
-//        if (curOpMode.gamepad1.y) {
-//            ReturnToZero();
-//        }
+        xVal=curOpMode.gamepad1.left_stick_x;
+        yVal=-curOpMode.gamepad1.left_stick_y;
 
-        if (Math.abs(curOpMode.gamepad1.left_stick_x) < controllerCap){
-            xVal = curOpMode.gamepad1.left_stick_x * speed;
-        } else if (Math.abs(curOpMode.gamepad1.left_stick_x) > controllerCap){
-            xVal = Math.signum(curOpMode.gamepad1.left_stick_x) * maxSpeed;
-        }
-
-        if (Math.abs(curOpMode.gamepad1.left_stick_y) < controllerCap){
-            yVal = -curOpMode.gamepad1.left_stick_y * speed;
-        } else if (Math.abs(curOpMode.gamepad1.left_stick_y) > controllerCap){
-            yVal = -Math.signum(curOpMode.gamepad1.left_stick_y) * maxSpeed;
-        }
-
-        if (Math.abs(yVal) < .7) {
-            yVal = (yVal * .71);
-        } else {
-            yVal = ((Math.abs(yVal) * 1.67) - .67) * Math.signum(yVal);
-            ;
-        }
-
-        if (Math.abs(xVal) < .7) {
-            xVal = (xVal * .71);
-        } else {
-            xVal = ((Math.abs(xVal) * 1.67) - .67) * Math.signum(xVal);
-            ;
-        }
+        xVal_rs=curOpMode.gamepad1.right_stick_x;
 
         correction = 0;
 
@@ -169,6 +152,7 @@ public class DrivetrainCommon {
             yDir = true;
         }
 
+        //Maintain minimum power value whenever stick is above zero
         if (Math.abs(yVal) > 0 && Math.abs(yVal) < min) {
 
             yVal = Math.signum(yVal) * min;
@@ -179,41 +163,58 @@ public class DrivetrainCommon {
             xVal = Math.signum(xVal) * min;
         }
 
+        if (Math.abs(xVal_rs) > 0 && Math.abs(xVal_rs) < min) {
 
-        if (Math.abs(yVal) > 0 && Math.abs(yVal) > max) {
-
-            yVal = Math.signum(yVal) * max;
+            xVal_rs = Math.signum(xVal_rs) * min;
         }
 
-        if (Math.abs(xVal) > 0 && Math.abs(xVal) > max) {
+        //Scale power based on exponential curve
 
-            xVal = Math.signum(xVal) * max;
+        if(Math.abs(yVal)>0) {
+            yVal = Math.signum(yVal) * (Math.pow(Math.abs(yVal), 4 )+powerShift);
         }
 
+        if(Math.abs(xVal)>0) {
+            xVal = Math.signum(xVal) * (Math.pow(Math.abs(xVal), 4));
+        }
+
+        if(Math.abs(xVal_rs)>0) {
+            xVal_rs = Math.signum(xVal_rs) * (Math.pow(Math.abs(xVal_rs), 4));
+        }
+
+
+        if(Math.abs(yVal)>1)
+        {
+            yVal=Math.signum(yVal)*1;
+        }
+
+        if(Math.abs(xVal)>1)
+        {
+            xVal=Math.signum(xVal)*1;
+        }
+
+        if(Math.abs(xVal_rs)>1)
+        {
+            xVal_rs=Math.signum(xVal_rs)*1;
+        }
+
+        //Scale resulting curve values to defined maximum
+        yVal = yVal * max;
+        xVal = xVal * max;
+        xVal_rs = xVal_rs * turnMax;
 
         double leftTurnCorrection = 0;
         double rightTurnCorrection = 0;
 
-        if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
+
+        if (Math.abs(xVal_rs) > 0) {
+
+            //This case is for a pure turn with no forward/backward or slide L/R motion
             if (Math.abs(yVal) == 0 && Math.abs(xVal)==0) {
-                //while (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
-                if (Math.abs(curOpMode.gamepad1.right_stick_x) > 0) {
-                    if(Math.abs(curOpMode.gamepad1.right_stick_x) < controllerCap){
-                        turnVal = curOpMode.gamepad1.right_stick_x * speed;
-                    } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > controllerCap){
-                        turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * maxSpeed;
-                    }
 
-                    if (Math.abs(turnVal) < .7) {
-                        turnVal = (turnVal * .71);
-                    } else {
-                        turnVal = ((Math.abs(turnVal) * 1.67) - .67) * Math.signum(turnVal);
-                    }
+                if (Math.abs(xVal_rs) > 0) {
 
-                    if (Math.abs(turnVal) > 0 && Math.abs(turnVal) > turnMax) {
-
-                        turnVal = Math.signum(turnVal) * turnMax;
-                    }
+                    turnVal = xVal_rs;
 
                     powerRightRear = -turnVal;
                     powerLeftRear = turnVal;
@@ -233,24 +234,12 @@ public class DrivetrainCommon {
                     robot.driveRF.setPower(0);
                 }
 
-            } else  {
+            }
 
-                if(Math.abs(curOpMode.gamepad1.right_stick_x) < controllerCap){
-                    turnVal = curOpMode.gamepad1.right_stick_x * speed;
-                } else if(Math.abs(curOpMode.gamepad1.right_stick_x) > controllerCap){
-                    turnVal = Math.signum(curOpMode.gamepad1.right_stick_x) * maxSpeed;
-                }
+            //Otherwise capture a turn value to cause simultaneous turning while moving forward/backward or sliding left/right
+            else  {
 
-                if (Math.abs(turnVal) < .7) {
-                    turnVal = (turnVal * .71);
-                } else {
-                    turnVal = ((Math.abs(turnVal) * 1.67) - .67) * Math.signum(turnVal);
-                }
-
-                if (Math.abs(turnVal) > 0 && Math.abs(turnVal) > turnMax) {
-
-                    turnVal = Math.signum(turnVal) * turnMax;
-                }
+                turnVal = xVal_rs;
 
                 if (turnVal > 0) {
                     rightTurnCorrection = turnVal;
@@ -258,12 +247,13 @@ public class DrivetrainCommon {
                     leftTurnCorrection = turnVal;
                 }
             }
-//yo this some code woop woop
-            //this code kinda legitly lit
+
             rotation = getAngle();        // reset angle tracking on new heading.
             resetAngle();
         }
 
+
+        //Drive forward
         if (yVal > 0 && yDir) {
 
 
@@ -276,7 +266,9 @@ public class DrivetrainCommon {
             powerRightFront = yVal - rightTurnCorrection;
 
 
-        } else if (yVal < 0 && yDir) {
+        }
+        //Drive backward
+        else if (yVal < 0 && yDir) {
             //Left motors
             powerLeftRear = yVal + rightTurnCorrection;
             powerLeftFront = yVal + rightTurnCorrection;
@@ -288,11 +280,10 @@ public class DrivetrainCommon {
 
         }
 
-        //Slide Left/Right
+        //Slide Left/Right with no correction curve
         else if (Math.abs(xVal) > 0 && Math.abs(curOpMode.gamepad1.right_stick_x)==0) {
 
             correction = 0;//pidDrive.performPID(getAngle());//*Math.max(Math.abs(yVal),Math.abs(xVal));
-
             //Front Motors
             powerLeftFront = xVal - correction;
             powerRightFront = -xVal + correction;
@@ -303,11 +294,13 @@ public class DrivetrainCommon {
 
 
         }
-        else if (Math.abs(xVal) > 0 && Math.abs(curOpMode.gamepad1.right_stick_x)>0) {
+        //Slide Left/Right with correction causing curved motion
+        else if (Math.abs(xVal) > 0 && Math.abs(xVal_rs)>0) {
 
-            correction = curOpMode.gamepad1.right_stick_x;
+            correction = xVal_rs;
 
-            if(xVal<0 && curOpMode.gamepad1.right_stick_x>0) {
+            //Slide Left with forward curve
+            if(xVal<0 && xVal_rs>0) {
                 //Front Motors
                 powerLeftFront = xVal + correction;
                 powerRightFront = -xVal - correction;
@@ -316,7 +309,8 @@ public class DrivetrainCommon {
                 powerRightRear = xVal;
                 powerLeftRear = -xVal;
             }
-            else if(xVal<0 && curOpMode.gamepad1.right_stick_x<0)
+            //Slide Left with backward curve
+            else if(xVal<0 && xVal_rs < 0)
             {
                 //Front Motors
                 powerLeftFront = xVal;
@@ -326,7 +320,8 @@ public class DrivetrainCommon {
                 powerRightRear = xVal - correction;
                 powerLeftRear = -xVal + correction;
             }
-            else if(xVal>0 && curOpMode.gamepad1.right_stick_x>0)
+            //Slide Right with backward curve
+            else if(xVal>0 && xVal_rs>0)
             {
                 //Front Motors
                 powerLeftFront = xVal;
@@ -336,7 +331,8 @@ public class DrivetrainCommon {
                 powerRightRear = xVal - correction;
                 powerLeftRear = -xVal + correction;
             }
-            else if(xVal>0 && curOpMode.gamepad1.right_stick_x<0)
+            //Slide right with forward curve
+            else if(xVal>0 && xVal_rs<0)
             {
                 //Front Motors
                 powerLeftFront = xVal + correction;
@@ -347,59 +343,51 @@ public class DrivetrainCommon {
                 powerLeftRear = -xVal;
             }
         }
-        else if(Math.abs(curOpMode.gamepad1.right_stick_x)==0) {
+        else if(Math.abs(xVal_rs)==0) {
             powerRightRear = 0;
             powerLeftRear = 0;
             powerLeftFront = 0;
             powerRightFront = 0;
         }
 
+
+        //Slow controls for forward/backward and slide left/right
+
+        //Slow forward
         if (curOpMode.gamepad1.dpad_up) {
-            //Left motors
-            powerLeftRear = slowPower;
-            powerLeftFront = slowPower;
 
-            //Right Motors
-            powerRightRear = slowPower;
-            powerRightFront = slowPower;
-        } else if (curOpMode.gamepad1.dpad_left) {
+            if(curOpMode.gamepad1.dpad_left)
+            {
+                //Left motors
+                powerLeftRear = slowPower;
+                powerLeftFront = 0;
 
-            correction = 0;// pidDrive.performPID(getAngle());//*Math.max(Math.abs(yVal),Math.abs(xVal));
-
-            if (correction < 0) {
-                correction = Math.abs(correction);
-
-                //Front Motors
-                powerLeftFront = -slideSlowPower + correction;
-                powerRightFront = slideSlowPower - correction;
-
-                //Rear Motors
-                powerRightRear = -slideSlowPower - correction;
-                powerLeftRear = slideSlowPower + correction;
-
-
-            } else {
-                //Front Motors
-                powerLeftFront = -slideSlowPower - correction;
-                powerRightFront = slideSlowPower + correction;
-
-                //Rear Motors
-                powerRightRear = -slideSlowPower + correction;
-                powerLeftRear = slideSlowPower - correction;
+                //Right Motors
+                powerRightRear = 0;
+                powerRightFront = slowPower;
             }
+            else if(curOpMode.gamepad1.dpad_right)
+            {
+                //Left motors
+                powerLeftRear = 0;
+                powerLeftFront =slowPower;     
 
-        } else if (curOpMode.gamepad1.dpad_right) {
+                //Right Motors
+                powerRightRear =slowPower;
+                powerRightFront = 0;
+            }
+            else {
+                //Left motors
+                powerLeftRear = slowPower;
+                powerLeftFront = slowPower;
 
-            correction = 0;//pidDrive.performPID(getAngle());//*Math.max(Math.abs(yVal),Math.abs(xVal));
-
-            //Front Motors
-            powerLeftFront = slideSlowPower - correction;
-            powerRightFront = -slideSlowPower + correction;
-
-            //Rear Motors
-            powerRightRear = slideSlowPower + correction;
-            powerLeftRear = -slideSlowPower - correction;
-        } else if (curOpMode.gamepad1.dpad_down) {
+                //Right Motors
+                powerRightRear = slowPower;
+                powerRightFront = slowPower;
+            }
+        }
+        //Slow backward
+        else if (curOpMode.gamepad1.dpad_down) {
             //Left motors
             powerLeftRear = -slowPower;
             powerLeftFront = -slowPower;
@@ -408,7 +396,29 @@ public class DrivetrainCommon {
             powerRightRear = -slowPower;
             powerRightFront = -slowPower;
         }
+        //Slow slide left
+        else if (curOpMode.gamepad1.dpad_left) {
 
+            //Front Motors
+            powerLeftFront = -slideSlowPower ;
+            powerRightFront = slideSlowPower;
+
+            //Rear Motors
+            powerRightRear = -slideSlowPower;
+            powerLeftRear = slideSlowPower ;
+
+        }
+        //Slow slide right
+        else if (curOpMode.gamepad1.dpad_right) {
+
+            //Front Motors
+            powerLeftFront = slideSlowPower;
+            powerRightFront = -slideSlowPower;
+
+            //Rear Motors
+            powerRightRear = slideSlowPower;
+            powerLeftRear = -slideSlowPower;
+        }
 
         robot.driveRR.setPower(powerRightRear);
         robot.driveLR.setPower(powerLeftRear);
