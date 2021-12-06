@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
 import org.firstinspires.ftc.teamcode.drivetrain.DrivetrainCommon;
@@ -14,4 +15,42 @@ public class GlobalAll {
     public DrivetrainCommon drivetrain;
     public IntakeCommon intake;
     public GripperCommon gripper;
+
+    public LinearOpMode curOpMode;
+
+    public ElapsedTime runtime = new ElapsedTime();
+
+    public GlobalHardware robot = new GlobalHardware();
+
+    public boolean firstLoop;
+
+    public GlobalAll(LinearOpMode owningOpMode){
+        curOpMode = owningOpMode;
+        robot.init(curOpMode.hardwareMap);
+        runtime.reset();
+        firstLoop = true;
+    }
+
+    double fullTime = 120;
+    double flagTime = 75;
+    double timeLeft;
+    double pos;
+
+    public void executeTeleop(){
+        if(firstLoop){
+            runtime.reset();
+            firstLoop = false;
+        }
+        if(runtime.seconds() >= flagTime){
+//            double tempVal = runtime.seconds() + flagTime;
+            timeLeft = fullTime - runtime.seconds();
+            pos = timeLeft / (fullTime - flagTime);
+            robot.flag.setPosition(pos);
+
+        } else {
+            robot.flag.setPosition(0);
+        }
+    }
+
+
 }

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 //@Disabled
 public class TeleopAllBlue extends LinearOpMode {
 
-        GlobalAll global = new GlobalAll();
+        GlobalAll global = new GlobalAll(this);
 
         @Override
         public void runOpMode() {
@@ -27,7 +27,7 @@ public class TeleopAllBlue extends LinearOpMode {
 
             while (opModeIsActive()) {
 //                oldDrivetrain.executeTeleop();
-
+                global.executeTeleop();
                 global.spinner.executeTeleop();
                 global.drivetrain.executeTeleop();
                 global.conveyor.executeTeleop();
