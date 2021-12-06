@@ -10,6 +10,7 @@ package org.firstinspires.ftc.teamcode.intake;
 
 // This imports all the different dependencies and libraries and other classes we use in this file
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -27,6 +28,7 @@ public class IntakeHardware {
     public CRServo backSpin;
     public Servo frontSpinRotate;
     public Servo backSpinRotate;
+    public RevColorSensorV3 intakeColor;
 
     HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
@@ -44,6 +46,8 @@ public class IntakeHardware {
         backSpin = hwMap.get(CRServo.class, "back_spin");
         frontSpinRotate = hwMap.get(Servo.class, "front_spin_rotate");
         backSpinRotate = hwMap.get(Servo.class, "back_spin_rotate");
+
+        intakeColor = hwMap.get(RevColorSensorV3.class,"intake_color");
 
         frontSpin.setDirection(DcMotorSimple.Direction.REVERSE);
 

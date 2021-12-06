@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.intake;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 public class IntakeCommon {
 
     public IntakeHardware robot = new IntakeHardware();
@@ -72,6 +74,16 @@ public class IntakeCommon {
             robot.frontGuide2.setPosition(.7);
         }
 
+
+        double blockCheck = robot.intakeColor.getDistance(DistanceUnit.CM);
+
+        if(state==intakeState.intake && blockCheck<3)
+        {
+            state=intakeState.lift;
+
+        }
+
+
         switch(state){
             case start:
                 firstLift = true;
@@ -126,7 +138,7 @@ public class IntakeCommon {
             case onlyLift:
                 firstLift = true;
                 firstStart = true;
-
+                robot.frontSpin.setPower(0);
                 robot.frontSpinRotate.setPosition(.4);
                 break;
         }
@@ -137,6 +149,7 @@ public class IntakeCommon {
         curOpMode.telemetry.addData("Dropper Position", robot.frontSpinRotate.getPosition());
         curOpMode.telemetry.addData("Spinner Speed", robot.frontSpin.getPower());
         curOpMode.telemetry.addData("Lift is moving", liftIsMoving);
+        curOpMode.telemetry.addData("Block Check", blockCheck);
 
     }
 
