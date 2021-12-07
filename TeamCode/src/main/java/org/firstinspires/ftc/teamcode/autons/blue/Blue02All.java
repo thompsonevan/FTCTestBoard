@@ -88,7 +88,9 @@ public class Blue02All extends LinearOpMode {
 
         auto.checkDistances();
 
-        waitForStart();
+        while(!isStarted()){
+            auto.checkDistances();
+        }
 
         int pos = auto.getPos(!red);
 

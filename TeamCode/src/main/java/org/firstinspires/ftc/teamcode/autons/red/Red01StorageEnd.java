@@ -84,9 +84,9 @@ public class Red01StorageEnd extends LinearOpMode {
 
         auto.resetEncoders();
 
-        auto.checkDistances();
-
-        waitForStart();
+        while(!isStarted()){
+            auto.checkDistances();
+        }
 
         int pos = auto.getPos(false);
 

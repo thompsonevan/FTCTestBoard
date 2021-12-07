@@ -86,9 +86,9 @@ public class Red02All extends LinearOpMode {
 
         auto.resetEncoders();
 
-        auto.checkDistances();
-
-        waitForStart();
+        while(!isStarted()){
+            auto.checkDistances();
+        }
 
         int pos = auto.getPos(!red);
 
