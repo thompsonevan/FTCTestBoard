@@ -77,7 +77,10 @@ public class IntakeCommon {
 
         double blockCheck = robot.intakeColor.getDistance(DistanceUnit.CM);
 
-        if(state==intakeState.intake && blockCheck<3)
+        double redRatio =(float) robot.intakeColor.red()/ (float) robot.intakeColor.blue();
+        double greenRatio = (float) robot.intakeColor.green() / (float) robot.intakeColor.blue();
+
+        if(state==intakeState.intake && redRatio>1.5 && greenRatio > 2)
         {
             state=intakeState.lift;
 
