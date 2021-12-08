@@ -40,6 +40,8 @@ public class ConveyorHardware {
         conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        conveyorMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         conveyorMotor.setPower(0);
         armMotor.setPower(0);
 

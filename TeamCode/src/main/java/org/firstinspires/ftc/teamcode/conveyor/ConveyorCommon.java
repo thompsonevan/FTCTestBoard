@@ -71,7 +71,7 @@ public class ConveyorCommon {
         } else if (curOpMode.gamepad2.dpad_left){
             liftConveyor(3, .8, 10);
         } else if (curOpMode.gamepad1.x){
-            liftConveyor(4, .2, 10);
+            liftConveyor(4, .8, 10);
         } else if (curOpMode.gamepad1.y){
             liftConveyor(5, .8, 10);
         }
