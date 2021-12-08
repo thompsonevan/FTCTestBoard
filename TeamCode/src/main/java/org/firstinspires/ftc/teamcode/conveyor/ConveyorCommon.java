@@ -28,6 +28,8 @@ public class ConveyorCommon {
     double read1 = 0;
     double read2 = 0;
 
+    int count;
+
     public ConveyorCommon(LinearOpMode owningOpMode, GlobalAll gaP){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
@@ -42,6 +44,8 @@ public class ConveyorCommon {
         robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         ga = gaP;
+
+        count = 0;
     }
     public ConveyorCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
@@ -52,6 +56,7 @@ public class ConveyorCommon {
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        count = 0;
     }
 
     public void executeTeleop(){
@@ -72,7 +77,15 @@ public class ConveyorCommon {
         }
 
         if(curOpMode.gamepad2.back){
-            pushConveyor(.8, 10);
+            count++;
+        }
+
+        if(count == 1){
+            pushConveyor(.8, 10, 1500);
+        } else if (count > 1){
+            pushConveyor(.8, 10, 2500);
+            pushConveyor(.8, 10, 0);
+            count = 0;
         }
 
         printData();
@@ -104,9 +117,13 @@ public class ConveyorCommon {
         }
     }
 
+    public void pushConveyor(double speed, double timeout, int distance){
+        moveConveyor(robot.conveyorMotor, distance, speed, timeout);
+        robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     public void pushConveyor(double speed, double timeout){
         moveConveyor(robot.conveyorMotor, 2500, speed, timeout);
-        moveConveyor(robot.conveyorMotor, 0, speed, timeout);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
