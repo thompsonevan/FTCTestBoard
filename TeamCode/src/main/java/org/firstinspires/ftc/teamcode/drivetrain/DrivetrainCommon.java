@@ -51,9 +51,10 @@ public class DrivetrainCommon {
 
     double slowPower = .25;
     double slideSlowPower = .25;
+    double slowTurn =.2;
 
-    double max = 1;
-    double turnMax = 1;
+    double max = .8;
+    double turnMax = .8;
 
     Gamepad driverControl;
 
@@ -63,7 +64,7 @@ public class DrivetrainCommon {
     double controllerCap = .95;
     double speed = .75;
 
-    double powerShift = .1;
+    double powerShift = .15;
     // Important Stuff
 
 
@@ -92,6 +93,8 @@ public class DrivetrainCommon {
 
         curOpMode.telemetry.addData("Mode", "calibrating...");
         curOpMode.telemetry.update();
+
+
 
 
     //    while (!curOpMode.isStopRequested() && !robot.imu.isGyroCalibrated()) {
@@ -138,10 +141,10 @@ public class DrivetrainCommon {
     public void executeTeleop() {
 
 
-        xVal=curOpMode.gamepad1.left_stick_x;
-        yVal=-curOpMode.gamepad1.left_stick_y;
+        xVal = curOpMode.gamepad1.left_stick_x;
+        yVal = -curOpMode.gamepad1.left_stick_y;
 
-        xVal_rs=curOpMode.gamepad1.right_stick_x;
+        xVal_rs = curOpMode.gamepad1.right_stick_x;
 
         correction = 0;
 
@@ -151,6 +154,13 @@ public class DrivetrainCommon {
 
             yDir = true;
         }
+
+        if (curOpMode.gamepad1.x) {
+            robot.driveLF.setPower(-.35);
+            robot.driveRF.setPower(.35);
+            robot.driveLR.setPower(.35);
+            robot.driveRR.setPower(-.35);
+        } else {
 
         //Maintain minimum power value whenever stick is above zero
         if (Math.abs(yVal) > 0 && Math.abs(yVal) < min) {
@@ -170,32 +180,29 @@ public class DrivetrainCommon {
 
         //Scale power based on exponential curve
 
-        if(Math.abs(yVal)>0) {
-            yVal = Math.signum(yVal) * (Math.pow(Math.abs(yVal), 4 )+powerShift);
+        if (Math.abs(yVal) > 0) {
+            yVal = Math.signum(yVal) * (Math.pow(Math.abs(yVal), 4) + powerShift);
         }
 
-        if(Math.abs(xVal)>0) {
-            xVal = Math.signum(xVal) * (Math.pow(Math.abs(xVal), 4));
+        if (Math.abs(xVal) > 0) {
+            xVal = Math.signum(xVal) * (Math.pow(Math.abs(xVal), 4) + powerShift);
         }
 
-        if(Math.abs(xVal_rs)>0) {
-            xVal_rs = Math.signum(xVal_rs) * (Math.pow(Math.abs(xVal_rs), 4));
+        if (Math.abs(xVal_rs) > 0) {
+            xVal_rs = Math.signum(xVal_rs) * (Math.pow(Math.abs(xVal_rs), 4) + powerShift);
         }
 
 
-        if(Math.abs(yVal)>1)
-        {
-            yVal=Math.signum(yVal)*1;
+        if (Math.abs(yVal) > 1) {
+            yVal = Math.signum(yVal) * 1;
         }
 
-        if(Math.abs(xVal)>1)
-        {
-            xVal=Math.signum(xVal)*1;
+        if (Math.abs(xVal) > 1) {
+            xVal = Math.signum(xVal) * 1;
         }
 
-        if(Math.abs(xVal_rs)>1)
-        {
-            xVal_rs=Math.signum(xVal_rs)*1;
+        if (Math.abs(xVal_rs) > 1) {
+            xVal_rs = Math.signum(xVal_rs) * 1;
         }
 
         //Scale resulting curve values to defined maximum
@@ -210,7 +217,7 @@ public class DrivetrainCommon {
         if (Math.abs(xVal_rs) > 0) {
 
             //This case is for a pure turn with no forward/backward or slide L/R motion
-            if (Math.abs(yVal) == 0 && Math.abs(xVal)==0) {
+            if (Math.abs(yVal) == 0 && Math.abs(xVal) == 0) {
 
                 if (Math.abs(xVal_rs) > 0) {
 
@@ -225,8 +232,7 @@ public class DrivetrainCommon {
                     robot.driveLR.setPower(powerLeftRear);
                     robot.driveLF.setPower(powerLeftFront);
                     robot.driveRF.setPower(powerRightFront);
-                }
-                else if (Math.abs(curOpMode.gamepad1.right_stick_x)==0){
+                } else if (Math.abs(curOpMode.gamepad1.right_stick_x) == 0) {
 
                     robot.driveRR.setPower(0);
                     robot.driveLR.setPower(0);
@@ -237,7 +243,7 @@ public class DrivetrainCommon {
             }
 
             //Otherwise capture a turn value to cause simultaneous turning while moving forward/backward or sliding left/right
-            else  {
+            else {
 
                 turnVal = xVal_rs;
 
@@ -281,7 +287,7 @@ public class DrivetrainCommon {
         }
 
         //Slide Left/Right with no correction curve
-        else if (Math.abs(xVal) > 0 && Math.abs(curOpMode.gamepad1.right_stick_x)==0) {
+        else if (Math.abs(xVal) > 0 && Math.abs(curOpMode.gamepad1.right_stick_x) == 0) {
 
             correction = 0;//pidDrive.performPID(getAngle());//*Math.max(Math.abs(yVal),Math.abs(xVal));
             //Front Motors
@@ -295,12 +301,12 @@ public class DrivetrainCommon {
 
         }
         //Slide Left/Right with correction causing curved motion
-        else if (Math.abs(xVal) > 0 && Math.abs(xVal_rs)>0) {
+        else if (Math.abs(xVal) > 0 && Math.abs(xVal_rs) > 0) {
 
             correction = xVal_rs;
 
             //Slide Left with forward curve
-            if(xVal<0 && xVal_rs>0) {
+            if (xVal < 0 && xVal_rs > 0) {
                 //Front Motors
                 powerLeftFront = xVal + correction;
                 powerRightFront = -xVal - correction;
@@ -310,8 +316,7 @@ public class DrivetrainCommon {
                 powerLeftRear = -xVal;
             }
             //Slide Left with backward curve
-            else if(xVal<0 && xVal_rs < 0)
-            {
+            else if (xVal < 0 && xVal_rs < 0) {
                 //Front Motors
                 powerLeftFront = xVal;
                 powerRightFront = -xVal;
@@ -321,8 +326,7 @@ public class DrivetrainCommon {
                 powerLeftRear = -xVal + correction;
             }
             //Slide Right with backward curve
-            else if(xVal>0 && xVal_rs>0)
-            {
+            else if (xVal > 0 && xVal_rs > 0) {
                 //Front Motors
                 powerLeftFront = xVal;
                 powerRightFront = -xVal;
@@ -332,8 +336,7 @@ public class DrivetrainCommon {
                 powerLeftRear = -xVal + correction;
             }
             //Slide right with forward curve
-            else if(xVal>0 && xVal_rs<0)
-            {
+            else if (xVal > 0 && xVal_rs < 0) {
                 //Front Motors
                 powerLeftFront = xVal + correction;
                 powerRightFront = -xVal - correction;
@@ -342,8 +345,7 @@ public class DrivetrainCommon {
                 powerRightRear = xVal;
                 powerLeftRear = -xVal;
             }
-        }
-        else if(Math.abs(xVal_rs)==0) {
+        } else if (Math.abs(xVal_rs) == 0) {
             powerRightRear = 0;
             powerLeftRear = 0;
             powerLeftFront = 0;
@@ -356,8 +358,7 @@ public class DrivetrainCommon {
         //Slow forward
         if (curOpMode.gamepad1.dpad_up) {
 
-            if(curOpMode.gamepad1.dpad_left)
-            {
+            if (curOpMode.gamepad1.dpad_left) {
                 //Left motors
                 powerLeftRear = slowPower;
                 powerLeftFront = 0;
@@ -365,18 +366,15 @@ public class DrivetrainCommon {
                 //Right Motors
                 powerRightRear = 0;
                 powerRightFront = slowPower;
-            }
-            else if(curOpMode.gamepad1.dpad_right)
-            {
+            } else if (curOpMode.gamepad1.dpad_right) {
                 //Left motors
                 powerLeftRear = 0;
-                powerLeftFront =slowPower;
+                powerLeftFront = slowPower;
 
                 //Right Motors
-                powerRightRear =slowPower;
+                powerRightRear = slowPower;
                 powerRightFront = 0;
-            }
-            else {
+            } else {
                 //Left motors
                 powerLeftRear = slowPower;
                 powerLeftFront = slowPower;
@@ -389,8 +387,7 @@ public class DrivetrainCommon {
         //Slow backward
         else if (curOpMode.gamepad1.dpad_down) {
 
-            if(curOpMode.gamepad1.dpad_right)
-            {
+            if (curOpMode.gamepad1.dpad_right) {
                 //Left motors
                 powerLeftRear = -slowPower;
                 powerLeftFront = 0;
@@ -398,18 +395,15 @@ public class DrivetrainCommon {
                 //Right Motors
                 powerRightRear = 0;
                 powerRightFront = -slowPower;
-            }
-            else if(curOpMode.gamepad1.dpad_left)
-            {
+            } else if (curOpMode.gamepad1.dpad_left) {
                 //Left motors
                 powerLeftRear = 0;
-                powerLeftFront =-slowPower;
+                powerLeftFront = -slowPower;
 
                 //Right Motors
-                powerRightRear =-slowPower;
+                powerRightRear = -slowPower;
                 powerRightFront = 0;
-            }
-            else {
+            } else {
 
 
                 //Left motors
@@ -425,12 +419,12 @@ public class DrivetrainCommon {
         else if (curOpMode.gamepad1.dpad_left) {
 
             //Front Motors
-            powerLeftFront = -slideSlowPower ;
+            powerLeftFront = -slideSlowPower;
             powerRightFront = slideSlowPower;
 
             //Rear Motors
             powerRightRear = -slideSlowPower;
-            powerLeftRear = slideSlowPower ;
+            powerLeftRear = slideSlowPower;
 
         }
         //Slow slide right
@@ -444,11 +438,26 @@ public class DrivetrainCommon {
             powerRightRear = slideSlowPower;
             powerLeftRear = -slideSlowPower;
         }
+        else if(curOpMode.gamepad1.right_bumper)
+        {
+            powerRightRear = -slowTurn;
+            powerLeftRear = slowTurn;
+            powerLeftFront = slowTurn;
+            powerRightFront = -slowTurn;
+        }
+        else if(curOpMode.gamepad1.left_bumper)
+        {
+            powerRightRear = slowTurn;
+            powerLeftRear = -slowTurn;
+            powerLeftFront = -slowTurn;
+            powerRightFront = slowTurn;
+        }
 
         robot.driveRR.setPower(powerRightRear);
         robot.driveLR.setPower(powerLeftRear);
         robot.driveLF.setPower(powerLeftFront);
         robot.driveRF.setPower(powerRightFront);
+    }
 
         printData();
     }

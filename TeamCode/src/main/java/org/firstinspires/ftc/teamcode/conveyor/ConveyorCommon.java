@@ -59,6 +59,8 @@ public class ConveyorCommon {
         count = 0;
     }
 
+    double startTime = 999999999;
+
     public void executeTeleop(){
         curOpMode.telemetry.addData("Conveyor Level:", robot.armMotor.getCurrentPosition());
 
@@ -86,6 +88,18 @@ public class ConveyorCommon {
             pushConveyor(.8, 10, 2500);
             pushConveyor(.8, 10, 0);
             count = 0;
+        }
+
+        if(ga.intakeFull){
+            if(startTime == 999999999){
+                startTime = runtime.seconds();
+            }
+
+            if (startTime - runtime.seconds() > 2){
+                pushConveyor(.8, 10, 1500);
+            }
+        } else if (startTime > 4){
+            startTime = 999999999;
         }
 
         printData();

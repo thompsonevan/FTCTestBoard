@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.intake;
 
+import android.provider.Settings;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.GlobalAll;
 
 public class IntakeCommon {
 
@@ -27,6 +30,29 @@ public class IntakeCommon {
     boolean firstStart = true;
 
     boolean liftIsMoving = false;
+
+    GlobalAll ga;
+
+    public IntakeCommon(LinearOpMode owningOpMode, GlobalAll _ga){
+        curOpMode = owningOpMode;
+        robot.init(curOpMode.hardwareMap);
+
+        state = intakeState.start;
+
+//        autoIntake(state);
+
+        runtime.reset();
+
+        robot.frontSpin.setPower(0);
+
+        robot.frontSpinRotate.setPosition(.4);
+
+        curOpMode.sleep(300);
+
+        robot.frontLift.setPosition(.5);
+
+        ga = _ga;
+    }
 
     public IntakeCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
@@ -63,12 +89,12 @@ public class IntakeCommon {
 
         }
 
-        if (curOpMode.gamepad2.left_bumper){
+        if (curOpMode.gamepad2.right_bumper){
             robot.frontGuide1.setPosition(1);
         } else {
             robot.frontGuide1.setPosition(.2);
         }
-        if (curOpMode.gamepad2.right_bumper){
+        if (curOpMode.gamepad2.left_bumper){
             robot.frontGuide2.setPosition(0);
         } else {
             robot.frontGuide2.setPosition(.7);
@@ -83,7 +109,10 @@ public class IntakeCommon {
         if(state==intakeState.intake && redRatio>1.5 && greenRatio > 2)
         {
             state=intakeState.lift;
+            ga.intakeFull = true;
 
+        } else {
+            ga.intakeFull = false;
         }
 
 

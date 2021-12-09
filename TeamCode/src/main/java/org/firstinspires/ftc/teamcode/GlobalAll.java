@@ -24,15 +24,18 @@ public class GlobalAll {
 
     public boolean firstLoop;
 
+    public boolean intakeFull;
+
     public GlobalAll(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
         runtime.reset();
         firstLoop = true;
+        intakeFull = false;
     }
 
-    double fullTime = 120;
-    double flagTime = 75;
+    double fullTime = 50;
+    double flagTime = 5;
     double timeLeft;
     double pos;
 

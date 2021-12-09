@@ -104,8 +104,10 @@ public class Blue01StorageEnd extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
 
+        int encoderPos = auto.getDistFromHub(pos);
+
         // Strafe towards hub
-        auto.encoderStrafe(strafeSpeed,1, 2650,false,false,false);
+        auto.encoderStrafe(strafeSpeed,1, encoderPos,false,false,false);
 
         // Put block onto hub
         auto.conveyor.pushConveyor(conveyorSpeed, 30);

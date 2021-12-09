@@ -22,7 +22,7 @@ public class TeleopAllRed extends LinearOpMode {
 //            OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
             global.spinner = new SpinnerCommon(this, true);
             global.drivetrain = new DrivetrainCommon(this, global);
-            global.intake = new IntakeCommon(this);
+            global.intake = new IntakeCommon(this, global);
             global.conveyor = new ConveyorCommon(this, global);
             global.gripper = new GripperCommon(this);
 
