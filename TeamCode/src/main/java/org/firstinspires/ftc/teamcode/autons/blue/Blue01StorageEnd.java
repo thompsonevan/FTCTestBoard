@@ -88,7 +88,7 @@ public class Blue01StorageEnd extends LinearOpMode {
             auto.checkDistances();
         }
 
-        int pos = 1;
+        int pos = auto.getPos(!red);
 
         telemetry.addData("pos", pos);
 
@@ -107,7 +107,7 @@ public class Blue01StorageEnd extends LinearOpMode {
         auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
 
         int encoderPos = auto.getDistFromHub(pos);
-
+        
         // Strafe towards hub
         auto.encoderStrafe(strafeSpeed,30, encoderPos,false,false,false);
 

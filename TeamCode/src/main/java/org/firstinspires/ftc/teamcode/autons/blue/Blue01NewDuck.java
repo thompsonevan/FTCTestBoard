@@ -88,7 +88,7 @@ public class Blue01NewDuck extends LinearOpMode {
             auto.checkDistances();
         }
 
-        int pos = 1;
+        int pos = auto.getPos(!red);
 
         telemetry.addData("pos", pos);
 
