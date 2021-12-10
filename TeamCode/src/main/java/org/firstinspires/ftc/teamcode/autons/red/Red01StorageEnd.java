@@ -108,10 +108,14 @@ public class Red01StorageEnd extends LinearOpMode {
 
         auto.conveyor.liftConveyor(3, .8, 4);
 
-        auto.encoderDrive(driveSpeed, 2500, 30, false);
+        auto.encoderStrafe(strafeSpeed,10,200,true,false,false);
 
-        auto.encoderStrafe(strafeSpeed, 30, 300, false, false, false);
+        auto.encoderDrive(driveSpeed, 700, 30, false);
 
+        auto.encoderTurn(.5, -750, 30);
 
+        auto.encoderStrafe(strafeSpeed,10,1800,true,false,false);
+
+        auto.encoderDrive(driveSpeed, 570, 30, false);
     }
 }

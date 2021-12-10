@@ -38,10 +38,9 @@ public class ConveyorCommon {
         moveConveyor(robot.armMotor, 0, .8, 30);
         moveConveyor(robot.conveyorMotor, 0, .8, 30);
 
-        moveConveyor(robot.conveyorMotor, 0, .8, 10);
 //        moveConveyor(robot.armMotor, 0, .8, 10);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       // robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         ga = gaP;
 
@@ -50,11 +49,14 @@ public class ConveyorCommon {
     public ConveyorCommon(LinearOpMode owningOpMode){
         curOpMode = owningOpMode;
         robot.init(curOpMode.hardwareMap);
-        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        moveConveyor(robot.conveyorMotor, 0, .8, 10);
+//        robot.conveyorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        moveConveyor(robot.armMotor, 0, .8, 30);
+        moveConveyor(robot.conveyorMotor, 0, .8, 30);
+
+//        moveConveyor(robot.armMotor, 0, .8, 10);
         robot.conveyorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         count = 0;
     }
@@ -129,7 +131,7 @@ public class ConveyorCommon {
 
     public void liftConveyor(int pos, double speed, double timeout){
         if(pos == 0){
-            moveConveyor(robot.armMotor, 1920, speed, timeout); // 1
+            moveConveyor(robot.armMotor, 1950, speed, timeout); // 1
         } else if (pos == 1){
             moveConveyor(robot.armMotor, 1673, speed, timeout); //390
         } else if (pos == 2){
@@ -139,8 +141,21 @@ public class ConveyorCommon {
         } else if (pos == 4){
             moveConveyor(robot.armMotor, 600, speed, timeout); // 630
         } else if (pos == 5){
-            moveConveyor(robot.armMotor, 130, speed, timeout); // 630
+            moveConveyor(robot.armMotor, 100, speed, timeout); // 630
         }
+//        if(pos == 0){
+//            moveConveyor(robot.armMotor, 0, speed, timeout); // 1950
+//        } else if (pos == 1){
+//            moveConveyor(robot.armMotor, 1673, speed, timeout); //277
+//        } else if (pos == 2){
+//            moveConveyor(robot.armMotor, 1117, speed, timeout); // 833
+//        } else if (pos == 3){
+//            moveConveyor(robot.armMotor, 1950, speed, timeout); // 0
+//        } else if (pos == 4){
+//            moveConveyor(robot.armMotor, 1350, speed, timeout); // 600
+//        } else if (pos == 5){
+//            moveConveyor(robot.armMotor, 1850, speed, timeout); // 100
+//        }
     }
 
     public void pushConveyor(double speed, double timeout, int distance){
@@ -177,30 +192,31 @@ public class ConveyorCommon {
         } else {
 
 
-            motor.setTargetPosition(encoder);
+                motor.setTargetPosition(encoder);
 
-            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motor.setPower(speed);
-
-            runtime.reset();
-
-            while (motor.isBusy() && runtime.seconds() < timeout) {
-                checkInputs();
+                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 motor.setPower(speed);
-                curOpMode.telemetry.addData("Encoder Position", motor.getCurrentPosition());
-                curOpMode.telemetry.update();
-            }
 
-            if(motor.getCurrentPosition() == 0){
-                motor.setPower(0);
-                motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
+                runtime.reset();
+
+                while (motor.isBusy() && runtime.seconds() < timeout) {
+                    checkInputs();
+                    motor.setPower(speed);
+                    curOpMode.telemetry.addData("Encoder Position", motor.getCurrentPosition());
+                    curOpMode.telemetry.update();
+                }
+
+                if (motor.getCurrentPosition() == 0) {
+                    motor.setPower(0);
+                    motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                }
 //
 //            motor.setPower(0);
 //
 //            double currentEncoderValue = motor.getCurrentPosition();
 //
 //            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         }
     }
 
