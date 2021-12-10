@@ -63,13 +63,13 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RED 01 (Side Hub)", group="OnBot")
+@Autonomous(name="RED 01 (Side Hub Storage End)", group="OnBot")
 
 //@Disabled
-public class Red01SideHub extends LinearOpMode {
-    private ElapsedTime     runtime = new ElapsedTime();
+public class Red01SideHubStorageEnd extends LinearOpMode {
+    private ElapsedTime runtime = new ElapsedTime();
 
-    AutoCommon auto=null;
+    AutoCommon auto = null;
 
     boolean red = true;
 
@@ -84,28 +84,30 @@ public class Red01SideHub extends LinearOpMode {
 
         auto.resetEncoders();
 
-        while(!isStarted()){
+        while (!isStarted()) {
             auto.checkDistances();
         }
 
         int pos = auto.getPos(!red);
 
-        auto.encoderStrafe(strafeSpeed,10, 850,false,false,false);
+        auto.encoderDrive(driveSpeed, 825, 10, false);
 
-        auto.encoderDrive(driveSpeed,1000,10, false);
+        auto.encoderStrafe(strafeSpeed, 10, 1500, false, false, false);
 
-        auto.encoderDrive(driveSpeed,-1000,10, false);
+        auto.encoderTurn(.5, -700, 30);
 
-        auto.encoderStrafe(strafeSpeed,10, 850,false,false,false);
+        auto.encoderStrafe(strafeSpeed, 10, 1150, false, false, false);
 
-auto.encoderTurn(.5, 700, 30);
+        auto.encoderDrive(driveSpeed, 200, 10, false);
 
-        auto.encoderDrive(driveSpeed,1000,10, false);
+        auto.conveyor.pushConveyor(conveyorSpeed, 10);
 
-        auto.encoderStrafe(strafeSpeed,10, 850,false,false,false);
+        auto.encoderStrafe(strafeSpeed, 10, -850, false, false, false);
 
         auto.encoderTurn(.5, 700, 30);
 
-        auto.encoderDrive(driveSpeed,1000,10, false);
+        auto.encoderDrive(driveSpeed, 300, 10, false);
+
+        auto.encoderStrafe(strafeSpeed, 10, -250, false, false, false);
     }
 }

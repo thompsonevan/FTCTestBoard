@@ -63,10 +63,10 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Blue 01 (Storage End)", group="OnBot")
+@Autonomous(name="Blue 02 (Garret and Julian)", group="OnBot")
 
 //@Disabled
-public class Blue01StorageEnd extends LinearOpMode {
+public class Blue02GarretAndJulian extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
@@ -76,7 +76,7 @@ public class Blue01StorageEnd extends LinearOpMode {
     double driveSpeed = .5;
     double strafeSpeed = .5;
     double conveyorSpeed = .8;
-    double spinnerSpeed = .3;
+    double spinnerSpeed = .300;
 
     @Override
     public void runOpMode() {
@@ -90,35 +90,20 @@ public class Blue01StorageEnd extends LinearOpMode {
 
         int pos = auto.getPos(!red);
 
-        telemetry.addData("pos", pos);
+// -----------------------------------------------------------------------------------------------------------------------
 
-        // Lift the conveyor
-        auto.conveyor.liftConveyor(pos, .8, 4);
+        auto.encoderDrive(driveSpeed,-750,10, false);
 
-        // Drive to the spinner
-        auto.encoderDrive(driveSpeed,-500,10, false);
+        auto.encoderStrafe(strafeSpeed,10, 950,false,false,false);
 
-        // Spin the spinner
-        auto.moveSpinner(spinnerSpeed, 2);
+        auto.encoderStrafe(strafeSpeed,10, 1000,true,false,false);
 
-        // Drive away from spinner
-        auto.encoderDrive(driveSpeed,1950,10, false);
+        auto.encoderDrive(driveSpeed,-1750,10, false);
 
-        auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
+        auto.encoderStrafe(strafeSpeed,10, 200,true,false,false);
 
-        int encoderPos = auto.getDistFromHub(pos);
+        auto.encoderDrive(driveSpeed,4100,10, false);
 
-        // Strafe towards hub
-        auto.encoderStrafe(strafeSpeed,30, encoderPos,false,false,false);
 
-        // Put block onto hub
-        auto.conveyor.pushConveyor(conveyorSpeed, 30);
-
-        // Drive towards storage area
-        auto.encoderDrive(driveSpeed,-2350,10, false);
-
-        auto.conveyor.liftConveyor(3, .8, 4);
-
-        auto.encoderStrafe(strafeSpeed,1, 500,false,false,false);
     }
 }

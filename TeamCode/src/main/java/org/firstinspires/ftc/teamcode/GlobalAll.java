@@ -34,8 +34,8 @@ public class GlobalAll {
         intakeFull = false;
     }
 
-    double fullTime = 50;
-    double flagTime = 5;
+    double fullTime = 120;
+    double flagTime = 75;
     double timeLeft;
     double pos;
 
