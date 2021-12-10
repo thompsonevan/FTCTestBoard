@@ -63,7 +63,7 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="_Blue 01 (New Duck)", group="OnBot")
+@Autonomous(name="_Blue 01", group="OnBot")
 
 //@Disabled
 public class Blue01NewDuck extends LinearOpMode {

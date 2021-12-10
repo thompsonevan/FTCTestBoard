@@ -67,7 +67,7 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
 
 @Autonomous(name="RED 01 (All Actions)", group="OnBot")
 
-//@Disabled
+@Disabled
 public class Red01All extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
