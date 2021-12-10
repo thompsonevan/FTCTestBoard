@@ -63,10 +63,10 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="_RED 02 (Side Hub)", group="OnBot")
+@Autonomous(name="RED 01 (Side Hub)", group="OnBot")
 
 //@Disabled
-public class Red02SideHub extends LinearOpMode {
+public class Red01SideHub extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
@@ -90,22 +90,22 @@ public class Red02SideHub extends LinearOpMode {
 
         int pos = auto.getPos(!red);
 
-        auto.conveyor.liftConveyor(pos, .8, 4);
-
-        auto.encoderStrafe(strafeSpeed,10, 1150,false,false,false);
+        auto.encoderStrafe(strafeSpeed,10, 850,false,false,false);
 
         auto.encoderDrive(driveSpeed,1000,10, false);
 
-        auto.conveyor.pushConveyor(conveyorSpeed, 30);
-
         auto.encoderDrive(driveSpeed,-1000,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10, 1000,true,false,false);
+        auto.encoderStrafe(strafeSpeed,10, 850,false,false,false);
 
-        auto.encoderDrive(driveSpeed,-1550,10, false);
+auto.encoderTurn(.5, 700, 30);
 
-        auto.encoderStrafe(strafeSpeed,10, 1000,false,false,false);
+        auto.encoderDrive(driveSpeed,1000,10, false);
 
-        auto.encoderDrive(driveSpeed,-500,10, false);
+        auto.encoderStrafe(strafeSpeed,10, 850,false,false,false);
+
+        auto.encoderTurn(.5, 700, 30);
+
+        auto.encoderDrive(driveSpeed,1000,10, false);
     }
 }

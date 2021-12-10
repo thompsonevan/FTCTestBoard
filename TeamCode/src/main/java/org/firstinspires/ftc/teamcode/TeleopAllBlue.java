@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.conveyor.ConveyorCommon;
 import org.firstinspires.ftc.teamcode.drivetrain.DrivetrainCommon;
+import org.firstinspires.ftc.teamcode.gripper.GripperCommon;
 import org.firstinspires.ftc.teamcode.intake.IntakeCommon;
 import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 
@@ -12,29 +13,31 @@ import org.firstinspires.ftc.teamcode.spinner.SpinnerCommon;
 //@Disabled
 public class TeleopAllBlue extends LinearOpMode {
 
-        GlobalAll global = new GlobalAll(this);
+    GlobalAll global;
 
-        @Override
-        public void runOpMode() {
-
+    @Override
+    public void runOpMode() {
+        global = new GlobalAll(this);
 //            OldDrivetrainCommon oldDrivetrain = new OldDrivetrainCommon(this);
-            global.spinner = new SpinnerCommon(this, false );
-            global.drivetrain = new DrivetrainCommon(this, global);
-            global.intake = new IntakeCommon(this, global);
-            global.conveyor = new ConveyorCommon(this, global);
+        global.spinner = new SpinnerCommon(this, false);
+        global.drivetrain = new DrivetrainCommon(this, global);
+        global.intake = new IntakeCommon(this, global);
+        global.conveyor = new ConveyorCommon(this, global);
+        global.gripper = new GripperCommon(this);
 
-            waitForStart();
+        waitForStart();
 
-            while (opModeIsActive()) {
+        while (opModeIsActive()) {
 //                oldDrivetrain.executeTeleop();
-                global.executeTeleop();
-                global.spinner.executeTeleop();
-                global.drivetrain.executeTeleop();
-                global.conveyor.executeTeleop();
-                global.intake.executeTeleop();
+            global.executeTeleop();
+            global.spinner.executeTeleop();
+            global.drivetrain.executeTeleop();
+            global.conveyor.executeTeleop();
+            global.intake.executeTeleop();
+            global.gripper.executeTeleop();
 
-                telemetry.update();
-            }
+            telemetry.update();
         }
-
     }
+
+}

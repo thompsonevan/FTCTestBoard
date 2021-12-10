@@ -106,15 +106,12 @@ public class IntakeCommon {
         double redRatio =(float) robot.intakeColor.red()/ (float) robot.intakeColor.blue();
         double greenRatio = (float) robot.intakeColor.green() / (float) robot.intakeColor.blue();
 
-        if(state==intakeState.intake && redRatio>1.5 && greenRatio > 2)
-        {
-            state=intakeState.lift;
+        if(state==intakeState.intake && redRatio > 1.5 && greenRatio > 2) {
+            state = intakeState.lift;
             ga.intakeFull = true;
-
         } else {
             ga.intakeFull = false;
         }
-
 
         switch(state){
             case start:

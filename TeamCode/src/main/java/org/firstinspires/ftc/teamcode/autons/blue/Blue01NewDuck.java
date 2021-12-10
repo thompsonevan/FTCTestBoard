@@ -88,7 +88,9 @@ public class Blue01NewDuck extends LinearOpMode {
             auto.checkDistances();
         }
 
-        int pos = auto.getPos(!red);
+        int pos = 1;
+
+        telemetry.addData("pos", pos);
 
         auto.conveyor.liftConveyor(pos, .8, 4);
 

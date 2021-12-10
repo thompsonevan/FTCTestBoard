@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autons.blue;
+package org.firstinspires.ftc.teamcode.autons.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -63,15 +63,15 @@ import org.firstinspires.ftc.teamcode.autons.AutoCommon;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Blue 01 (Storage End)", group="OnBot")
+@Autonomous(name="_RED 02 (Starting Strafe)", group="OnBot")
 
 //@Disabled
-public class Blue01StorageEnd extends LinearOpMode {
+public class Red02StartingStrafe extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     AutoCommon auto=null;
 
-    boolean red=false;
+    boolean red = true;
 
     double driveSpeed = .5;
     double strafeSpeed = .5;
@@ -88,37 +88,26 @@ public class Blue01StorageEnd extends LinearOpMode {
             auto.checkDistances();
         }
 
-        int pos = 1;
+        int pos = auto.getPos(!red);
 
-        telemetry.addData("pos", pos);
-
-        // Lift the conveyor
         auto.conveyor.liftConveyor(pos, .8, 4);
 
-        // Drive to the spinner
-        auto.encoderDrive(driveSpeed,-500,10, false);
+        auto.encoderStrafe(strafeSpeed,10, 850,false,false,false);
 
-        // Spin the spinner
-        auto.moveSpinner(spinnerSpeed, 2);
+        auto.encoderDrive(driveSpeed,1000,10, false);
 
-        // Drive away from spinner
-        auto.encoderDrive(driveSpeed,1950,10, false);
-
-        auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
-
-        int encoderPos = auto.getDistFromHub(pos);
-
-        // Strafe towards hub
-        auto.encoderStrafe(strafeSpeed,30, encoderPos,false,false,false);
-
-        // Put block onto hub
         auto.conveyor.pushConveyor(conveyorSpeed, 30);
 
-        // Drive towards storage area
-        auto.encoderDrive(driveSpeed,-2350,10, false);
+        auto.encoderDrive(driveSpeed,-1000,10, false);
 
-        auto.conveyor.liftConveyor(3, .8, 4);
+        auto.encoderStrafe(strafeSpeed,10, 1000,true,false,false);
 
-        auto.encoderStrafe(strafeSpeed,1, 500,false,false,false);
+        auto.encoderDrive(driveSpeed,-1500,10, false);
+
+        auto.encoderStrafe(strafeSpeed,10,1300,false,false,false);
+
+        auto.encoderTurn(.5, 700, 30);
+
+        auto.encoderStrafe(strafeSpeed,10,1300,true,false,false);
     }
 }
