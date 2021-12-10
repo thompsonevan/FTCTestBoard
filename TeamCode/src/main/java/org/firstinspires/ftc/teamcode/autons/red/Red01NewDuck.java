@@ -89,7 +89,7 @@ public class Red01NewDuck extends LinearOpMode {
 
         int pos = auto.getPos(!red);
 
-        auto.conveyor.liftConveyor(pos, .8, 4);
+        auto.conveyor.liftConveyor(pos, .8, 30);
 
         auto.encoderStrafe(strafeSpeed, 30, 250, false, false, false);
 
@@ -115,6 +115,6 @@ public class Red01NewDuck extends LinearOpMode {
 
         auto.conveyor.liftConveyor(3, .8, 30);
 
-        auto.encoderDrive(driveSpeed, -2200, 10,false);
+        auto.encoderDrive(driveSpeed, -2300, 10,false);
     }
 }

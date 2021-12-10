@@ -679,7 +679,7 @@ public class AutoCommon {
         } else if (pos == 2){
             return 1160;
         } else if (pos == 1){
-            return 1040;
+            return 980;
         } else{
             return 1240;
         }
