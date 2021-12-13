@@ -673,16 +673,29 @@ public class AutoCommon {
         }
     }
 
-    public int getDistFromHub(int pos){
-        if(pos == 3){
-            return 1240;
-        } else if (pos == 2){
-            return 1160;
-        } else if (pos == 1){
-            return 980;
-        } else{
-            return 1240;
+    public int getDistFromHub(int pos, boolean red){
+        if(red){
+            if(pos == 3){
+                return 1240;
+            } else if (pos == 2){
+                return 1160;
+            } else if (pos == 1){
+                return 980;
+            } else{
+                return 1240;
+            }
+        } else {
+            if(pos == 3){
+                return 1270;
+            } else if (pos == 2){
+                return 1190;
+            } else if (pos == 1){
+                return 1100;
+            } else{
+                return 1240;
+            }
         }
+
     }
 
     public int getPos(boolean blue){

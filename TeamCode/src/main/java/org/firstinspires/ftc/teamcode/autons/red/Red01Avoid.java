@@ -93,7 +93,7 @@ public class Red01Avoid extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed, 30, 250, false, false, false);
 
-        auto.encoderDrive(driveSpeed,800,10, false);
+        auto.encoderDrive(driveSpeed,850,10, false);
 
         auto.moveSpinner(spinnerSpeed, 2);
 
@@ -101,9 +101,9 @@ public class Red01Avoid extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed, 4, 350, true, false, false);
 
-        int encoderPos = auto.getDistFromHub(pos);
+        int encoderPos = auto.getDistFromHub(pos, red);
 
-        auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
+        auto.encoderStrafe(strafeSpeed,10,encoderPos+100,false,false,false);
 
         auto.encoderDrive(driveSpeed, -1000, 10,false);
 
@@ -111,7 +111,7 @@ public class Red01Avoid extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed, -1000, 10,false);
 
-        auto.encoderStrafe(strafeSpeed,10,encoderPos + 60,true,false,false);
+        auto.encoderStrafe(strafeSpeed,10,encoderPos + 2000,true,false,false);
 
         auto.conveyor.liftConveyor(3, .8, 30);
 

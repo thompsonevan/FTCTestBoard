@@ -100,9 +100,9 @@ public class Blue01Avoid extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,750,10, false);
 
-        auto.encoderStrafe(strafeSpeed,4, 350,true,false,false);
+        auto.encoderStrafe(strafeSpeed,3, 350,true,false,false);
 
-        int encoderPos = auto.getDistFromHub(pos);
+        int encoderPos = auto.getDistFromHub(pos, red);
 
         auto.encoderStrafe(strafeSpeed,10, encoderPos,false,false,false);
 
@@ -112,7 +112,7 @@ public class Blue01Avoid extends LinearOpMode {
 
         auto.encoderDrive(driveSpeed,1000,10, false);
 
-        auto.encoderStrafe(strafeSpeed,10,encoderPos+100,true,false,false);
+        auto.encoderStrafe(strafeSpeed,6,encoderPos+100,true,false,false);
 
         auto.conveyor.liftConveyor(3, .8, 30);
 

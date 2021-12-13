@@ -104,11 +104,11 @@ public class Blue01NewDuck extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed,4, 350,true,false,false);
 
-        auto.encoderDrive(driveSpeed,1200,10, false);
+        auto.encoderDrive(driveSpeed,1100,10, false);
 
         auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
 
-        int encoderPos = auto.getDistFromHub(pos);
+        int encoderPos = auto.getDistFromHub(pos, red);
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
 

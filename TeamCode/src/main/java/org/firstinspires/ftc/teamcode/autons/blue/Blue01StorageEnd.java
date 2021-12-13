@@ -76,7 +76,7 @@ public class Blue01StorageEnd extends LinearOpMode {
     double driveSpeed = .5;
     double strafeSpeed = .5;
     double conveyorSpeed = .8;
-    double spinnerSpeed = .3;
+    double spinnerSpeed = .15;
 
     @Override
     public void runOpMode() {
@@ -106,7 +106,7 @@ public class Blue01StorageEnd extends LinearOpMode {
 
         auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
 
-        int encoderPos = auto.getDistFromHub(pos);
+        int encoderPos = auto.getDistFromHub(pos, red);
 
         // Strafe towards hub
         auto.encoderStrafe(strafeSpeed,30, encoderPos,false,false,false);
@@ -114,10 +114,10 @@ public class Blue01StorageEnd extends LinearOpMode {
         // Put block onto hub
         auto.conveyor.pushConveyor(conveyorSpeed, 30);
 
+        auto.conveyor.liftConveyor(3, .8, 4);
+
         // Drive towards storage area
         auto.encoderDrive(driveSpeed,-2350,10, false);
-
-        auto.conveyor.liftConveyor(3, .8, 4);
 
         auto.encoderStrafe(strafeSpeed,1, 500,false,false,false);
     }

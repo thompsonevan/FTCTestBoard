@@ -76,7 +76,7 @@ public class Red01StorageEnd extends LinearOpMode {
     double driveSpeed = .5;
     double strafeSpeed = .5;
     double conveyorSpeed = .8;
-    double spinnerSpeed = .3;
+    double spinnerSpeed = .1;
 
     @Override
     public void runOpMode() {
@@ -96,11 +96,21 @@ public class Red01StorageEnd extends LinearOpMode {
 
         auto.moveSpinner(spinnerSpeed, 2);
 
-        auto.encoderDrive(driveSpeed,-1900,10, false);
+        auto.encoderDrive(driveSpeed,-1800,10, false);
 
-        auto.encoderStrafe(strafeSpeed,1, 100,true,false,false);
+//        auto.encoderStrafe(strafeSpeed,10, 250,false,false,false);
+//
+//        auto.encoderDrive(driveSpeed,500,10, false);
+//
+//        auto.moveSpinner(spinnerSpeed, 2);
+//
+//        auto.encoderDrive(driveSpeed,-550,10, false);
+//
+//        auto.encoderStrafe(strafeSpeed,4, 350,true,false,false);
+//
+//        auto.encoderDrive(driveSpeed,-1800,10, false);
 
-        int encoderPos = auto.getDistFromHub(pos);
+        int encoderPos = auto.getDistFromHub(pos, red);
 
         auto.encoderStrafe(strafeSpeed,10,encoderPos,false,false,false);
 
